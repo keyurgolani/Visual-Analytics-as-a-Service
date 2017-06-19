@@ -1,0 +1,58 @@
+.node {
+	font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
+	color: #ffffff!important;
+	text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+	font-size: 12px;
+	padding: 5px;
+	display: inline-block;
+	font-weight: bold;
+	margin: 5px 0 5px 0;
+	border-radius: 5px;
+	background-color: #00834B;
+	transition: box-shadow 0.2s ease-in-out;
+	-webkit-box-shadow: 1px 1px 5px #000;
+	-moz-box-shadow: 1px 1px 5px #000;
+	box-shadow: 1px 1px 5px #000;
+}
+
+.sandbox {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: #E0E0E0;
+}
+
+.overlayingRight {
+	-webkit-box-shadow: 1px 0 5px #000;
+	-moz-box-shadow: 1px 0 5px #000;
+	box-shadow: 1px 0 5px #000;
+}
+
+.overlayingLeft {
+	-webkit-box-shadow: -1px 0 5px #000;
+	-moz-box-shadow: -1px 0 5px #000;
+	box-shadow: -1px 0 5px #000;
+}
+
+.overlayingTop {
+	-webkit-box-shadow: 0 -1px 5px #000;
+	-moz-box-shadow: 0 -1px 5px #000;
+	box-shadow: 0 -1px 5px #000;
+}
+
+.overlayingBottom {
+	-webkit-box-shadow: 0 1px 5px #000;
+	-moz-box-shadow: 0 1px 5px #000;
+	box-shadow: 0 1px 5px #000;
+}
+
+.leftPane {
+	height: 100%;
+	background-color: #2979ff;
+}
+
+.nodeList {
+	width: 90%;
+}
