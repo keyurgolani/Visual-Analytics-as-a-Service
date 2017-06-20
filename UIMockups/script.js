@@ -2,12 +2,15 @@ var app = angular.module('myApp', []);
 
 app.controller('myController', function($scope) {
 
-}).directive('ngNode', function($document, $compile) {
+}).directive('ngNode', function($document, $compile, Bounds, NodeChain) {
 	return {
 		restrict: 'E',
 		transclude: true,
 		template: '<div class="node"><div ng-transclude></div></div>',
 		link: function(scope, element, attr) {
+
+			var originY = element[0].offsetTop;
+			var originX = element[0].offsetLeft;
 
 			var startY = element[0].offsetTop;
 			var startX = element[0].offsetLeft;
@@ -40,12 +43,54 @@ app.controller('myController', function($scope) {
 				});
 			}
 
-			function mouseup() {
-				startX = startX + event.pageX - moveStartX;
-				startY = startY + event.pageY - moveStartY;
+			function mouseup(event) {
+				// startX = startX + event.pageX - moveStartX;
+				// startY = startY + event.pageY - moveStartY;
+				element.css({
+					position: 'relative',
+					top: 0 + 'px',
+					left: 0 + 'px'
+				});
+				var leftPane = Bounds.getElementById('leftPane');
+				if(!Bounds.within(event.pageX, event.pageY, leftPane)) {
+					console.log(element);
+					NodeChain.addToChain();
+				}
 				$document.unbind('mousemove', mousemove);
 				$document.unbind('mouseup', mouseup);
 			}
 		}
 	};
-});
+}).service('Bounds', function() {
+		this.within = function(x, y, elem) {
+			return x > this.leftBound(elem)
+					&& x < this.rightBound(elem)
+					&& y > this.topBound(elem)
+					&& x < this.bottomBound(elem)
+		}
+		this.getElementById = function(id) {
+			return angular.element(document.getElementById(id))[0];
+		}
+		this.rightBound = function(elem) {
+			return parseInt(elem.offsetLeft) + parseInt(elem.offsetWidth);
+		};
+		this.leftBound = function(elem) {
+			return parseInt(elem.offsetLeft);
+		};
+		this.topBound = function(elem) {
+			return parseInt(elem.offsetTop);
+		};
+		this.bottomBound = function(elem) {
+			return parseInt(elem.offsetTop) + parseInt(elem.offsetHeight);
+		};
+	}).service('NodeChain', function() {
+			this.getNodeFromId = function(id) {
+				// TODO: Add Node Detailed Structure to be mapped to the node ID.
+				// Node structure might contain the javascript functions to manipulate the sample data and other details & configurations about the node.
+				return id
+			};
+			this.addToChain = function(id) {
+				// TODO: Define a global app variable named chain or anything and implement the add logic to it.
+				// chain.add(this.getNodeFromId(id));
+			}
+		});
