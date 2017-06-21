@@ -2,7 +2,7 @@
 	font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New;
 	color: #ffffff!important;
 	text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-	font-size: 12px;
+	font-size: 20px;
 	padding: 5px;
 	display: inline-block;
 	font-weight: bold;
@@ -13,6 +13,19 @@
 	-webkit-box-shadow: 1px 1px 5px #000;
 	-moz-box-shadow: 1px 1px 5px #000;
 	box-shadow: 1px 1px 5px #000;
+	width: 100%;
+	text-align: center;
+	-webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.padIt {
+	padding: 10px;
+}
+
+.marginIt {
+	margin: 10px;
 }
 
 .sandbox {
