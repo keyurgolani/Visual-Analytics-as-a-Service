@@ -7,7 +7,8 @@ app.controller('myController', function($scope) {
 		restrict: 'E',
 		transclude: true,
 		scope: {
-			icon: '@'
+			icon: '@',
+			nid: '@'
 		},
 		templateUrl: 'node.html',
 		link: function(scope, element, attr) {
@@ -57,8 +58,7 @@ app.controller('myController', function($scope) {
 					left: 0 + 'px'
 				});
 				if (!Bounds.within(event.pageX, event.pageY, leftPane)) {
-					console.log(element);
-					NodeChain.addToChain();
+					NodeChain.addToChain(attr.nid);
 				}
 				$document.unbind('mousemove', mousemove);
 				$document.unbind('mouseup', mouseup);
@@ -99,7 +99,8 @@ app.controller('myController', function($scope) {
 		// Node structure might contain the javascript functions to manipulate the sample data and other details & configurations about the node.
 		return id
 	};
-	this.addToChain = function(id) {
+	this.addToChain = function(nid) {
+		console.log("Adding Node to Chain", nid)
 		// TODO: Define a global app variable named chain or anything and implement the add logic to it.
 		// chain.add(this.getNodeFromId(id));
 	}
