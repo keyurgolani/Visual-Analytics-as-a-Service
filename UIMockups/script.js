@@ -1,7 +1,7 @@
 var app = angular.module('myApp', []);
 
 app.controller('myController', function($scope) {
-
+	$scope.expand = false;
 }).directive('ngNode', function($document, $compile, Bounds, NodeChain) {
 	return {
 		restrict: 'E',
@@ -11,12 +11,6 @@ app.controller('myController', function($scope) {
 		},
 		templateUrl: 'node.html',
 		link: function(scope, element, attr) {
-
-			var originalWidth = Bounds.getWidth(element);
-			var originalHeight = Bounds.getHeight(element);
-
-			var originY = element[0].offsetTop;
-			var originX = element[0].offsetLeft;
 
 			var startY = element[0].offsetTop;
 			var startX = element[0].offsetLeft;
@@ -32,6 +26,8 @@ app.controller('myController', function($scope) {
 
 			element.on('mousedown', function(event) {
 				event.preventDefault();
+				startY = element[0].offsetTop;
+				startX = element[0].offsetLeft;
 				moveStartX = event.pageX
 				moveStartY = event.pageY
 				$document.on('mousemove', mousemove);
@@ -45,23 +41,21 @@ app.controller('myController', function($scope) {
 				element.css({
 					position: 'absolute',
 					top: y + 'px',
-					left: x + 'px',
-					height: originalHeight + 'px!important',
-					width: originalWidth + 'px!important'
+					left: x + 'px'
 				});
 			}
 
 			function mouseup(event) {
 				// startX = startX + event.pageX - moveStartX;
 				// startY = startY + event.pageY - moveStartY;
+
+				var leftPane = Bounds.getElementById('leftPane');
+
 				element.css({
 					position: 'relative',
 					top: 0 + 'px',
-					left: 0 + 'px',
-					height: 'auto',
-					width: 'auto'
+					left: 0 + 'px'
 				});
-				var leftPane = Bounds.getElementById('leftPane');
 				if (!Bounds.within(event.pageX, event.pageY, leftPane)) {
 					console.log(element);
 					NodeChain.addToChain();

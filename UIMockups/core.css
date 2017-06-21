@@ -13,7 +13,6 @@
 	-webkit-box-shadow: 1px 1px 5px #000;
 	-moz-box-shadow: 1px 1px 5px #000;
 	box-shadow: 1px 1px 5px #000;
-	width: 100%;
 	text-align: center;
 	-webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -63,9 +62,46 @@
 
 .leftPane {
 	height: 100%;
+	overflow-x: visible;
 	background-color: #2979ff;
+	transition: all 500ms ease;
 }
 
-.nodeList {
-	width: 90%;
+.wrapper {
+	height: 100%;
+	overflow-y: hidden;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border-top: .4rem solid black;
+  border-right: .4rem solid black;
+  box-shadow: 0 0 0 lightgray;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.arrow.left {
+  right: 10px;
+  -webkit-transform: translate3d(0, -50%, 0) rotate(-135deg);
+          transform: translate3d(0, -50%, 0) rotate(-135deg);
+}
+.arrow.right {
+  right: 10px;
+  -webkit-transform: translate3d(0, -50%, 0) rotate(45deg);
+          transform: translate3d(0, -50%, 0) rotate(45deg);
+}
+.arrow:hover {
+  border-top: .4rem solid orange;
+  border-right: .4rem solid orange;
+  box-shadow: .2rem -.2rem 0 black;
+}
+.arrow:hover.left {
+  right: 12px;
+}
+.arrow:hover.right {
+  right: 8px;
 }
