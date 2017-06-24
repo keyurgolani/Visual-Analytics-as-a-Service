@@ -2,53 +2,57 @@
 <html ng-app="myApp">
 
 <head>
-	<title>Sandbox</title>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-	<script src="https://code.angularjs.org/1.2.9/angular.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="script.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="core.css">
+    <title>Sandbox</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.angularjs.org/1.2.9/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="core.css">
 </head>
 
 <body>
-	<div ng-controller="myController">
-		<h2>Draging Directive Testing</h2>
-		<div class="sandbox">
-			<div class="wrapper">
-				<div id="leftPane" class="leftPane overlayingRight" ng-class="{false:'col-md-2', true:'col-md-10'}[expand]">
-					<div class="arrow right" ng-hide="expand" ng-click="expand = true"></div>
-					<div class="arrow left" ng-show="expand" ng-click="expand = false"></div>
-					<ng-node nid="1" icon="fa-arrows">Node1</ng-node>
-					<ng-node nid="2">Node2</ng-node>
-					<ng-node nid="3">Node3</ng-node>
-					<ng-node nid="4">Node4</ng-node>
-					<ng-node nid="5">Node5</ng-node>
-					<ng-node nid="6">Node6</ng-node>
-					<ng-node nid="7">Node7</ng-node>
-					<ng-node nid="8">Node8</ng-node>
-					<ng-node nid="9">Node9</ng-node>
-					<ng-node nid="10">Node10</ng-node>
-					<ng-node nid="11">Node11</ng-node>
-					<ng-node nid="12">Node12</ng-node>
-					<ng-node nid="13">Node13</ng-node>
-					<ng-node nid="14">Node14</ng-node>
-					<ng-node nid="15">Node15</ng-node>
-					<ng-node nid="16">Node16</ng-node>
-					<ng-node nid="17">Node17</ng-node>
-					<ng-node nid="18">Node18</ng-node>
-					<ng-node nid="19">Node19</ng-node>
-					<ng-node nid="20">Node20</ng-node>
-				</div>
-			</div>
-			<div class="rightCanvas col-md-10">
-				<!--TODO: Define the autoupdating canvas-->
-			</div>
-				<div class="playground"></div>
-				<div class="sample"></div>
-		</div>
-	</div>
+    <div ng-controller="myController">
+        <h2>Draging Directive Testing</h2>
+        <div class="sandbox">
+            <div class="wrapper" ng-class="{false:'col-md-2', true:'col-md-10'}[expand]">
+                <div id="leftPane" class="leftPane padIt overlayingRight">
+                    <div class="arrow right" ng-hide="expand" ng-click="expand = true"></div>
+                    <div class="arrow left" ng-show="expand" ng-click="expand = false"></div>
+                    <ng-node nid="1" icon="fa-arrows">Node1</ng-node>
+                    <ng-node nid="2">Node2</ng-node>
+                    <ng-node nid="3">Node3</ng-node>
+                    <ng-node nid="4">Node4</ng-node>
+                    <ng-node nid="5">Node5</ng-node>
+                    <ng-node nid="6">Node6</ng-node>
+                    <ng-node nid="7">Node7</ng-node>
+                    <ng-node nid="8">Node8</ng-node>
+                    <ng-node nid="9">Node9</ng-node>
+                    <ng-node nid="10">Node10</ng-node>
+                    <ng-node nid="11">Node11</ng-node>
+                    <ng-node nid="12">Node12</ng-node>
+                    <ng-node nid="13">Node13</ng-node>
+                    <ng-node nid="14">Node14</ng-node>
+                    <ng-node nid="15">Node15</ng-node>
+                    <ng-node nid="16">Node16</ng-node>
+                    <ng-node nid="17">Node17</ng-node>
+                    <ng-node nid="18">Node18</ng-node>
+                    <ng-node nid="19">Node19</ng-node>
+                    <ng-node nid="20">Node20</ng-node>
+                </div>
+            </div>
+            <div class="rightCanvas col-md-10">
+                <!--TODO: Define the autoupdating canvas-->
+                <div class="playground">
+                    <div ng-repeat="node in nodeChain track by $index">
+                        <ng-node>{{node}}</ng-node>
+                    </div>
+                </div>
+                <div class="sample"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

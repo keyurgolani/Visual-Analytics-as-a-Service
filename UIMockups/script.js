@@ -1,7 +1,8 @@
 var app = angular.module('myApp', []);
 
-app.controller('myController', function($scope) {
+app.controller('myController', function($scope, NodeChain) {
     $scope.expand = false;
+    $scope.nodeChain = [];
 }).directive('ngNode', function($document, $compile, Bounds, NodeChain) {
     return {
         restrict: 'E',
@@ -58,7 +59,8 @@ app.controller('myController', function($scope) {
                     left: 0 + 'px'
                 });
                 if (!Bounds.within(event.pageX, event.pageY, leftPane)) {
-                    NodeChain.addToChain(attr.nid);
+                    scope.$parent.nodeChain.push(NodeChain.getNodeFromId(attr.nid));
+                    scope.$apply();
                 }
                 $document.unbind('mousemove', mousemove);
                 $document.unbind('mouseup', mouseup);
@@ -94,15 +96,9 @@ app.controller('myController', function($scope) {
         return parseInt(elem.offsetTop) + parseInt(elem.offsetHeight);
     };
 }).service('NodeChain', function() {
-    this.nodeChain = [];
     this.getNodeFromId = function(nid) {
         // TODO: Add Node Detailed Structure to be mapped to the node ID.
         // Node structure might contain the javascript functions to manipulate the sample data and other details & configurations about the node.
         return nid;
     };
-    this.addToChain = function(nid) {
-        console.log("Adding Node to Chain", nid);
-        // TODO: Finalize the place for the nodeChain
-        nodeChain.add(this.getNodeFromId(nid));
-    }
 });
