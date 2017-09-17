@@ -1,0 +1,159 @@
+<!-- START Navbar -->
+<div class="navbar-default navbar navbar-fixed-top">
+<div class="container-fluid">
+
+<div class="navbar-header">
+<a class="current navbar-brand" href="../index.html">
+    Visual Analytics as a Service
+</a>
+<button class="action-right-sidebar-toggle navbar-toggle collapsed" data-target="#navdbar" data-toggle="collapse" type="button">
+    <i class="fa fa-fw fa-align-right"></i>
+</button>
+<button class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+    <i class="fa fa-fw fa-user"></i>
+</button>
+<button class="action-sidebar-open navbar-toggle collapsed" type="button">
+    <i class="fa fa-fw fa-bars"></i>
+</button>
+</div>
+</div>
+</div>
+
+<!-- START Sidebars -->
+<aside class="navbar-default sidebar">
+<div class="sidebar-overlay-head">
+<img src="../assets/images/logo-warning-white@2X.png" alt="Logo" width="80">
+<a href="#" class="sidebar-switch action-sidebar-close">
+  <i class="fa fa-times"></i>
+</a>
+</div>
+<div class="sidebar-content">
+<!-- START Sidebar Header -->
+<div class="add-on-container">
+  <div class="sidebar-container-default sidebar-section">
+      <div class="media">
+          <div class="media-left media-top">
+              <div class="avatar avatar-image avatar-inline">
+                  <img src="../assets/images/avatars/avatar-33.jpg" alt="Avatar">
+                  <i class="avatar-status bg-success avatar-status-bottom b-sidebar-status"></i>
+              </div>
+          </div>
+          <div class="media-body">
+              <h5 class="media-heading text-white m-t-0 m-b-0"><span>Ikwhan Chang</span></h5>
+          </div>
+      </div>
+  </div>
+
+</div>
+<!-- END Sidebar Header -->
+
+<div class="sidebar-content">
+<div class="sidebar-default-visible small text-uppercase sidebar-section m-t-3 m-b-2">
+  <strong>Tools</strong>
+</div>
+
+<!-- START Tree Sidebar Common -->
+<ul class="side-menu">
+
+<li ui-sref-active="active nested-active expanded" class="primary-submenu has-submenu">
+    <a ui-sref="index.main"  title="Dashboards">
+      <i class="fa fa-th fa-lg"></i><span class="nav-label">I/O</span>
+    </a>
+    <ul class="submenu-level-1">
+      <li ui-sref-active="active nested-active expanded" >
+          <a ui-sref="index.main"  title="Dashboards">
+          <span class="nav-label">Input</span>
+          </a>
+      </li>
+      <li class="">
+          <a href="../widgets/graphs-widgets.html">
+          <span class="nav-label">Output</span>
+          </a>
+      </li>
+    </ul>
+  </li>
+
+<li  ui-sref-active="active nested-active expanded"  class="primary-submenu has-submenu expanded">
+<a ui-sref="index.main"   title="Apps">
+  <i class="fa fa-suitcase fa-lg"></i><span class="nav-label">Machine Learning</span> <i class="fa arrow"></i>
+</a>
+
+<ul class="submenu-level-1">
+
+  <li class="active has-submenu expanded">
+      <a href="#">
+      <span class="nav-label">Classification</span> <i class="fa arrow"></i>
+      </a>
+          <ul class="submenu-level-2">
+              <li>
+                  <a href="../apps/projects-list.html">
+                    <div  ondrop="drop(event)" ondragover="allowDrop(event)">
+                      <div class="nav-label"  draggable="true" ondragstart="drag(event)" id="drag1">Averaged Perceptron</div>
+                    </div>  
+                  </a>
+              </li>
+              <li class="">
+                  <a href="../apps/projects-grid.html">
+                      <span class="nav-label">Bayes Point Machine</span>
+                  </a>
+              </li>
+              <li class="">
+                  <a href="../apps/projects-grid.html">
+                      <span class="nav-label">Boosted Decision Tree</span>
+                  </a>
+              </li>
+          </ul>
+  </li>
+  <li class="active has-submenu expanded">
+      <a href="#">
+      <span class="nav-label">Clustering</span> <i class="fa arrow"></i>
+      </a>
+          <ul class="submenu-level-2">
+              <li>
+                  <a href="../apps/projects-list.html">
+                      <span class="nav-label">K-means Clustering</span>
+                  </a>
+              </li>
+          </ul>
+  </li>
+
+  <li class="active has-submenu expanded">
+      <a href="#">
+      <span class="nav-label">Recommendation</span> <i class="fa arrow"></i>
+      </a>
+          <ul class="submenu-level-2">
+              <li>
+                  <a href="../apps/projects-list.html">
+                      <span class="nav-label">Matchbox Recommender</span>
+                  </a>
+              </li>
+          </ul>
+  </li>
+  <li class="active has-submenu expanded">
+      <a href="#">
+      <span class="nav-label">Regression</span> <i class="fa arrow"></i>
+      </a>
+          <ul class="submenu-level-2">
+              <li>
+                  <a href="../apps/projects-list.html">
+                      <span class="nav-label">Bayesian Linear Regression</span>
+                  </a>
+              </li>
+              <li class="">
+                  <a href="../apps/projects-grid.html">
+                      <span class="nav-label">Boosted Decision Tree</span>
+                  </a>
+              </li>
+          </ul>
+  </li>
+</ul>
+</li>
+
+
+
+
+</ul>
+<!-- END Tree Sidebar Common  -->
+
+</div>
+</aside>
