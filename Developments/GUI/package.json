@@ -39,5 +39,12 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "http": "0.0.0",
+    "method-override": "^2.3.9",
+    "morgan": "^1.8.2"
   }
 }
