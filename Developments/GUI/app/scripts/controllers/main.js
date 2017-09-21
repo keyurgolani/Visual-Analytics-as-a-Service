@@ -9,62 +9,93 @@
  */
 angular.module('visualAnalyticsApp')
   .controller('MainCtrl', function ($scope) {
-
-    $scope.init = function() {
-      var width = window.innerWidth;
+    var width = window.innerWidth;
     var height = window.innerHeight;
 
     var stage = new Konva.Stage({
-        container: 'container',
+        container: 'whiteboard',
         width: width,
         height: height
     });
     var dragLayer = new Konva.Layer();
-    var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'cyan', 'purple'];
+
     var colorIndex = 0;
     var layersArr = [];
-    /*
-    * create 10 layers each containing 1000 shapes to create
-    * 10,000 shapes.  This greatly improves performance because
-    * only 1,000 shapes will have to be drawn at a time when a
-    * circle is removed from a layer rather than all 10,000 shapes.
-    * Keep in mind that having too many layers can also slow down performance.
-    * I found that using 10 layers each made up of 1,000 shapes performs better
-    * than 20 layers with 500 shapes or 5 layers with 2,000 shapes
-    */
-    var layer = new Konva.Layer();
-    layersArr.push(layer);
-    addCircle(layer);
-    stage.add(layer);
-    stage.add(dragLayer);
-    stage.on('mousedown', function(evt) {
-        var circle = evt.target;
-        var layer = circle.getLayer();
-        circle.moveTo(dragLayer);
-        layer.draw();
-        circle.startDrag();
+    var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'cyan', 'purple'];
+
+
+    var rectX = stage.getWidth() / 2 - 50;
+    var rectY = stage.getHeight() / 2 - 25;
+
+    $scope.tempNode = {
+      title: ''
+    }
+
+    $scope.addBox = function(x, y, title) {
+      var layer = new Konva.Layer();
+      var group = new Konva.Group({
+        draggable: true
     });
-    }
-
-    $scope.addCircle = function(layer){
-      var color = colors[colorIndex++];
-      if(colorIndex >= colors.length) {
-          colorIndex = 0;
-      }
-      var randX = Math.random() * stage.getWidth();
-      var randY = Math.random() * stage.getHeight();
-      var circle = new Konva.Circle({
-          x: randX,
-          y: randY,
-          radius: 6,
-          fill: color
+      var box = new Konva.Rect({
+          x: x,
+          y: y,
+          width: 100,
+          height: 50,
+          fill: '#FFF',
+          stroke: 'grey',
+          strokeWidth: 0.5,
+          cornerRadius: 10
       });
-      layer.add(circle);
+
+      var text = new Konva.Text({
+        x: x,
+        y: y,
+        width: 100,
+        height: 50,
+        text: title,
+        fontSize: 12,
+        fontFamily: 'Calibri',
+        fill: '#555',
+        align: 'center'
+      })
+      // add cursor styling
+      group.on('mouseover', function() {
+          document.body.style.cursor = 'pointer';
+      });
+
+      layer.on('click', function() {
+          console.log("clicked"+title);
+          $scope.tempNode.title = title;
+          $("#myModal").modal('show')
+      });
+      group.on('mouseout', function() {
+          document.body.style.cursor = 'default';
+      });
+
+      group.add(box);
+      group.add(text);
+      layer.add(group);
+      stage.add(layer);
     }
 
-    $scope.addInput = function() {
 
+    $("#whiteboard").droppable({
+      drop: function(event, ui){
+
+        var newPosX = ui.offset.left - $(this).offset().left;
+        var newPosY = ui.offset.top - $(this).offset().top;
+        console.log(ui.draggable[0].dataset.title)
+        $scope.addBox(newPosX, newPosY , ui.draggable[0].dataset.title)
+        $(".draggable").animate({
+          top : 0,
+          left : 0
+        }, 'fast')
+      }
+    })
+
+    $scope.save = function() {
+      var json = stage.toJSON()
+      console.log(json);
     }
 
-    $scope.init();
   });
