@@ -1,13 +1,7 @@
 import os
 import uuid
 
-data_mapping = {}
-
-def initialize_server():
-    with open("data_mapping.info", 'r+') as data_mappings:
-        for mapping in data_mappings:
-            filename, uuid = mapping.split('\t')
-            data_mapping[filename] = uuid
+default_data_path = "/hdfs/data"
 
 
 def write_to_file(logic):
@@ -23,15 +17,28 @@ def write_to_file(logic):
 def get_data(sc, filename):
     return sc.parallelize(open(filename, "r+").read().split("\n"))
 
+
 def get_uuid(filename, category):
     return eval(category)[filename]
+
 
 def map_uuid(filename, category):
     eval(category)[filename] = str(uuid.uuid4())
     return eval(category)[filename]
 
+
 def save_results(results, file, format):
     with open(file, 'w+') as outfile:
         for result in results:
-            outfile.write(("," if format == "csv" else "\t").join(result))
+            values = map(str, result)
+            outfile.write(("," if format == "csv" else "\t").join(values))
             outfile.write("\n")
+
+
+def encode_value(element):
+    if type(element) == str:
+        return "'{}'".format(element)
+    elif type(element) == unicode:
+        return "'{}'".format(element.encode("ascii", "ignore"))
+    else:
+        return str(element)
