@@ -12,9 +12,9 @@ var methodOverride = require('method-override'); // simulate DELETE and PUT (exp
 const fs = require('fs');
 var net = require('net');
 const http = require('http');
-const https = require('https');
+var mongoose    = require('mongoose');
 
-const http_port = 80;
+const http_port = 8080;
 
 if (app.get('env') == 'development') {
 // This will change in production since we'll be using the dist folder
@@ -60,6 +60,16 @@ app.use(methodOverride());
 
 // Error handling
 // Handle 404
+
+// CONNECT TO MONGODB SERVER
+var db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
+mongoose.connect('mongodb://127.0.0.1/cmpe295');
 
 
 // listen (start app with node server.js) ======================================
