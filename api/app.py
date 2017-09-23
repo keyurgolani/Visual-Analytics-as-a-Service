@@ -14,7 +14,7 @@ dao = importlib.import_module("dao")
 
 @route('/process/<dataset_id>', method='POST')
 def process(dataset_id):
-    node_chain = ["map"]
+    node_chain = ["map", "reduce"]
     # ==== Input ====
     dataset = dao.get_dataset(Dataset(dataset_id=dataset_id, owner=1))
     rdd = utils.get_data(sc, dataset.get_full_path())
@@ -31,7 +31,6 @@ def process(dataset_id):
     
     # ==== Output ====
     name, ext = os.path.splitext(dataset.filename)
-    import pdb; pdb.set_trace()
     processed_dataset = Dataset(filename="{}_processed{}".format(name, ext), root_path=dataset.root_path, owner=1, beautiful_name=dataset.beautiful_name + " Processed")
     utils.save_results(rdd.collect(), processed_dataset.get_full_path(), "csv")
     dao.add_dataset(processed_dataset)
