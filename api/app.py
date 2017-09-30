@@ -21,7 +21,7 @@ def process(dataset_id):
 
     # ==== Processing ====
     for node in node_chain:
-        code_module = importlib.import_module("node_" + node)
+        code_module = importlib.import_module("nodes.node_" + node)
         if node == "map":
             rdd = code_module.run_node(rdd, utils, request.body.read())
         elif node == "custom":
