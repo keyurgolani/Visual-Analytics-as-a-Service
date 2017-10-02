@@ -9,5 +9,5 @@
  */
 angular.module('visualAnalyticsApp')
   .controller('UploadCtrl', function ($scope) {
-
+    alert("asdasd");
   });
