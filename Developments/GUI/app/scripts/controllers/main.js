@@ -8,7 +8,9 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $state) {
+
+    var boxes = [];
     var width = window.innerWidth;
     var height = window.innerHeight;
 
@@ -22,7 +24,6 @@ angular.module('visualAnalyticsApp')
     var colorIndex = 0;
     var layersArr = [];
     var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'cyan', 'purple'];
-
 
     var rectX = stage.getWidth() / 2 - 50;
     var rectY = stage.getHeight() / 2 - 25;
@@ -58,12 +59,28 @@ angular.module('visualAnalyticsApp')
         fill: '#555',
         align: 'center'
       })
+
+      boxes.push({
+        box: box,
+        text: text
+      })
       // add cursor styling
       group.on('mouseover', function() {
           document.body.style.cursor = 'pointer';
       });
 
       layer.on('click', function() {
+        var fill = box.fill() == '#EEE' ? 'white' : '#EEE';
+        var stroke = box.stroke() === 'red' ? 'gray' : 'red';
+        var strokeWidth = box.strokeWidth() === 0.5 ? 1 : 0.5
+
+        box.fill(fill);
+        box.stroke(stroke);
+        box.strokeWidth(strokeWidth);
+        layer.draw();
+      });
+
+      layer.on('dblclick', function() {
           console.log("clicked"+title);
           $scope.tempNode.title = title;
           $("#myModal").modal('show')
@@ -96,6 +113,10 @@ angular.module('visualAnalyticsApp')
     $scope.save = function() {
       var json = stage.toJSON()
       console.log(json);
+    }
+
+    $scope.upload = function() {
+      $state.go('index.upload');
     }
 
   });

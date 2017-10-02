@@ -9,6 +9,7 @@
  */
 angular.module('visualAnalyticsApp')
   .controller('NavCtrl', function ($scope) {
+    
         $(".draggable").draggable({
         revert : function(event, ui) {
             // on older version of jQuery use "draggable"
@@ -24,5 +25,7 @@ angular.module('visualAnalyticsApp')
             // that evaluate like this:
             // return event !== false ? false : true;
         }
+
+        //console.log(localStorage.getItem("__USER_INFO__"));
     });
   });

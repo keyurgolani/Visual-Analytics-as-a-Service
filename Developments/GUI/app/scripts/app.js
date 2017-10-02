@@ -39,6 +39,13 @@ angular
             abstract: false,
             templateUrl: "/views/main.html",
             controller: "MainCtrl"
+        })
+        .state('index.upload', {
+            url: "/upload",
+            parent: 'index',
+            abstract: false,
+            templateUrl: "/views/upload.html",
+            controller: "UploadCtrl"
         });
 
         //$qProvider.errorOnUnhandledRejections(false);
@@ -47,4 +54,5 @@ angular
             enabled: false, // set HTML5 mode
             requireBase: false // I removed this to keep it simple, but you can set your own base url
         });
+
   });

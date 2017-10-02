@@ -7,6 +7,17 @@
 
 body {
   padding: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+#whiteboard{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  z-index: -1;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -84,4 +95,20 @@ body {
 
 #whiteboard{
   width: 100%;
+}
+
+.draggable{
+    z-index: 2;
+}
+
+ul{
+  z-index: 2;
+}
+
+li{
+  z-index: 2;
+}
+
+canvas{
+  z-index: 2;
 }
