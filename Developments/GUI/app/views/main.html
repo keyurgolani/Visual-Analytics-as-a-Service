@@ -1,7 +1,5 @@
 <div class="row">
-  <button class="btn btn-primary" type="button" ng-click="upload()">Upload</button>
-<button class="btn btn-primary" type="button" ng-click="save()">Save</button>
-<button class="btn btn-primary" type="button" ng-click="run()">Run</button>
+  
     <div id="whiteboard" width="100%" style="z-index:1;"></div>
     <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -12,7 +10,14 @@
         <h4 class="modal-title" id="myModalLabel">{{tempNode.title}}</h4>
       </div>
       <div class="modal-body">
-        ...
+        <form class="form-horizontal">
+          <div class="form-group">
+              <label for="inputEmail3" class="col-sm-3 control-label">Script</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" rows="3"></textarea>
+              </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

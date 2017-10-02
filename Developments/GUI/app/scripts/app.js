@@ -28,6 +28,11 @@ angular
             templateUrl: "/views/login.html",
             controller: "LoginCtrl"
         })
+        .state('register', {
+            url: "/register",
+            templateUrl: "/views/register.html",
+            controller: "RegisterCtrl"
+        })
         .state('index', {
             abstract: true,
             templateUrl: "/views/common/content.html",
