@@ -8,8 +8,8 @@ class Entity(object):
         pass
 
 class Dataset(Entity):
-    def __init__(self, 
-        dataset_id=None, 
+    def __init__(self,
+        dataset_id=None,
         beautiful_name="Dataset {}".format(str(uuid.uuid4())),
         filename=None,
         root_path=utils.default_data_path,
@@ -22,7 +22,7 @@ class Dataset(Entity):
         self.root_path=root_path
         self.owner=owner
         self.is_private=is_private
-    
+
     def get_insert_query(self):
         keys = []
         values = []

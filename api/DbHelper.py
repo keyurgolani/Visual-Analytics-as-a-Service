@@ -1,6 +1,5 @@
 import pymysql.cursors
 import pymysql
-from config import config
 from errors import *
 
 
@@ -10,8 +9,8 @@ class DbHelper(object):
 
     DB_HOST = "localhost"
     DB_USER = "root"
-    DB_PASSWORD = "admin"
-    DB = "vaaas"
+    DB_PASSWORD = ""
+    DB = "VAaaS"
 
     def __init__(self):
         self.__connection = pymysql.connect(

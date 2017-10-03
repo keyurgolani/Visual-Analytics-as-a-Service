@@ -1,7 +1,7 @@
 import os
 import uuid
 
-default_data_path = "/hdfs/data"
+default_data_path = "/data"
 
 
 def write_to_file(logic):
@@ -16,15 +16,6 @@ def write_to_file(logic):
 
 def get_data(sc, filename):
     return sc.parallelize(open(filename, "r+").read().split("\n"))
-
-
-def get_uuid(filename, category):
-    return eval(category)[filename]
-
-
-def map_uuid(filename, category):
-    eval(category)[filename] = str(uuid.uuid4())
-    return eval(category)[filename]
 
 
 def save_results(results, file, format):
