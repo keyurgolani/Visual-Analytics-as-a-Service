@@ -13,6 +13,7 @@ const fs = require('fs');
 var net = require('net');
 const http = require('http');
 var mongoose    = require('mongoose');
+const fileUpload = require('express-fileupload');
 
 const http_port = 8080;
 
@@ -28,9 +29,9 @@ if (app.get('env') == 'development') {
 
     app.use(express.static(__dirname + '/app'));                 // set the static files location /public/img will be /img for users
     app.use('/bower_components', express.static(__dirname + '/bower_components'));
-    app.get('/*', function (req, res) {
+    /*app.get('/*', function (req, res) {
         res.sendFile("index.html", { root: __dirname + '/app' });
-    });
+    });*/
 }
 
 /**
@@ -46,6 +47,49 @@ if(app.get('env') == 'production') {
 
 
 }
+
+// default options
+app.use(fileUpload());
+
+app.post('/file_upload', function(req, res) {
+  // Uploaded files:
+
+  if (!req.files)
+    return res.status(400).send('No files were uploaded.');
+
+//console.log("file: ",req.files.data_files);
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  let file = req.files.data_files;
+
+
+  // Use the mv() method to place the file somewhere on your server
+console.log(__dirname + '/uploads/' + req.files.data_files.name)
+  file.mv(__dirname + '/uploads/' + req.files.data_files.name, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  });
+
+});
+
+
+app.get('/get_file_list', function(req, res) {
+  // Uploaded files:
+res.contentType('application/json');
+  const testFolder = './uploads/';
+
+fs.readdir(testFolder, (err, files) => {
+  let _files = [];
+  files.forEach(file => {
+    _files.push({name: file});
+  });
+
+  res.send(JSON.stringify(_files));
+
+
+})
+});
 
 
 // configuration =================
@@ -69,7 +113,7 @@ db.once('open', function(){
     console.log("Connected to mongod server");
 });
 
-mongoose.connect('mongodb://127.0.0.1/cmpe295');
+//mongoose.connect('mongodb://127.0.0.1/cmpe295');
 
 
 // listen (start app with node server.js) ======================================

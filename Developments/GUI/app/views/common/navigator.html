@@ -4,7 +4,7 @@
   <div class="container-fluid">
 
   <div class="navbar-header">
-  <a class="current navbar-brand" href="../index.html">
+  <a class="current navbar-brand" href ui-sref="index.main">
       Visual Analytics as a Service
   </a>
   <button class="action-right-sidebar-toggle navbar-toggle collapsed" data-target="#navdbar" data-toggle="collapse" type="button">
@@ -62,21 +62,11 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu" data-title="abc.csv">
+    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}"  ng-repeat="file in fileList">
         <a href="../apps/projects-list.html">
           <div>
-            <div class="nav-label" style="z-index:10000;">abc.csv</div>
+            <div class="nav-label" style="z-index:10000;">{{file.name}}</div>
           </div>
-        </a>
-    </li>
-    <li  class="draggable primary-submenu" data-title="def.csv">
-        <a href="../apps/projects-grid.html">
-            <span class="nav-label">def.csv</span>
-        </a>
-    </li>
-    <li  class="draggable primary-submenu" data-title="haha.tsv">
-        <a href="../apps/projects-grid.html">
-            <span class="nav-label">haha.tsv</span>
         </a>
     </li>
 

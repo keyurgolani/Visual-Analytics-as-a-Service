@@ -16,9 +16,10 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.router'
+    'ui.router',
+    'thatisuday.dropzone'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, dropzoneOpsProvider) {
 
     $urlRouterProvider.otherwise("/login");
 
@@ -59,5 +60,11 @@ angular
             enabled: false, // set HTML5 mode
             requireBase: false // I removed this to keep it simple, but you can set your own base url
         });
+
+        // Dropzone configuration
+        dropzoneOpsProvider.setOptions({
+      		url : '/file_upload',
+      		maxFilesize : '10000'
+      	});
 
   });

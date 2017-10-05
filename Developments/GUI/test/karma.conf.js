@@ -32,6 +32,8 @@ module.exports = function(config) {
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/ngDraggable/ngDraggable.js',
       'bower_components/angularjs-social-login/angularjs-social-login.js',
+      'bower_components/dropzone/dist/min/dropzone.min.js',
+      'bower_components/ng-dropzone/dist/ng-dropzone.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
