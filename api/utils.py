@@ -1,7 +1,7 @@
 import os
 import uuid
 
-default_data_path = "/data"
+default_data_path = "datasets"
 
 
 def write_to_file(logic):
