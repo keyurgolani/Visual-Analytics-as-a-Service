@@ -47,7 +47,7 @@ angular.module('visualAnalyticsApp')
             console.log(response.statusText);
     });
 
-    $timeout(function(){ 
+    $timeout(function(){
           $(".file_lists").draggable();
       });
   });

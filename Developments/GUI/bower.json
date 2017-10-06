@@ -13,7 +13,8 @@
     "angular-ui-router": "~0.2.12",
     "ngDraggable": "^0.1.11",
     "angularjs-social-login": "^2.6.1",
-    "ng-dropzone": "ngdropzone#^2.0.2"
+    "ng-dropzone": "ngdropzone#^2.0.2",
+    "angular-ui-bootstrap": "^2.5.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.8"

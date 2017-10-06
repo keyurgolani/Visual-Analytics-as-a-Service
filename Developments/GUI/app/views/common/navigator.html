@@ -41,6 +41,7 @@
             </div>
             <div class="media-body">
                 <h5 class="media-heading text-white m-t-0 m-b-0"><span>Ikwhan Chang</span></h5>
+                <button class="btn btn-danger btn-sm" type="button" ui-sref="login">Logout</button>
             </div>
         </div>
     </div>
@@ -53,7 +54,7 @@
       <button class="btn btn-primary btn-sm" type="button" ng-click="upload()">Upload</button>
       <button class="btn btn-default btn-sm" type="button" ng-click="save()">Save</button>
       <button class="btn btn-warning btn-sm" type="button" ng-click="run()">Run</button>
-      <button class="btn btn-danger btn-sm" type="button" ui-sref="login">Logout</button>
+
     </div>
   <div class="sidebar-default-visible small text-uppercase sidebar-section m-t-3 m-b-2">
     <strong>Uploaded Files</strong>
@@ -62,7 +63,7 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}"  ng-repeat="file in fileList">
+    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}" data-idx="{{$index}}"  ng-repeat="file in fileList">
         <a href="../apps/projects-list.html">
           <div>
             <div class="nav-label" style="z-index:10000;">{{file.name}}</div>

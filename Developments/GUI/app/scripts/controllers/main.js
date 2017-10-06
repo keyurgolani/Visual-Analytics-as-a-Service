@@ -8,7 +8,7 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('MainCtrl', function ($scope, $state) {
+  .controller('MainCtrl', function ($scope, $state, $uibModal) {
 
     var boxes = [];
     var width = window.innerWidth;
@@ -30,11 +30,13 @@ angular.module('visualAnalyticsApp')
 
     var cnt = 0;
 
-    var selected_list = [];
+    var data = Array(100);
     var sel = 0;
 
     $scope.tempNode = {
-      title: ''
+      title: '',
+      fileName: '',
+      fileContent: null
     }
 
     $scope.addBox = function(x, y, title, idx) {
@@ -76,7 +78,7 @@ angular.module('visualAnalyticsApp')
       });
 
       layer.on('click', function() {
-        
+
         var fill = box.fill() == '#EEE' ? 'white' : '#EEE';
         var stroke = box.stroke() === 'red' ? 'gray' : 'red';
         var strokeWidth = box.strokeWidth() === 0.5 ? 1 : 0.5
@@ -90,7 +92,53 @@ angular.module('visualAnalyticsApp')
       layer.on('dblclick', function() {
           console.log("clicked"+title);
           $scope.tempNode.title = title;
-          $("#myModal").modal('show')
+          $scope.tempNode.fileName = data[idx];
+          //$("#myModal").modal('show')
+          var modalInstance = $uibModal.open({
+            templateUrl: 'views/modal/view_node.html',
+            controller: function ($scope, $uibModalInstance, $http) {
+              $scope.load = function() {
+                if(data[idx].indexOf('.csv') !== -1){
+                  $http({
+                      url: "http://localhost:8080/get_file/" + data[idx],
+                      method: "GET"
+                  }).success($scope.processData);
+                }
+              }
+
+              $('#datatables-example').DataTable();
+
+              $scope.processData = function(allText) {
+                  // split content based on new line
+                  var allTextLines = allText.split(/\r\n|\n/);
+                  var headers = allTextLines[0].split(',');
+                  console.log(headers)
+                  var lines = [];
+
+                  for ( var i = 0; i < allTextLines.length; i++) {
+                      // split content based on comma
+                      var data = allTextLines[i].split(',');
+                      if (data.length == headers.length) {
+                          var tarr = [];
+                          for ( var j = 0; j < headers.length; j++) {
+                              tarr.push(data[j]);
+                          }
+                          lines.push(tarr);
+                      }
+                  }
+                  console.log(lines);
+                  $scope.tempNode.fileContent = lines;
+              };
+
+              $scope.load();
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            },
+            scope: $scope,
+            windowClass: "hmodal-success",
+            size: 'lg'
+        });
       });
       group.on('mouseout', function() {
           document.body.style.cursor = 'default';
@@ -108,8 +156,10 @@ angular.module('visualAnalyticsApp')
 
         var newPosX = ui.offset.left - $(this).offset().left;
         var newPosY = ui.offset.top - $(this).offset().top;
-        console.log(ui.draggable[0].dataset.title)
-        $scope.addBox(newPosX, newPosY , ui.draggable[0].dataset.title, cnt++)
+        var dataset = ui.draggable[0].dataset;
+        //console.log(dataset.title, dataset.idx);
+        data[dataset.idx] = dataset.title;
+        $scope.addBox(newPosX, newPosY , dataset.title, dataset.idx)
         $(".draggable").animate({
           top : 0,
           left : 0

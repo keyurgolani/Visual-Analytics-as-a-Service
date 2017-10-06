@@ -8,7 +8,7 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('UploadCtrl', function ($scope, $http) {
+  .controller('UploadCtrl', function ($scope, $http, $state) {
     var myDropzone;
       $scope.dzOptions = {
   		url : '/file_upload',
@@ -23,6 +23,7 @@ angular.module('visualAnalyticsApp')
       $("#submit-all").click(function() {
         //alert("clicked");
         myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+        //$state.go('index.main')
       });
 
       // You might want to show the submit button only when

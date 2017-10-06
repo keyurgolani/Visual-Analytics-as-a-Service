@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.router',
-    'thatisuday.dropzone'
+    'thatisuday.dropzone',
+    'ui.bootstrap'
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, dropzoneOpsProvider) {
 

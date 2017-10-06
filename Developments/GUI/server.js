@@ -91,6 +91,21 @@ fs.readdir(testFolder, (err, files) => {
 })
 });
 
+app.get('/get_file/:file_name', function(req, res) {
+  // Uploaded files:
+
+//  console.log(req.params.file_name);
+  //var file = ;
+  var file_name = req.params.file_name;
+  res.download(__dirname + '/uploads/'+ file_name, file_name, function(err) {
+    if(err){
+      res.status(500).send(err)
+    }else{
+
+    }
+  });
+});
+
 
 // configuration =================
 
