@@ -43,8 +43,10 @@ angular.module('visualAnalyticsApp')
 
       var layer = new Konva.Layer();
       var group = new Konva.Group({
-        draggable: true
-    });
+          draggable: true
+      });
+
+      var isInputButtonClicked = false;
       var box = new Konva.Rect({
           x: x,
           y: y,
@@ -68,16 +70,81 @@ angular.module('visualAnalyticsApp')
         align: 'center'
       })
 
+      var inputCircle = new Konva.Circle({
+        x: x,
+        y: y + 25,
+        width: 10,
+        height: 10,
+        fill: '#FFF',
+        stroke: 'grey',
+        strokeWidth: 0.5,
+        cornerRadius: 10
+      });
+
+      var outputCircle = new Konva.Circle({
+        x: x + 100,
+        y: y + 25,
+        width: 10,
+        height: 10,
+        fill: '#FFF',
+        stroke: 'grey',
+        strokeWidth: 0.5,
+        cornerRadius: 10
+      });
+
       boxes.push({
         box: box,
         text: text
+      });
+
+      var arrow = new Konva.Arrow({
+        x: stage.getWidth() / 4,
+        y: stage.getHeight() / 4,
+        points: [0,0, x / 2, y / 2],
+        pointerLength: 20,
+        pointerWidth : 20,
+        fill: 'black',
+        stroke: 'black',
+        strokeWidth: 4
+      });
+
+      inputCircle.on('click', function(e) {
+        isInputButtonClicked = !isInputButtonClicked;
+        if(isInputButtonClicked){
+          var mousePos = stage.getPointerPosition();
+          arrow.move(mousePos);
+          group.add(arrow);
+          layer.draw();
+        }
+
+      });
+
+      inputCircle.on('mousemove', function() {
+        inputCircle.fill('red');
+        layer.draw();
+      });
+
+      $("#whiteboard").mousemove(function(e){
+        if(isInputButtonClicked){
+          arrow.setAttr([x, y+25, e.offsetX, e.offsetY]);
+          group.add(arrow);
+          layer.draw();
+          console.log(x, y+25, e.pageX, e.pageY,"mousemove");
+        }
+
       })
+
+      inputCircle.on('mouseout', function() {
+        inputCircle.fill('#EEE');
+        layer.draw();
+      });
+
       // add cursor styling
       group.on('mouseover', function() {
           document.body.style.cursor = 'pointer';
       });
 
-      layer.on('click', function() {
+      /*layer.on('click', function() {
 
         var fill = box.fill() == '#EEE' ? 'white' : '#EEE';
         var stroke = box.stroke() === 'red' ? 'gray' : 'red';
@@ -87,7 +154,7 @@ angular.module('visualAnalyticsApp')
         box.stroke(stroke);
         box.strokeWidth(strokeWidth);
         layer.draw();
-      });
+      });*/
 
       layer.on('dblclick', function() {
           console.log("clicked"+title);
@@ -146,6 +213,8 @@ angular.module('visualAnalyticsApp')
 
       group.add(box);
       group.add(text);
+      group.add(inputCircle);
+      group.add(outputCircle);
       layer.add(group);
       stage.add(layer);
     }
