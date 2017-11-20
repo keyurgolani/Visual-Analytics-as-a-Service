@@ -37,7 +37,6 @@ def process(dataset_id):
         #         "column": TODO: Column index to be passed here
         #     }
         # },
-        # TODO: Below Nodes
         # {
         #     "node": "splitUsingRegex",
         #     "params": {
@@ -45,11 +44,21 @@ def process(dataset_id):
         #         "column": TODO: Column index to be passed here
         #     }
         # },
+        # TODO: Below Nodes
         # {
         #     "node": "splitUsingDelimiter",
         #     "params": {
         #         "regex": TODO: Split Delimeter to be passed here,
         #         "column": TODO: Column index to be passed here
+        #     }
+        # },
+        # {
+        #     "node": "duplicate",
+        #     "params": {
+        #         "interleave": TODO: Weather to interleave the
+        #         duplicate fields or not.
+        #         "start": TODO: Split Delimeter to be passed here,
+        #         "end": TODO: Column index to be passed here
         #     }
         # },
         # {
