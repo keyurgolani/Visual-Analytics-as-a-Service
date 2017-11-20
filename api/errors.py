@@ -5,3 +5,7 @@ class DBError(Exception):
 class MoreThanOneResultError(Exception):
     def __init__(self):
         pass
+
+class UnimplementedOperationError(Exception):
+	def __init__(self):
+        pass

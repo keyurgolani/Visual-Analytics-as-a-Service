@@ -14,6 +14,9 @@ sc = pyspark.SparkContext(appName="VAaaS")
 utils = importlib.import_module("utils")
 dao = importlib.import_module("dao")
 
+# TODO: Move complimenting methods from Utils to a seperate module.
+# TODO: Pass complementing module in nodes rather than utils.
+
 
 @route('/process/<dataset_id>', method='POST')
 def process(dataset_id):
@@ -60,7 +63,6 @@ def process(dataset_id):
         #         "end": TODO: Column index to be passed here
         #     }
         # },
-        # TODO: Below Nodes
         # {
         #     "node": "mergeWithDelimeter",
         #     "params": {
@@ -74,14 +76,27 @@ def process(dataset_id):
         #     "params": {
         #         "parameter": TODO: greater / less / equal / greater equal /
         #         less equal to be passed here,
-        #         "column": TODO: feature column index to be passed here
-        #         "value": TODO: Value to be filtered at to be passed here
+        #         "column": TODO: feature column index to be passed here,
+        #         "value": TODO: Value to be filtered at to be passed here,
+        #         "target_column: TODO: Index of the column that will act as
+        #         target for the comparison"
         #     }
         # },
+        # TODO: Add reduce nodes
+        # TODO: Add aggregation nodes
+        # TODO: Below Nodes
         # {
         #     "node": "filterUsingRegex",
         #     "params": {
         #         "regex": TODO: Fliter Regex to be passed here,
+        #         "column": TODO: Column index to be passed here
+        #     }
+        # },
+        # {
+        #     "node": "slice",
+        #     "params": {
+        #         "start": TODO: Start index of the slice
+        #         "end": TODO: End index of the slice
         #         "column": TODO: Column index to be passed here
         #     }
         # },
