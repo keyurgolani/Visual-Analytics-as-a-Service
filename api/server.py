@@ -82,9 +82,6 @@ def process(dataset_id):
         #         target for the comparison"
         #     }
         # },
-        # TODO: Add reduce nodes
-        # TODO: Add aggregation nodes
-        # TODO: Below Nodes
         # {
         #     "node": "filterUsingRegex",
         #     "params": {
@@ -107,6 +104,8 @@ def process(dataset_id):
         #         "columns": TODO: List of column indices to be passed here
         #     }
         # }
+        # TODO: Add reduce nodes
+        # TODO: Add aggregation nodes
     ]
     # ==== Input ====
     dataset = dao.get_dataset(entities.Dataset(dataset_id=dataset_id, owner=1))
