@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-from bottle import route, run, request, static_file
+from bottle import route, run, request, response, static_file, hook
 import entities
 import importlib
 import os
@@ -16,6 +16,16 @@ dao = importlib.import_module("dao")
 
 # TODO: Move complimenting methods from Utils to a seperate module.
 # TODO: Pass complementing module in nodes rather than utils.
+
+@hook('after_request')
+def enable_cors():
+    """
+    You need to add some headers to each request.
+    Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
+    """
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 
 @route('/process/<dataset_id>', method='POST')

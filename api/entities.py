@@ -32,12 +32,12 @@ class Dataset(Entity):
             if value:
                 keys.append(key)
                 values.append(value)
-        return "insert into datasets (%s) values (%s)" % (
+        return "insert into DATASETS (%s) values (%s)" % (
             ','.join(keys), ','.join(map(utils.encode_value, values)))
 
     def get_search_query(self):
         if self.dataset_id:
-            return ("select * from datasets where dataset_id = %s"
+            return ("select * from DATASETS where dataset_id = %s"
                     % self.dataset_id)
         else:
             keys = []
@@ -46,7 +46,7 @@ class Dataset(Entity):
                 if value:
                     keys.append(key)
                     values.append(value)
-            return "select * from datasets where (%s)" % (' and '.join(
+            return "select * from DATASETS where (%s)" % (' and '.join(
                 ["{} = {}".format(key, value) for (key, value) in zip(
                     keys, map(utils.encode_value, values))]))
 

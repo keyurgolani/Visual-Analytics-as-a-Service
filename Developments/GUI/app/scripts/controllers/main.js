@@ -8,8 +8,8 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('MainCtrl', function ($scope, $state, $uibModal) {
-
+  .controller('MainCtrl', function ($rootScope, $scope, $state, $uibModal) {
+    $rootScope.script = "";
     var boxes = [];
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -348,6 +348,11 @@ angular.module('visualAnalyticsApp')
                   $scope.cancel = function () {
                       $uibModalInstance.dismiss('cancel');
                   };
+
+                  $scope.submit = function() {
+                    $uibModalInstance.dismiss('cancel');
+                    $rootScope.script = $scope.script;
+                  }
               },
               scope: $scope,
               windowClass: "hmodal-success",

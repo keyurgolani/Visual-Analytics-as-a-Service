@@ -15,7 +15,7 @@ const http = require('http');
 var mongoose    = require('mongoose');
 const fileUpload = require('express-fileupload');
 
-const http_port = 8080;
+const http_port = 8090;
 
 if (app.get('env') == 'development') {
 // This will change in production since we'll be using the dist folder

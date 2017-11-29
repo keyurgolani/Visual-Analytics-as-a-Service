@@ -1,0 +1,565 @@
+Connecting to the Database.
+DB2 Universal Database Version 10.5, 5622-044 (c) Copyright IBM Corp. 1991, 2012
+Licensed Material - Program Property of IBM
+IBM DATABASE 2 Explain Table Format Tool
+
+
+
+******************** EXPLAIN INSTANCE ********************
+
+DB2_VERSION:       10.05.5
+FORMATTED ON DB:   SAMPLE
+SOURCE_NAME:       SQLC2K26
+SOURCE_SCHEMA:     NULLID  
+SOURCE_VERSION:      
+EXPLAIN_TIME:      2016-02-29-23.17.03.014794
+EXPLAIN_REQUESTER: DB2INST1
+
+Database Context:
+----------------
+	Parallelism:          None
+	CPU Speed:            2.046825e-07
+	Comm Speed:           0
+	Buffer Pool size:     1000
+	Sort Heap size:       256
+	Database Heap size:   1200
+	Lock List size:       4096
+	Maximum Lock List:    10
+	Average Applications: 1
+	Locks Available:      13107
+
+Package Context:
+---------------
+	SQL Type:           Dynamic
+	Optimization Level: 5
+	Blocking:           Block All Cursors
+	Isolation Level:    Cursor Stability
+
+
+
+---------------- STATEMENT 1  SECTION 201 ----------------
+	QUERYNO:       4
+	QUERYTAG:      CLP                 
+	Statement Type:   Select
+	Updatable:        No
+	Deletable:        No
+	Query Degree:     1
+
+Original Statement:
+------------------
+select 
+  SUM(SALARY),
+  DEPT 
+FROM 
+  STAFF 
+Where 
+  Dept IN (10, 15, 20) 
+Group By 
+  DEPT
+
+
+Optimized Statement:
+-------------------
+SELECT 
+  Q5.$C0,
+  Q5.DEPT AS "DEPT" 
+FROM 
+  (SELECT 
+     SUM(Q4.SALARY),
+     Q4.DEPT 
+   FROM 
+     (SELECT 
+        Q3.DEPT,
+        Q3.SALARY 
+      FROM 
+        DB2INST1.STAFF AS Q3 
+      WHERE 
+        Q3.DEPT IN (10, 15, 20)
+     ) AS Q4 
+   GROUP BY 
+     Q4.DEPT
+  ) AS Q5
+
+Access Plan:
+-----------
+	Total Cost: 		6.83388
+	Query Degree:		1
+
+      Rows 
+     RETURN
+     (   1)
+      Cost 
+       I/O 
+       |
+     2.74286 
+     GRPBY 
+     (   2)
+     6.83354 
+        1 
+       |
+     2.74286 
+     TBSCAN
+     (   3)
+     6.83334 
+        1 
+       |
+     2.74286 
+     SORT  
+     (   4)
+     6.83288 
+        1 
+       |
+       12 
+     TBSCAN
+     (   5)
+     6.83033 
+        1 
+       |
+       35 
+ TABLE: DB2INST1
+      STAFF
+       Q3
+
+
+
+Extended Diagnostic Information:
+--------------------------------
+
+No extended Diagnostic Information for this statement.
+
+
+Plan Details:
+-------------
+
+
+	1) RETURN: (Return Result)
+		Cumulative Total Cost: 		6.83388
+		Cumulative CPU Cost: 		141091
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0159703
+		Cumulative Re-CPU Cost: 	78024.9
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.83334
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		BLDLEVEL: (Build level)
+			DB2 v10.5.0.5 : s141128
+		HEAPUSE : (Maximum Statement Heap Usage)
+			96 Pages
+		PLANID  : (Access plan identifier)
+			71edde77d4099574
+		PREPTIME: (Statement prepare time)
+			       150 milliseconds
+		SEMEVID : (Semantic environment identifier)
+			431f78d03d9bb07e
+		STMTHEAP: (Statement heap size)
+			8192
+		STMTID  : (Normalized statement identifier)
+			2e089aa1871394e5
+
+		Input Streams:
+		-------------
+			5) From Operator #2
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q6.DEPT+Q6.$C0
+
+
+	2) GRPBY : (Group By)
+		Cumulative Total Cost: 		6.83354
+		Cumulative CPU Cost: 		139426
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0156294
+		Cumulative Re-CPU Cost: 	76359.3
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.83325
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		AGGMODE : (Aggregation Mode)
+			FINAL
+		GROUPBYC: (Group By columns)
+			TRUE
+		GROUPBYN: (Number of Group By columns)
+			1
+		GROUPBYR: (Group By requirement)
+			1: Q4.DEPT
+		ONEFETCH: (One Fetch flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			4) From Operator #3
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.DEPT(A)+Q4.SALARY
+
+
+		Output Streams:
+		--------------
+			5) To Operator #1
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q6.DEPT+Q6.$C0
+
+
+	3) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		6.83334
+		Cumulative CPU Cost: 		138446
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0154289
+		Cumulative Re-CPU Cost: 	75379.7
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.8332
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE                
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			SLOW
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			FALSE
+		VISIBLE : (May be included in scan sharing structures)
+			FALSE
+		WRAPPING: (Scan may start anywhere and wrap)
+			FALSE
+
+		Input Streams:
+		-------------
+			3) From Operator #4
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.DEPT(A)+Q4.SALARY
+
+
+		Output Streams:
+		--------------
+			4) To Operator #2
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.DEPT(A)+Q4.SALARY
+
+
+	4) SORT  : (Sort)
+		Cumulative Total Cost: 		6.83288
+		Cumulative CPU Cost: 		136223
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.014974
+		Cumulative Re-CPU Cost: 	73157
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.83288
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		AGGMODE : (Aggregation Mode)
+			PARTIAL
+		DUPLWARN: (Duplicates Warning flag)
+			FALSE
+		NUMROWS : (Estimated number of rows)
+			3
+		ROWWIDTH: (Estimated width of rows)
+			29
+		SORTKEY : (Sort Key column)
+			1: Q4.DEPT(A)
+		TEMPSIZE: (Temporary Table Page Size)
+			8192
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			2) From Operator #5
+
+				Estimated number of rows: 	12
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.SALARY+Q4.DEPT
+
+
+		Output Streams:
+		--------------
+			3) To Operator #3
+
+				Estimated number of rows: 	2.74286
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.DEPT(A)+Q4.SALARY
+
+
+	5) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		6.83033
+		Cumulative CPU Cost: 		123750
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.014974
+		Cumulative Re-CPU Cost: 	73157
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81657
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE                
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Predicates:
+		----------
+		4) Sargable Predicate, 
+			Comparison Operator: 		In List (IN), evaluated by binary search (list sorted at compile-time)
+			Subquery Input Required: 	No
+			Filter Factor: 			0.342857
+
+			Predicate Text:
+			--------------
+			Q3.DEPT IN (10, 15, 20)
+
+
+
+		Input Streams:
+		-------------
+			1) From Object DB2INST1.STAFF
+
+				Estimated number of rows: 	35
+				Number of columns: 		3
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.$RID$+Q3.SALARY+Q3.DEPT
+
+
+		Output Streams:
+		--------------
+			2) To Operator #4
+
+				Estimated number of rows: 	12
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.SALARY+Q4.DEPT
+
+
+Objects Used in Access Plan:
+---------------------------
+
+	Schema: DB2INST1
+	Name: 	STAFF
+	Type: 	Table
+
+
+Extended Statistics Information:
+--------------------------------
+
+Tablespace Context:
+-------------------
+		Name:                                         	USERSPACE1
+		Overhead:                                     	6.725000 
+		Transfer Rate:                                	0.080000 
+		Prefetch Size:                                	32 
+		Extent Size:                                  	32 
+		Type:                                         	Database managed
+		Partition Group Name:                         	NULLP
+		Buffer Pool Identifier:                       	0 
+
+Base Table Statistics:
+----------------------
+Name  : 	STAFF
+Schema: 	DB2INST1
+		Number of Columns:                            	7 
+		Number of Pages with Rows:                    	1
+		Number of Meta Pages:                         	0
+		Number of Pages:                              	1
+		Number of Rows:                               	35
+		Table Overflow Record Count:                  	0
+		Width of Rows:                                	38 
+		Time of Creation:                             	2016-02-29-21.30.10.476821
+		Last Statistics Update:                       	2016-02-29-21.58.31.270815
+		Primary Tablespace:                           	USERSPACE1
+		Tablespace for Indexes:                       	NULLP
+		Tablespace for Long Data:                     	NULLP
+		Number of Referenced Columns:                 	2 
+		Number of Indexes:                            	0 
+		Volatile Table:                               	No
+		Number of Active Blocks:                      	-1
+		Number of Column Groups:                      	0 
+		Number of Data Partitions:                    	1 
+		Average Row Compression Ratio:                	-1.000000 
+		Percent Rows Compressed:                      	-1.000000 
+		Average Compressed Row Size:                  	-1 
+		Statistics Type:                              	A
+
+	Column Information:
+	--------------------
+		Number:                                       	6 
+		Name:                                         	SALARY
+		Statistics Available:                         	Yes
+
+		Column Statistics:
+		------------------
+			Schema name of the column type:               	SYSIBM  
+			Name of column type:                          	DECIMAL
+			Maximum column length:                        	4 
+			Scale for decimal or timestamp column:        	2 
+			Number of distinct column values:             	35
+			Average column length:                        	5 
+			Number of most frequent values:               	-1 
+			Number of quantiles:                          	20 
+			Second highest data value:                    	+91150.00
+			Second lowest data value:                     	+37009.75
+			Column sequence in partition key:             	0 
+			Average number of sub-elements:               	-1 
+			Average length of delimiters:                 	-1 
+			Percentage encoded column values:             	-1 
+			Column clustering:                            	-1 
+
+		Column Distribution Statistics:
+		-------------------------------
+			Quantile Statistics:
+			Valcount 	Value 		Distcount 
+			----------------------------------------------
+			1 		+34252.75		0
+			2 		+37009.75		0
+			4 		+40505.90		0
+			6 		+42258.50		0
+			8 		+42954.75		0
+			9 		+43030.50		0
+			11 		+49988.00		0
+			13 		+66808.30		0
+			15 		+71000.00		0
+			17 		+76502.83		0
+			19 		+77506.75		0
+			20 		+78006.00		0
+			22 		+78352.80		0
+			24 		+79260.25		0
+			26 		+80659.80		0
+			28 		+82959.20		0
+			30 		+87654.50		0
+			31 		+88555.50		0
+			33 		+90010.00		0
+			35 		+98357.50		0
+
+	Column Information:
+	--------------------
+		Number:                                       	3 
+		Name:                                         	DEPT
+		Statistics Available:                         	Yes
+
+		Column Statistics:
+		------------------
+			Schema name of the column type:               	SYSIBM  
+			Name of column type:                          	SMALLINT
+			Maximum column length:                        	2 
+			Scale for decimal or timestamp column:        	0 
+			Number of distinct column values:             	8
+			Average column length:                        	3 
+			Number of most frequent values:               	8 
+			Number of quantiles:                          	16 
+			Second highest data value:                    	66
+			Second lowest data value:                     	15
+			Column sequence in partition key:             	0 
+			Average number of sub-elements:               	-1 
+			Average length of delimiters:                 	-1 
+			Percentage encoded column values:             	-1 
+			Column clustering:                            	-1 
+
+		Column Distribution Statistics:
+		-------------------------------
+			Frequency Statistics:
+			Valcount	Value 
+			--------------------------------
+			5 		38		
+			5 		51		
+			5 		66		
+			4 		10		
+			4 		15		
+			4 		20		
+			4 		42		
+			4 		84		
+
+			Quantile Statistics:
+			Valcount 	Value 		Distcount 
+			----------------------------------------------
+			0 		10		0
+			4 		10		0
+			4 		15		0
+			8 		15		0
+			8 		20		0
+			12 		20		0
+			12 		38		0
+			17 		38		0
+			17 		42		0
+			21 		42		0
+			21 		51		0
+			26 		51		0
+			26 		66		0
+			31 		66		0
+			32 		84		0
+			35 		84		0
+
+

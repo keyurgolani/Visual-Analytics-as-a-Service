@@ -7,5 +7,5 @@ class MoreThanOneResultError(Exception):
         pass
 
 class UnimplementedOperationError(Exception):
-	def __init__(self):
+    def __init__(self):
         pass
