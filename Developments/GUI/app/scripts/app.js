@@ -55,7 +55,7 @@ angular
             controller: "UploadCtrl"
         })
         .state('index.upload_preview', {
-            url: "/upload_preview",
+            url: "/upload_preview/:file_name",
             parent: 'index',
             abstract: false,
             templateUrl: "/views/upload_preview.html",
