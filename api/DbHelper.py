@@ -1,11 +1,11 @@
 import pymysql.cursors
 import pymysql
-from errors import *
+import errors
 
 
 class DbHelper(object):
-    __connection = None;
-    __cursor = None;
+    __connection = None
+    __cursor = None
 
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -15,11 +15,11 @@ class DbHelper(object):
     def __init__(self):
         self.__connection = pymysql.connect(
             host=self.DB_HOST,
-            user = self.DB_USER,
-            password = self.DB_PASSWORD,
-            db = self.DB,
-            charset = 'utf8mb4',
-            cursorclass = pymysql.cursors.DictCursor
+            user=self.DB_USER,
+            password=self.DB_PASSWORD,
+            db=self.DB,
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
         );
 
     def query(self, query, params=None):
@@ -44,7 +44,7 @@ class DbHelper(object):
             else:
                 result = cursor.execute(query)
         except Exception as e:
-            raise DBError()
+            raise errors.DBError()
         else:
             id = cursor.lastrowid
         finally:

@@ -74,8 +74,7 @@ def process(dataset_id):
         # {
         #     "node": "filterWithParameter",
         #     "params": {
-        #         "parameter": TODO: greater / less / equal / greater equal /
-        #         less equal to be passed here,
+        #         "parameter": TODO: ,
         #         "column": TODO: feature column index to be passed here,
         #         "value": TODO: Value to be filtered at to be passed here,
         #         "target_column: TODO: Index of the column that will act as
@@ -104,6 +103,37 @@ def process(dataset_id):
         #         "columns": TODO: List of column indices to be passed here
         #     }
         # }
+        # {
+        #     "node": "addColumn",
+        #     "params": {
+        #         "at": TODO: Index to add new column at
+        #         "value": TODO: Default value of the newly added column
+        #     }
+        # }
+        # {
+        #     "node": "chooseColumn",
+        #     "params": {
+        #         "indexes": TODO: Indexes to be performed operation on
+        #         "operation": TODO: Add the keep / remove for the columns
+        #         mentioned in the indexes
+        #     }
+        # }
+        # {
+        #     "node": "flatten",
+        #     "params": {
+        #         "start": TODO: start index to start flattening at
+        #         "end": TODO: end index to do flattening till
+        #     }
+        # }
+        # TODO: Finish Below Nodes
+        # {
+        #     "node": "parseUserAgent",
+        #     "params": {
+        #         "column": TODO: Column to parse user agent from
+        #         "replace": TODO: Weather the parsed value of user agent will
+        #         replace the original data or not
+        #     }
+        # }
         # TODO: Add reduce nodes
         # TODO: Add aggregation nodes
     ]
@@ -130,6 +160,8 @@ def process(dataset_id):
         owner=1, beautiful_name=dataset.beautiful_name + " Processed")
     utils.save_results(rdd.collect(), processed_dataset.get_full_path(), "csv")
     dao.add_dataset(processed_dataset)
+    # TODO: Finish Job History Addition Functionality
+    dao.add_job_history()
 
     return {
         "status": 200,

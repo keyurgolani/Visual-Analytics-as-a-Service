@@ -20,4 +20,5 @@ def run_node(rdd, utils, params):
             else:
                 import errors
                 raise errors.UnimplementedOperationError()
+        return row
     return rdd.map(run_logic)
