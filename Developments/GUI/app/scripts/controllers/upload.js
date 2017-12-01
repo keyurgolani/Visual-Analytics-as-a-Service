@@ -11,11 +11,15 @@ angular.module('visualAnalyticsApp')
   .controller('UploadCtrl', function ($scope, $http, $state) {
     var myDropzone;
       $scope.dzOptions = {
-  		url : 'http://localhost:8080/file_upload',
+  		url : 'file_upload',
   		paramName : 'data_files',
   		maxFilesize : '1000',
   		addRemoveLinks : true,
       autoProcessQueue: false,
+      maxfilesexceeded: function(file) {
+          this.removeAllFiles();
+          this.addFile(file);
+      },
       init: function(){
         var submitButton = document.querySelector("#submit-all")
           myDropzone = this; // closure
@@ -43,8 +47,11 @@ angular.module('visualAnalyticsApp')
 			$scope.newFile = file;
 		},
 		'success' : function(file, xhr){
-			console.log(file, xhr);
-      $state.go('index.upload_preview');
+      console.log(file.name);
+
+      alert(file.name);
+
+      //$state.go('index.upload_preview', {'file_name': file.name});
 		}
 	};
 

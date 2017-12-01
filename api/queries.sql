@@ -2,7 +2,7 @@ drop database if exists VAaaS;
 
 create database VAaaS;
 
-CREATE TABLE `VAaaS`.`datasets` (
+CREATE TABLE `VAaaS`.`DATASETS` (
   `dataset_id` BIGINT(10) NOT NULL AUTO_INCREMENT,
   `beautiful_name` VARCHAR(45) NULL,
   `filename` VARCHAR(45) NOT NULL,

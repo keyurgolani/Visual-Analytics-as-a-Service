@@ -1,0 +1,66 @@
+// get Censoos Data
+		var http = require("http");
+		ERDDAPurl = "http://erddap.cencoos.org/erddap/tabledap/cencoos_carquinez.json?time,latitude,longitude,station,sea_water_pressure,mass_concentration_of_chlorophyll_in_sea_water,sea_water_temperature,sea_water_electrical_conductivity,mass_concentration_of_oxygen_in_sea_water_optical,mass_concentration_of_oxygen_in_sea_water,fractional_saturation_of_oxygen_in_sea_water_optical,fractional_saturation_of_oxygen_in_sea_water,sea_water_practical_salinity,sea_water_ph_reported_on_total_scale,turbidity,depth&time%3E=2016-04-05T00:00:00Z&time%3C=2016-04-12T23:55:00Z";
+
+		// get is a simple wrapper for request()
+		// which sets the http method to GET
+		var request = http.get(ERDDAPurl, function (response) {
+			// data is streamed in chunks from the server
+			// so we have to handle the "data" event    
+			var buffer = "", 
+			data,
+			route,
+			jsondata;
+
+			});
+			response.on("data", function (chunk) {
+				buffer += chunk;
+			}); 
+
+			response.on("end", function (err) {
+				// finished transferring data
+				// dump the raw data
+				//console.log(buffer);
+				console.log("---------------ads--------------------\n--------------------------------");
+				jsondata = JSON.parse(buffer);
+				//route = data.routes[0];
+
+
+				});
+				
+	
+			//Mongo Goes here
+			console.log("inside insert data func");
+				
+				
+					
+
+	
+
+				
+				
+				
+				
+				
+				
+				
+				
+				
+
+
+			
+
+
+					//  console.log("The JSON data is: " + data.station[0].text);
+
+
+
+					// extract the distance and time
+					//  console.log("time: " + route.legs[0].time.text);
+					//console.log("latitude: " + route.legs[0].latitude.text);
+					// console.log("longitude: " + route.legs[0].longitude.text);
+					//console.log("sea_water_pressure: " + route.legs[0].sea_water_pressure.text);
+					//   console.log("mass_concentration_of_chlorophyll_in_sea_water: " + route.legs[0].mass_concentration_of_chlorophyll_in_sea_water.text);
+					//console.log("sea_water_electrical_conductivity: " + route.legs[0].sea_water_electrical_conductivity.text);
+				}); 
+			}); 

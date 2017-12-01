@@ -15,7 +15,7 @@ const http = require('http');
 var mongoose    = require('mongoose');
 const fileUpload = require('express-fileupload');
 
-const http_port = 8080;
+const http_port = 8090;
 
 if (app.get('env') == 'development') {
 // This will change in production since we'll be using the dist folder
@@ -29,6 +29,7 @@ if (app.get('env') == 'development') {
 
     app.use(express.static(__dirname + '/app'));                 // set the static files location /public/img will be /img for users
     app.use('/bower_components', express.static(__dirname + '/bower_components'));
+    app.use('/node_modules', express.static(__dirname + '/node_modules'));
     /*app.get('/*', function (req, res) {
         res.sendFile("index.html", { root: __dirname + '/app' });
     });*/

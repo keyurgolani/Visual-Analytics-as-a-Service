@@ -24,8 +24,8 @@
 
         Dashboard.LayoutControl.setContentMinHeight();
 
-        Dashboard.RightSidebar.setupVerticalScrolls();
-        Dashboard.RightSidebar.setupExtraContent();
+        //Dashboard.RightSidebar.setupVerticalScrolls();
+        //Dashboard.RightSidebar.setupExtraContent();
 
         Dashboard.LayoutControl.initLayoutChangeEventEmitter();
 

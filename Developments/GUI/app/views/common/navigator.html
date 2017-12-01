@@ -63,7 +63,7 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}" data-idx="{{$index}}"  ng-repeat="file in fileList">
+    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}" data-idx="{{$index + 7}}" data-mode="input"  ng-repeat="file in fileList" >
         <a href="../apps/projects-list.html">
           <div>
             <div class="nav-label" style="z-index:10000;">{{file.name}}</div>
@@ -83,25 +83,51 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu" data-title="Map">
+    <li class="draggable primary-submenu" data-title="Map" data-idx="1" data-mode="tool">
         <a href="../apps/projects-list.html">
           <div>
             <div class="nav-label" style="z-index:10000;">Map</div>
           </div>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="Reduce">
+    <li  class="draggable primary-submenu" data-title="Reduce"  data-idx="2" data-mode="tool">
         <a href="../apps/projects-grid.html">
             <span class="nav-label">Reduce</span>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="Filter">
+    <li  class="draggable primary-submenu" data-title="Filter"  data-idx="3" data-mode="tool">
         <a href="../apps/projects-grid.html">
             <span class="nav-label">Filter</span>
         </a>
     </li>
 
 
+  </ul>
+  <!-- END Tree Sidebar Common  -->
+  <div class="sidebar-default-visible small text-uppercase sidebar-section m-t-3 m-b-2">
+    <strong>Output</strong>
+  </div>
+
+  <!-- START Tree Sidebar Common -->
+  <ul class="side-menu">
+
+    <li class="draggable primary-submenu" data-title="XML" data-idx="4" data-mode="output">
+        <a href="../apps/projects-list.html">
+          <div>
+            <div class="nav-label" style="z-index:10000;">XML</div>
+          </div>
+        </a>
+    </li>
+    <li  class="draggable primary-submenu" data-title="JSON"  data-idx="5" data-mode="output">
+        <a href="../apps/projects-grid.html">
+            <span class="nav-label">JSON</span>
+        </a>
+    </li>
+    <li  class="draggable primary-submenu" data-title="CSV"  data-idx="6" data-mode="output">
+        <a href="../apps/projects-grid.html">
+            <span class="nav-label">CSV</span>
+        </a>
+    </li>
   </ul>
   <!-- END Tree Sidebar Common  -->
 

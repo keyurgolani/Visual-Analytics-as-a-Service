@@ -4,11 +4,11 @@
  * @ngdoc function
  * @name visualAnalyticsApp.controller:MainCtrl
  * @description
- * # MainCtrl
+ *  MainCtrl
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('NavCtrl', function ($scope, $state, $http, $timeout) {
+  .controller('NavCtrl', function ($rootScope, $scope, $state, $http, $timeout) {
 
         $(".draggable").draggable({
         revert : function(event, ui) {
@@ -50,4 +50,57 @@ angular.module('visualAnalyticsApp')
     $timeout(function(){
           $(".file_lists").draggable();
       });
+
+    $scope.run = function(){
+
+        
+
+        $scope.evokeWithRouter("filter", 1, $rootScope.script);
+    }
+
+
+    $scope.evokeWithRouter = function(name_function, dataset_id, script) {
+        
+
+
+        /*script = {
+            {
+                Name:"Map",
+                Logic, "Logic"
+            },
+            {
+                Name:"Reduce",
+                Logic, "Logic"
+            },
+            {
+            "node": "extractUsingRegex",
+            "params": {
+                "regex": "",
+                "column": ""
+            }
+        }*/
+
+
+        // var json =  [
+        // {
+        //  {
+        //      "node": name_function,
+        //      "logic": script //TODO: Filter Code to be passed here
+        //  },
+         
+        // ]
+
+        $.ajax({
+          type: "POST",
+          url: `http://localhost:8080/process/`+dataset_id,
+          data: json,
+          dataType: "text",
+          success: function(response)
+          {
+            alert(response);
+          }
+        });
+    }
+
+
   });

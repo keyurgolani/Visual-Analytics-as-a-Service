@@ -9,8 +9,8 @@ class DbHelper(object):
 
     DB_HOST = "localhost"
     DB_USER = "root"
-    DB_PASSWORD = ""
-    DB = "VAaaS"
+    DB_PASSWORD = "V1nayaka"
+    DB = "VAAAS"
 
     def __init__(self):
         self.__connection = pymysql.connect(
