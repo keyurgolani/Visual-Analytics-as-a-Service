@@ -82,7 +82,7 @@ res.contentType('application/json');
 
 fs.readdir(testFolder, (err, files) => {
   let _files = [];
-  files.forEach(file => {
+  files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
     _files.push({name: file});
   });
 
