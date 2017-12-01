@@ -36,7 +36,7 @@ angular.module('visualAnalyticsApp')
     }
 
     $http({
-        url: "get_file_list",
+        url: "file/get_file_list",
         method: "GET"
     }).then(function successCallback(response) {
             // this callback will be called asynchronously
@@ -56,79 +56,82 @@ angular.module('visualAnalyticsApp')
 
 
 
-                    var $draggableOperators = $('.draggable_operator');
-                    console.log($draggableOperators);
+            var $draggableOperators = $('.draggable_operator');
+            console.log($draggableOperators);
 
-                    function getOperatorData($element) {
-                      var nbInputs = parseInt($element.data('nb-inputs'));
-                      var nbOutputs = parseInt($element.data('nb-outputs'));
+            function getOperatorData($element) {
+              var nbInputs = parseInt($element.data('nb-inputs'));
+              var nbOutputs = parseInt($element.data('nb-outputs'));
 
-                      var data = {
-                        properties: {
-                          title: $element.data('title'),
-                          inputs: {},
-                          outputs: {},
-                          mode: $element.data('mode')
-                        }
-                      };
+              var data = {
+                properties: {
+                  title: $element.data('title'),
+                  inputs: {},
+                  outputs: {},
+                  dataset_id: 0,
+                  script:"",
+                  mode: $element.data('mode')
+                }
+              };
 
-                      var i = 0;
-                      for (i = 0; i < nbInputs; i++) {
-                        data.properties.inputs['input_' + i] = {
-                          label: 'Input ' + (i + 1)
-                        };
-                      }
-                      for (i = 0; i < nbOutputs; i++) {
-                        data.properties.outputs['output_' + i] = {
-                          label: 'Output ' + (i + 1)
-                        };
-                      }
+              var i = 0;
+              for (i = 0; i < nbInputs; i++) {
+                data.properties.inputs['input_' + i] = {
+                  label: 'Input ' + (i + 1)
+                };
+              }
+              for (i = 0; i < nbOutputs; i++) {
+                data.properties.outputs['output_' + i] = {
+                  label: 'Output ' + (i + 1)
+                };
+              }
 
-                      return data;
+              return data;
+            }
+
+            var operatorId = 0;
+
+            $draggableOperators.draggable({
+                cursor: "move",
+                opacity: 0.7,
+
+                helper: 'clone',
+                appendTo: 'body',
+                zIndex: 1000,
+
+                helper: function(e) {
+                  var $this = $(this);
+                  var data = getOperatorData($this);
+                  return $rootScope.flowchart.flowchart('getOperatorElement', data);
+                },
+                stop: function(e, ui) {
+                    var $this = $(this);
+                    var elOffset = ui.offset;
+                    var $container = $rootScope.flowchart.parent();
+                    var containerOffset = $container.offset();
+                    if (elOffset.left > containerOffset.left &&
+                        elOffset.top > containerOffset.top &&
+                        elOffset.left < containerOffset.left + $container.width() &&
+                        elOffset.top < containerOffset.top + $container.height()) {
+
+                        var flowchartOffset = $rootScope.flowchart.offset();
+
+                        var relativeLeft = elOffset.left - flowchartOffset.left;
+                        var relativeTop = elOffset.top - flowchartOffset.top;
+
+                        var positionRatio = $rootScope.flowchart.flowchart('getPositionRatio');
+                        relativeLeft /= positionRatio;
+                        relativeTop /= positionRatio;
+
+                        var data = getOperatorData($this);
+                        data.left = relativeLeft;
+                        data.top = relativeTop;
+                        
+
+                        $rootScope.flowchart.flowchart('addOperator', data);
                     }
-
-                    var operatorId = 0;
-
-                    $draggableOperators.draggable({
-                        cursor: "move",
-                        opacity: 0.7,
-
-                        helper: 'clone',
-                        appendTo: 'body',
-                        zIndex: 1000,
-
-                        helper: function(e) {
-                          var $this = $(this);
-                          var data = getOperatorData($this);
-                          return $rootScope.flowchart.flowchart('getOperatorElement', data);
-                        },
-                        stop: function(e, ui) {
-                            var $this = $(this);
-                            var elOffset = ui.offset;
-                            var $container = $rootScope.flowchart.parent();
-                            var containerOffset = $container.offset();
-                            if (elOffset.left > containerOffset.left &&
-                                elOffset.top > containerOffset.top &&
-                                elOffset.left < containerOffset.left + $container.width() &&
-                                elOffset.top < containerOffset.top + $container.height()) {
-
-                                var flowchartOffset = $rootScope.flowchart.offset();
-
-                                var relativeLeft = elOffset.left - flowchartOffset.left;
-                                var relativeTop = elOffset.top - flowchartOffset.top;
-
-                                var positionRatio = $rootScope.flowchart.flowchart('getPositionRatio');
-                                relativeLeft /= positionRatio;
-                                relativeTop /= positionRatio;
-
-                                var data = getOperatorData($this);
-                                data.left = relativeLeft;
-                                data.top = relativeTop;
-
-                                $rootScope.flowchart.flowchart('addOperator', data);
-                            }
-                        }
-                    });
+                }
+            });
 
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
@@ -142,7 +145,7 @@ angular.module('visualAnalyticsApp')
 
     $scope.run = function(){
         var data = $rootScope.flowchart.flowchart('getData');
-        //console.log(JSON.stringify(data, null, 2));
+        console.log(JSON.stringify(data, null, 2));
         console.log(data.operators);
         let noOfInput = 0, noOfOutput = 0;
 

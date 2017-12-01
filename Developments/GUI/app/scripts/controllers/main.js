@@ -478,7 +478,7 @@ $rootScope.flowchart = $flowchart;
             $scope.load = function() {
               if(title.indexOf('.csv') !== -1){
                 $http({
-                    url: "get_file/" + title,
+                    url: "file/get_file/" + title,
                     method: "GET"
                 }).success($scope.processData);
               }
@@ -614,6 +614,7 @@ $rootScope.flowchart = $flowchart;
                 $uibModalInstance.dismiss('cancel');
                 //$rootScope.script = $scope.script;
                 data.operators[operatorId].properties.script = $scope.script;
+                $flowchart.flowchart('setData', data);
               }
           },
           scope: $scope,

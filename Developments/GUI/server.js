@@ -9,11 +9,20 @@ var app      = express();                               // create our app w/ exp
 var morgan = require('morgan');             // log requests to the console (express4)
 var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
-const fs = require('fs');
+
 var net = require('net');
 const http = require('http');
 var mongoose    = require('mongoose');
-const fileUpload = require('express-fileupload');
+const fileUtils = require('./routes/fileUtils.js')(app);
+const userUtils = require('./routes/userUtils.js')(app);
+
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : '35.197.92.72',
+  user     : 'root',
+  password : 'vaaas',
+  database : 'VAAAS'
+});
 
 const http_port = 8090;
 
@@ -49,64 +58,6 @@ if(app.get('env') == 'production') {
 
 }
 
-// default options
-app.use(fileUpload());
-
-app.post('/file_upload', function(req, res) {
-  // Uploaded files:
-
-  if (!req.files)
-    return res.status(400).send('No files were uploaded.');
-
-//console.log("file: ",req.files.data_files);
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  let file = req.files.data_files;
-
-
-  // Use the mv() method to place the file somewhere on your server
-console.log(__dirname + '/uploads/' + req.files.data_files.name)
-  file.mv(__dirname + '/uploads/' + req.files.data_files.name, function(err) {
-    if (err)
-      return res.status(500).send(err);
-
-    res.send('File uploaded!');
-  });
-
-});
-
-
-app.get('/get_file_list', function(req, res) {
-  // Uploaded files:
-res.contentType('application/json');
-  const testFolder = './uploads/';
-
-fs.readdir(testFolder, (err, files) => {
-  let _files = [];
-  files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
-    _files.push({name: file});
-  });
-
-  res.send(JSON.stringify(_files));
-
-
-})
-});
-
-app.get('/get_file/:file_name', function(req, res) {
-  // Uploaded files:
-
-//  console.log(req.params.file_name);
-  //var file = ;
-  var file_name = req.params.file_name;
-  res.download(__dirname + '/uploads/'+ file_name, file_name, function(err) {
-    if(err){
-      res.status(500).send(err)
-    }else{
-
-    }
-  });
-});
-
 
 // configuration =================
 
@@ -134,5 +85,7 @@ db.once('open', function(){
 
 // listen (start app with node server.js) ======================================
 app.listen(http_port);
+app.use('/file', fileUtils);
+app.use('/user', userUtils);
 
 console.log("CMPE295 Frontend App Listening on Port "+http_port);
