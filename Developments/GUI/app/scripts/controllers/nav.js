@@ -177,6 +177,7 @@ angular.module('visualAnalyticsApp')
 
 
         var dataset_id_from_json="";
+        var output_format = "";
         var tools = {};
 
         var final_JSON=[];
@@ -213,6 +214,7 @@ angular.module('visualAnalyticsApp')
           }
           else if(mode == "output") {
 
+            output_format = data_operators[fromOp].properties.title;
           }
           else if(mode == "tool") {
             var tools={}
@@ -296,11 +298,11 @@ angular.module('visualAnalyticsApp')
 
 
 
-        $scope.evokeWithRouter(dataset_id_from_json, final_JSON);
+        $scope.evokeWithRouter(dataset_id_from_json, final_JSON, output_format);
     }
 
 
-    $scope.evokeWithRouter = function(dataset_id, jsonFile) {
+    $scope.evokeWithRouter = function(dataset_id, jsonFile, output) {
 
 
 
@@ -335,6 +337,7 @@ angular.module('visualAnalyticsApp')
           type: "POST",
           url: `http://localhost:8080/process/`+dataset_id,
           node_chain: jsonFile,
+          output_format : output,
           dataType: "json",
           success: function(response)
           {
