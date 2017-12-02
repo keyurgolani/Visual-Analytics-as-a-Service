@@ -13,16 +13,10 @@ var methodOverride = require('method-override'); // simulate DELETE and PUT (exp
 var net = require('net');
 const http = require('http');
 var mongoose    = require('mongoose');
+
+var router = express.Router();
 const fileUtils = require('./routes/fileUtils.js')(app);
 const userUtils = require('./routes/userUtils.js')(app);
-
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : '35.197.92.72',
-  user     : 'root',
-  password : 'vaaas',
-  database : 'VAAAS'
-});
 
 const http_port = 8090;
 
@@ -87,5 +81,7 @@ db.once('open', function(){
 app.listen(http_port);
 app.use('/file', fileUtils);
 app.use('/user', userUtils);
+app.use('/', router);
+app.use(bodyParser.json());
 
 console.log("CMPE295 Frontend App Listening on Port "+http_port);

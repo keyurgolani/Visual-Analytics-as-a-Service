@@ -10,25 +10,25 @@
 angular.module('visualAnalyticsApp')
   .controller('RegisterCtrl', function ($http, $scope, $rootScope, $state) {
     $scope.userinfo = {
-      firstName:"",
-      lastName:"",
+      first_name:"",
+      last_name:"",
       password:"",
-      password2:"",
       email:""
     }
+    $scope.password2 = "";
     $scope.register = function() {
-      const {firstName, lastName, password, password2, email} = $scope.userinfo;
-      if(password !== password2){
+      const {first_name, last_name, user_name, password, email_id} = $scope.userinfo;
+      if(password !== $scope.password2){
         alert("Password does not match!");
         return;
       }
 
-      if(firstName === ""){
+      if(first_name === ""){
         alert("First Name is empty!");
         return;
       }
 
-      if(lastName === ""){
+      if(last_name === ""){
         alert("Last Name is empty!");
         return;
       }
@@ -38,7 +38,7 @@ angular.module('visualAnalyticsApp')
         return;
       }
 
-      if(email === ""){
+      if(email_id === ""){
         alert("Email is empty!");
         return;
       }
@@ -47,22 +47,21 @@ angular.module('visualAnalyticsApp')
           url: "user/addUser",
           method: "POST",
           dataType: 'json',
-          data: JSON.stringify($scope.userinfo)
+          data: $scope.userinfo
       }).then(function successCallback(response) {
               // this callback will be called asynchronously
               // when the response is available
               //console.log(response.data)
-              $scope.fileList = response.data;
-              response.data.forEach((file, idx) => {
-                  $("#inputFileList")
-                    .append(`<li class="primary-submenu draggable_operator" data-nb-inputs="0" data-nb-outputs="1" data-title="${file.name}" data-idx="${idx + 7}" data-mode="input" ><a href="#">
-                      <div>
-                        <div class="nav-label" style="z-index:10000;">${file.name}</div>
-                      </div>
-                    </a>
-                    </li>`)
 
-              })
+
+              var __USER_INFO__ = response.data;
+
+              localStorage.setItem("__USER_INFO__", JSON.stringify(__USER_INFO__));
+
+              $state.go('index.main');
+
+            }).catch((error) => {
+              alert(error);
             });
     }
   });
