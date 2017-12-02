@@ -68,7 +68,7 @@ angular.module('visualAnalyticsApp')
                   title: $element.data('title'),
                   inputs: {},
                   outputs: {},
-                  dataset_id: 0,
+                  dataset_id: 1,
                   script:"",
                   mode: $element.data('mode')
                 }
@@ -145,8 +145,8 @@ angular.module('visualAnalyticsApp')
 
     $scope.run = function(){
         var data = $rootScope.flowchart.flowchart('getData');
-        console.log(JSON.stringify(data, null, 2));
-        console.log(data.operators);
+        // console.log(JSON.stringify(data, null, 2));
+        // console.log(data.operators);
         let noOfInput = 0, noOfOutput = 0;
 
         $.each(data.operators, (idx, d) => {
@@ -165,11 +165,142 @@ angular.module('visualAnalyticsApp')
           return;
         }
 
-        //$scope.evokeWithRouter("filter", 1, $rootScope.script);
+
+
+
+        // JSON parsing for server.py
+
+
+        var data_flowChart = data;
+
+        // console.log(data_flowChart);
+
+
+        var dataset_id_from_json="";
+        var tools = {};
+
+        var final_JSON=[];
+        //var output = {};
+
+
+        // Add all "operators" hashtable
+
+        var data_operators = data_flowChart.operators;
+        // console.log(data_operators);
+        var length = Object.keys(data_operators).length; 
+        console.log(length, data_operators);
+        var links = data_flowChart.links;
+
+        var arrOperators = Object.keys(data_operators);
+        var arrLinks = Object.keys(links);
+        console.log("Array of Links: "+ arrLinks);
+        
+        //Iterating through links
+        for(var k =0;k<arrLinks.length;k++){
+          //Get the from operator of each list object
+          //console.log("---------"+JSON.stringify(links[k]))
+          var fromOp = links[arrLinks[k]].fromOperator;
+          console.log("fromOp "+fromOp);
+          //Check if this fromOp is present in Operators
+          if(data_operators[fromOp] != null){
+            console.log("IN")
+            var mode =  data_operators[fromOp].properties.mode;
+            //Modes
+            if(mode == "input") {
+              console.log("-----------:"+data_operators[fromOp].properties)
+            dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
+            
+          }
+          else if(mode == "output") {
+
+          }
+          else if(mode == "tool") {
+            var tools={}
+            tools["title"] = data_operators[fromOp].properties.title;
+            tools["logic"] = data_operators[fromOp].properties.script;
+            tools["params"] = data_operators[fromOp].properties.params;
+            final_JSON.push(tools)
+          }
+
+
+          }
+        }
+
+
+        console.log("Tools:: "+JSON.stringify(final_JSON));
+        console.log("dataset_id:: "+ dataset_id_from_json);
+
+
+        /*//Iterating through operators
+        for (var j =0; j<arrOperators.length;j++){
+
+        }*/
+
+
+
+
+        /*for(var i = 0; i < length ; i++) {
+
+          var operator = data_operators[i];
+          // console.log(operator);
+
+          if(operator.mode == "input") {
+            dataset_id_from_json = operator.properties.dataset_id;
+          }
+          else if(operator.mode == "output") {
+
+          }
+          else if(operator.mode == "tool") {
+            tools[i] = {};
+            tools[i]["title"] = operator.properties.title;
+            tools[i]["logic"] = operator.properties.logic;
+            tools[i]["params"] = operator.properties.params;
+          }
+        }//*/
+
+
+        // var links = data_flowChart.links;
+        // console.log(links);
+
+        // for(var i=0;i<links.length;i++) {
+        //   var sublink = links.i;
+
+        //   if(sublink.fromOperator != sublink.toOperator) {
+        //     // var from = 
+        //     console.log(sublink);
+
+
+        //  }
+      //     "fromOperator": 0,
+      // "fromConnector": "output_0",
+      // "fromSubConnector": 0,
+      // "toOperator": 1,
+      // "toConnector": "input_0",
+      // "toSubConnector": 0
+          
+        // }        
+
+        // for(var i=0;i<data_flowChart.restaurants.length;i++) {
+        //   if(allRestaurantsJSON.restaurants[i].name.indexOf(searchByrestaurantName)>-1){
+        //     return i;
+        //   }
+        // }
+
+
+
+
+
+
+
+
+
+
+
+        $scope.evokeWithRouter(dataset_id_from_json, final_JSON);
     }
 
 
-    $scope.evokeWithRouter = function(name_function, dataset_id, script) {
+    $scope.evokeWithRouter = function(dataset_id, jsonFile) {
 
 
 
@@ -203,8 +334,8 @@ angular.module('visualAnalyticsApp')
         $.ajax({
           type: "POST",
           url: `http://localhost:8080/process/`+dataset_id,
-          data: json,
-          dataType: "text",
+          node_chain: jsonFile,
+          dataType: "json",
           success: function(response)
           {
             alert(response);
