@@ -8,7 +8,13 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('LoginCtrl', function ($scope, $rootScope, $state) {
+  .controller('LoginCtrl', function ($scope, $rootScope, $state, $http) {
+
+    $scope.userinfo = {
+      user_name:"",
+      password: ""
+    }
+
     $scope.fbLogin = function(){
           FB.login(function (response) {
               // handle the response
@@ -61,5 +67,28 @@ angular.module('visualAnalyticsApp')
 
               }
           }, {scope: 'public_profile,email,'});
+    }
+
+    $scope.login = function() {
+      const {user_name, password} = $scope.userinfo;
+
+      if(user_name === ""){
+        alert("ID is not entered!");
+        return;
+      }
+
+      if(password === ""){
+        alert("Password is not entered!");
+        return;
+      }
+
+      $http.post("user/login", $scope.userinfo)
+      .then(response => {
+        localStorage.setItem("__USER_INFO__", JSON.stringify(response.data));
+
+        $state.go('index.main');
+      }).catch(error => {
+        alert(error.data);
+      })
     }
   });

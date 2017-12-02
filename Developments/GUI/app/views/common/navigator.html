@@ -40,8 +40,8 @@
                 </div>
             </div>
             <div class="media-body">
-                <h5 class="media-heading text-white m-t-0 m-b-0"><span>Ikwhan Chang</span></h5>
-                <button class="btn btn-danger btn-sm" type="button" ui-sref="login">Logout</button>
+                <h5 class="media-heading text-white m-t-0 m-b-0"><span>{{userinfo.first_name}} {{userinfo.last_name}}</span></h5>
+                <button class="btn btn-danger btn-sm" type="button" ng-click="logout()">Logout</button>
             </div>
         </div>
     </div>

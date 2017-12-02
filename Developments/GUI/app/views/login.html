@@ -7,15 +7,15 @@
           <div class="panel-body">
             <form>
                   <div class="form-group">
-                      <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                      <label for="exampleInputEmail1">ID</label>
+                      <input type="id" class="form-control" id="exampleInputEmail1" placeholder="ID" ng-model="userinfo.user_name">
                   </div>
                   <div class="form-group">
                       <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="userinfo.password">
                   </div>
               </form>
-              <button type="button" class="btn btn-block btn-danger btn-lg" ui-sref="index.main">Login with Email</button>
+              <button type="submit" class="btn btn-block btn-danger btn-lg" ng-click="login()">Login</button>
               <button type="button" class="btn btn-block btn-lg btn-havelock-blue" ng-click="fbLogin()">Continue with Facebook</button>
               <button type="button" class="btn btn-block btn-lg btn-primary" ui-sref="register">Register</button>
 

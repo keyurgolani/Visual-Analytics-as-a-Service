@@ -9,7 +9,10 @@
  */
 angular.module('visualAnalyticsApp')
   .controller('NavCtrl', function ($rootScope, $scope, $state, $http, $timeout) {
+        $rootScope.userinfo = angular.fromJson(localStorage.getItem("__USER_INFO__"));
+        $scope.userinfo = $rootScope.userinfo;
 
+        console.log($scope.userinfo);
         $(".draggable").draggable({
         revert : function(event, ui) {
             // on older version of jQuery use "draggable"
@@ -29,7 +32,10 @@ angular.module('visualAnalyticsApp')
         //console.log(localStorage.getItem("__USER_INFO__"));
     });
 
-
+    $scope.logout = function() {
+      localStorage.removeItem("__USER_INFO__");
+      $state.go('login');
+    }
 
     $scope.upload = function() {
       $state.go('index.upload');
@@ -126,9 +132,14 @@ angular.module('visualAnalyticsApp')
                         var data = getOperatorData($this);
                         data.left = relativeLeft;
                         data.top = relativeTop;
-                        
+
 
                         $rootScope.flowchart.flowchart('addOperator', data);
+                        var data2 = $rootScope.flowchart.flowchart('getData');
+                        $http.post('user/updateScript', {
+                          script: JSON.stringify(data2),
+                          user_id: $rootScope.userinfo.user_id
+                        });
                     }
                 }
             });
@@ -139,12 +150,12 @@ angular.module('visualAnalyticsApp')
             console.log(response.statusText);
     });
 
-    $timeout(function(){
-          $(".file_lists").draggable();
-      });
-
     $scope.run = function(){
         var data = $rootScope.flowchart.flowchart('getData');
+        $http.post('user/updateScript', {
+          script: JSON.stringify(data),
+          user_id: $rootScope.userinfo.user_id
+        });
         // console.log(JSON.stringify(data, null, 2));
         // console.log(data.operators);
         let noOfInput = 0, noOfOutput = 0;
@@ -188,14 +199,14 @@ angular.module('visualAnalyticsApp')
 
         var data_operators = data_flowChart.operators;
         // console.log(data_operators);
-        var length = Object.keys(data_operators).length; 
+        var length = Object.keys(data_operators).length;
         console.log(length, data_operators);
         var links = data_flowChart.links;
 
         var arrOperators = Object.keys(data_operators);
         var arrLinks = Object.keys(links);
         console.log("Array of Links: "+ arrLinks);
-        
+
         //Iterating through links
         for(var k =0;k<arrLinks.length;k++){
           //Get the from operator of each list object
@@ -210,7 +221,7 @@ angular.module('visualAnalyticsApp')
             if(mode == "input") {
               console.log("-----------:"+data_operators[fromOp].properties)
             dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
-            
+
           }
           else if(mode == "output") {
 
@@ -268,7 +279,7 @@ angular.module('visualAnalyticsApp')
         //   var sublink = links.i;
 
         //   if(sublink.fromOperator != sublink.toOperator) {
-        //     // var from = 
+        //     // var from =
         //     console.log(sublink);
 
 
@@ -279,8 +290,8 @@ angular.module('visualAnalyticsApp')
       // "toOperator": 1,
       // "toConnector": "input_0",
       // "toSubConnector": 0
-          
-        // }        
+
+        // }
 
         // for(var i=0;i<data_flowChart.restaurants.length;i++) {
         //   if(allRestaurantsJSON.restaurants[i].name.indexOf(searchByrestaurantName)>-1){
