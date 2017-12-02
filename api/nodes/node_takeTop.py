@@ -10,4 +10,5 @@ def run_node(rdd, utils, params):
     :return: RDD with map Logic of current Node appended to it.
     :rtype: SparkRDD
     """
-    return rdd.zipWithIndex().filter(lambda x: x[1] < params['n'])
+    return rdd.zipWithIndex().\
+        filter(lambda x: x[1] < params['n']).map(lambda x: x[0])
