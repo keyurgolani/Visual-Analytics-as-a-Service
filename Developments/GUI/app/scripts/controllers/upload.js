@@ -40,6 +40,7 @@ angular.module('visualAnalyticsApp')
 
     //Handle events for dropzone
 	//Visit http://www.dropzonejs.com/#events for more events
+  var files = [];
 	$scope.dzCallbacks = {
 
 		'addedfile' : function(file){
@@ -49,11 +50,22 @@ angular.module('visualAnalyticsApp')
 		'success' : function(file, xhr){
       console.log(file.name);
 
-      alert(file.name);
+      files.push(file);
+      console.log(files);
+      //fileNames = test1.csv,test2.cv
 
       //$state.go('index.upload_preview', {'file_name': file.name});
 		}
 	};
+
+  $scope.goNext = function() {
+    var fileNames = "";
+    for(var file of files){
+      fileNames += (file.name + ",");
+    }
+
+    $state.go('index.upload_preview', {'file_name': fileNames, 'seq': 1});
+  }
 
     $scope.dzMethods = {};
   	$scope.removeNewFile = function(){

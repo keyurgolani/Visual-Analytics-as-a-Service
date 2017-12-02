@@ -14,9 +14,12 @@ angular.module('visualAnalyticsApp')
 
     $(document).ready(function(){
   	var data;
+
+  var firstFile =   $stateParams.file_name.split(",")[$stateParams.seq - 1];
+    console.log(firstFile);
   	$.ajax({
   	  type: "GET",
-  	  url: `get_file/${$stateParams.file_name}`,
+  	  url: `get_file/${firstFile}`,
   	  dataType: "text",
   	  success: function(response)
   	  {
@@ -85,6 +88,13 @@ angular.module('visualAnalyticsApp')
   	    var html = document.querySelector("table").outerHTML;
   		export_table_to_csv(html, $stateParams.file_name);
   	});
+
+    $("#btn_next").click(function() {
+      $state.go('index.upload_preview', {'file_name': $stateParams.file_name,'seq': parseInt($stateParams.seq) + 1});
+      //$state.go('index.upload_preview', {'file_name': fileNames, 'seq': 1});
+      //seq = seq +1;
+      //console.log(seq);
+    })
 
   	function generateHtmlTable(data) {
 
