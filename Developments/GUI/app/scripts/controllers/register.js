@@ -8,58 +8,61 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('RegisterCtrl', function ($scope, $rootScope, $state) {
-    $scope.fbLogin = function(){
-          FB.login(function (response) {
-              // handle the response
-              if (response.status === 'connected') {
-                  // Logged into your app and Facebook.
+  .controller('RegisterCtrl', function ($http, $scope, $rootScope, $state) {
+    $scope.userinfo = {
+      firstName:"",
+      lastName:"",
+      password:"",
+      password2:"",
+      email:""
+    }
+    $scope.register = function() {
+      const {firstName, lastName, password, password2, email} = $scope.userinfo;
+      if(password !== password2){
+        alert("Password does not match!");
+        return;
+      }
 
-                  FB.api('/me?fields=email,first_name,last_name,location,bio,birthday,gender,picture,link,timezone,work', function (fb_userinfo) {
-                      //console.log(response2);
-                      //alert("Your email is :"+response2.email);
-                      FB.api(
-                          "/" + fb_userinfo.id + "/picture?type=normal",
-                          function (picture) {
-                              if (picture && !picture.error) {
-                                  /* handle the result */
+      if(firstName === ""){
+        alert("First Name is empty!");
+        return;
+      }
 
-                                  var email           = (fb_userinfo.email === undefined ? "" : fb_userinfo.email);
-                                  var password        = "";
-                                  var first_name      = (fb_userinfo.first_name === undefined ? "" : fb_userinfo.first_name);
-                                  var last_name       = (fb_userinfo.last_name === undefined ? "" : fb_userinfo.last_name);
-                                  var gender          = (fb_userinfo.gender === undefined ? "" : fb_userinfo.gender);
-                                  //var birth_date      = (fb_userinfo.birthday === undefined ? "" : fb_userinfo.birthday);
-                                  var pic_url         = (picture.data === undefined ? "" : picture.data.url);
-                                  var timezone        = $rootScope.browser_tz;
-                                  var language        = $rootScope.browser_lang;
-                                  //var bio             = (fb_userinfo.bio === undefined ? "" : fb_userinfo.bio);
-                                  var job             = 0;
-                                  var fb_key          = (fb_userinfo.id);
+      if(lastName === ""){
+        alert("Last Name is empty!");
+        return;
+      }
 
-                                  var __USER_INFO__ = {  email: email, password: password, first_name: first_name,
-                                                  last_name: last_name, gender: gender,
-                                                  pic_url: pic_url, timezone: timezone, language: language,
-                                                  job: job,
-                                                  fb_key: fb_key
-                                  };
+      if(password === ""){
+        alert("password is empty!");
+        return;
+      }
 
-                                  localStorage.setItem("__USER_INFO__", JSON.stringify(__USER_INFO__));
+      if(email === ""){
+        alert("Email is empty!");
+        return;
+      }
 
-                                  $state.go('index.main');
-                              }
-                          }
-                      );
+      $http({
+          url: "user/addUser",
+          method: "POST",
+          dataType: 'json',
+          data: JSON.stringify($scope.userinfo)
+      }).then(function successCallback(response) {
+              // this callback will be called asynchronously
+              // when the response is available
+              //console.log(response.data)
+              $scope.fileList = response.data;
+              response.data.forEach((file, idx) => {
+                  $("#inputFileList")
+                    .append(`<li class="primary-submenu draggable_operator" data-nb-inputs="0" data-nb-outputs="1" data-title="${file.name}" data-idx="${idx + 7}" data-mode="input" ><a href="#">
+                      <div>
+                        <div class="nav-label" style="z-index:10000;">${file.name}</div>
+                      </div>
+                    </a>
+                    </li>`)
 
-
-                  });
-              } else if (response.status === 'not_authorized') {
-                  alert("not_authorized");
-
-              } else {
-                  alert("error");
-
-              }
-          }, {scope: 'public_profile,email,'});
+              })
+            });
     }
   });

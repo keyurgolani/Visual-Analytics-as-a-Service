@@ -61,15 +61,9 @@
   </div>
 
   <!-- START Tree Sidebar Common -->
-  <ul class="side-menu">
+  <ul class="side-menu" id="inputFileList">
 
-    <li class="draggable primary-submenu file_lists" data-title="{{file.name}}" data-idx="{{$index + 7}}" data-mode="input"  ng-repeat="file in fileList" >
-        <a href="../apps/projects-list.html">
-          <div>
-            <div class="nav-label" style="z-index:10000;">{{file.name}}</div>
-          </div>
-        </a>
-    </li>
+
 
 
   </ul>
@@ -83,20 +77,20 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu" data-title="Map" data-idx="1" data-mode="tool">
-        <a href="../apps/projects-list.html">
+    <li class="primary-submenu draggable_operator" data-nb-inputs="1" data-nb-outputs="1" data-title="Map" data-idx="1" data-mode="tool">
+        <a href="#">
           <div>
             <div class="nav-label" style="z-index:10000;">Map</div>
           </div>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="Reduce"  data-idx="2" data-mode="tool">
-        <a href="../apps/projects-grid.html">
+    <li  class="primary-submenu draggable_operator" data-nb-inputs="1" data-nb-outputs="1" data-title="Reduce"  data-idx="2" data-mode="tool">
+        <a href="#">
             <span class="nav-label">Reduce</span>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="Filter"  data-idx="3" data-mode="tool">
-        <a href="../apps/projects-grid.html">
+    <li  class="primary-submenu draggable_operator" data-nb-inputs="1" data-nb-outputs="1" data-title="Filter"  data-idx="3" data-mode="tool">
+        <a href="#">
             <span class="nav-label">Filter</span>
         </a>
     </li>
@@ -111,20 +105,20 @@
   <!-- START Tree Sidebar Common -->
   <ul class="side-menu">
 
-    <li class="draggable primary-submenu" data-title="XML" data-idx="4" data-mode="output">
-        <a href="../apps/projects-list.html">
+    <li class="draggable_operator primary-submenu" data-nb-inputs="1" data-nb-outputs="0" data-title="XML" data-idx="4" data-mode="output">
+        <a href="#">
           <div>
             <div class="nav-label" style="z-index:10000;">XML</div>
           </div>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="JSON"  data-idx="5" data-mode="output">
-        <a href="../apps/projects-grid.html">
+    <li  class="draggable_operator primary-submenu" data-nb-inputs="1" data-nb-outputs="0" data-title="JSON"  data-idx="5" data-mode="output">
+        <a href="#">
             <span class="nav-label">JSON</span>
         </a>
     </li>
-    <li  class="draggable primary-submenu" data-title="CSV"  data-idx="6" data-mode="output">
-        <a href="../apps/projects-grid.html">
+    <li  class="draggable_operator primary-submenu" data-nb-inputs="1" data-nb-outputs="0" data-title="CSV"  data-idx="6" data-mode="output">
+        <a href="#">
             <span class="nav-label">CSV</span>
         </a>
     </li>
