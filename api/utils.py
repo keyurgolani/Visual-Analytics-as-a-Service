@@ -1,12 +1,15 @@
 import os
-import uuid
 
 default_data_path = "datasets"
 
 
 def write_to_file(logic):
     i = 0
-    while os.path.exists(os.path.join("logics", "temp{}.py".format(i))) and os.path.isfile(os.path.join("logics", "temp{}.py".format(i))):
+    while os.path.exists(
+        os.path.join(
+            "logics", "temp{}.py".format(i))) and os.path.isfile(
+                os.path.join(
+                    "logics", "temp{}.py".format(i))):
         i += 1
     else:
         with open(os.path.join("logics", "temp{}.py".format(i)), 'w+') as f:

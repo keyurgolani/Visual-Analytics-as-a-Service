@@ -1,5 +1,24 @@
 def run_node(rdd, utils, params):
+    """
+    Logic for Node "Filter With Parameters"
+    :param rdd: Input RDD To Be Appended Node Logic To
+    :type rdd: SparkRDD
+    :param utils: Utils module object to access Utility functions from
+    :type utils: Module
+    :param params: parameters passed from client for current Node
+    :type params: dict
+    :return: RDD with filter Logic of current Node appended to it.
+    :rtype: SparkRDD
+    """
     def run_logic(row):
+        """
+        Logic to find weather the row fits the parameters passed in the params
+        from client and return True or False
+        :param row: each row to be passed to the function while mapping
+        :type row: list
+        :return: True or False based on given condition and row
+        :rtype: boolean
+        """
         data_value = row[params['column']]
         if 'value' in params.keys():
             target_value = params['value']

@@ -14,8 +14,6 @@ sc = pyspark.SparkContext(appName="VAaaS")
 utils = importlib.import_module("utils")
 dao = importlib.import_module("dao")
 
-# TODO: Move complimenting methods from Utils to a seperate module.
-# TODO: Pass complementing module in nodes rather than utils.
 
 @hook('after_request')
 def enable_cors():
@@ -24,12 +22,22 @@ def enable_cors():
     Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
     """
     response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+    response.headers['Access-Control-Allow-Methods'] = \
+        'PUT, GET, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = \
+        'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 
 @route('/process/<dataset_id>', method='POST')
 def process(dataset_id):
+    """
+    Processes the dataset denoted by the dataset ID using the Node Chain
+    denoted by the JSON object in body of the request. Saves the result
+    according to the parameters in the body of the request.
+    :param dataset_id: id of the dataset to be processed according to the
+    database
+    :return: JSON with response status and response message
+    """
     node_chain = [
         # {
         #     "node": "map",
@@ -60,7 +68,7 @@ def process(dataset_id):
         # {
         #     "node": "splitUsingDelimiter",
         #     "params": {
-        #         "regex": TODO: Split Delimeter to be passed here,
+        #         "regex": TODO: Split Delimiter to be passed here,
         #         "column": TODO: Column index to be passed here
         #     }
         # },
@@ -69,14 +77,14 @@ def process(dataset_id):
         #     "params": {
         #         "interleave": TODO: Weather to interleave the
         #         duplicate fields or not.
-        #         "start": TODO: Split Delimeter to be passed here,
+        #         "start": TODO: Split Delimiter to be passed here,
         #         "end": TODO: Column index to be passed here
         #     }
         # },
         # {
-        #     "node": "mergeWithDelimeter",
+        #     "node": "mergeWithDelimiter",
         #     "params": {
-        #         "delimeter": TODO: Merge Delimeter to be passed here,
+        #         "delimiter": TODO: Merge Delimiter to be passed here,
         #         "start": TODO: Start Column index to be passed here,
         #         "end": TODO: End Column index to be passed here
         #     }
@@ -135,6 +143,31 @@ def process(dataset_id):
         #         "end": TODO: end index to do flattening till
         #     }
         # }
+        # {
+        #     "node": "reduceBy",
+        #     "params": {
+        #         "column": TODO: Column to reduce the rows by
+        #         "aggregation": TODO: aggregation to be applied to columns
+        #         other than reduce by column. (Can be list, add, xor,
+        #         multiply)
+        #     }
+        # }
+        # {
+        #     "node": "sortBy",
+        #     "params": {
+        #         "column": TODO: Column index to act as key for sorting,
+        #         "ascending": TODO: Weather to sort in ascending order or not
+        #     }
+        # }
+        # {
+        #     "node": "distinct"
+        # }
+        # {
+        #     "node": "takeTop",
+        #     "params": {
+        #         "n": TODO: Number of top entries to be taken
+        #     }
+        # }
         # TODO: Finish Below Nodes
         # {
         #     "node": "parseUserAgent",
@@ -144,8 +177,14 @@ def process(dataset_id):
         #         replace the original data or not
         #     }
         # }
-        # TODO: Add reduce nodes
-        # TODO: Add aggregation nodes
+        # {
+        #     "node": "parseDateTime",
+        #     "params": {
+        #         "column": TODO: Column to parse date time from
+        #         "replace": TODO: Weather the parsed value of date time will
+        #         replace the original data or not
+        #     }
+        # }
     ]
     # ==== Input ====
     dataset = dao.get_dataset(entities.Dataset(dataset_id=dataset_id, owner=1))
@@ -181,6 +220,11 @@ def process(dataset_id):
 
 @route('/upload', method='POST')
 def do_upload():
+    """
+    Method to upload the dataset into the server and ultimately adding the
+    entry to the database for uploaded dataset
+    :return: Returns response code and response status
+    """
     upload = request.files.get('upload')
     dataset = entities.Dataset(filename=upload.filename, owner=1)
     with open(dataset.get_full_path(), 'w+') as out:
@@ -194,6 +238,11 @@ def do_upload():
 
 @route('/download/<dataset_id>')
 def do_download(dataset_id):
+    """
+    Method downloads the dataset from dataset ID given
+    :param dataset_id: dataset ID according to the database
+    :return: file object for the requested dataset
+    """
     dataset = dao.get_dataset(entities.Dataset(dataset_id=dataset_id, owner=1))
     return static_file(
         dataset.filename, root=dataset.root_path, download=dataset.filename)
