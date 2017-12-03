@@ -205,42 +205,54 @@ angular.module('visualAnalyticsApp')
 
         var arrOperators = Object.keys(data_operators);
         var arrLinks = Object.keys(links);
-        console.log("Array of Links: "+ arrLinks);
+        console.log("Array of Links: "+ arrLinks.length);
 
         //Iterating through links
-        for(var k =0;k<arrLinks.length;k++){
+        for(var k =0;k<arrOperators.length;k++){
           //Get the from operator of each list object
           //console.log("---------"+JSON.stringify(links[k]))
-          var fromOp = links[arrLinks[k]].fromOperator;
+          if(k==arrLinks.length){
+            var fromOp = links[arrLinks[k-1]].toOperator;  
+          }
+          else{
+            var fromOp = links[arrLinks[k]].fromOperator;  
+          }
+          
           console.log("fromOp "+fromOp);
           //Check if this fromOp is present in Operators
-          if(data_operators[fromOp] != null){
+          if(data_operators[fromOp] != null) {
             console.log("IN")
             var mode =  data_operators[fromOp].properties.mode;
             //Modes
             if(mode == "input") {
               console.log("-----------:"+data_operators[fromOp].properties)
-            dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
-
-          }
-          else if(mode == "output") {
-
-            output_format = data_operators[fromOp].properties.title;
-          }
-          else if(mode == "tool") {
-            var tools={}
-            tools["title"] = data_operators[fromOp].properties.title;
-            tools["logic"] = data_operators[fromOp].properties.script;
-            tools["params"] = data_operators[fromOp].properties.params;
-            final_JSON.push(tools)
-          }
-
-
+              dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
+            }
+            else if(mode == "output") {
+              output_format = data_operators[fromOp].properties.title;
+              // console.log("output_format"+ output_format);
+            }
+            else if(mode == "tool") {
+              var tools={}
+              tools["title"] = data_operators[fromOp].properties.title;
+              tools["logic"] = data_operators[fromOp].properties.script;
+              tools["params"] = data_operators[fromOp].properties.params;
+              final_JSON.push(tools)
+            }
           }
         }
 
+        // TODO Get the isSorted and limit from front end
+        
+        var output = {
+        "format": output_format,
+        "isSorted": false,
+        "limit": 10
+        };
 
-        console.log("Tools:: "+JSON.stringify(final_JSON));
+        
+        console.log("Final JSON:: "+JSON.stringify(final_JSON));
+        console.log("output:: "+JSON.stringify(output));
         console.log("dataset_id:: "+ dataset_id_from_json);
 
 
@@ -300,20 +312,11 @@ angular.module('visualAnalyticsApp')
         // }
 
 
-
-
-
-
-
-
-
-
-
-        $scope.evokeWithRouter(dataset_id_from_json, final_JSON, output_format);
+        $scope.evokeWithRouter(dataset_id_from_json, final_JSON, output);
     }
 
 
-    $scope.evokeWithRouter = function(dataset_id, jsonFile, output) {
+    $scope.evokeWithRouter = function(dataset_id, jsonFile, output_options) {
 
 
 
@@ -348,7 +351,7 @@ angular.module('visualAnalyticsApp')
           type: "POST",
           url: `http://localhost:8080/process/`+dataset_id,
           node_chain: jsonFile,
-          output_format : output,
+          output : output_options,
           dataType: "json",
           success: function(response)
           {
