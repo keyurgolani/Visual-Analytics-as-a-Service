@@ -38,7 +38,7 @@ def process(dataset_id):
     database
     :return: JSON with response status and response message
     """
-     if request.method == 'OPTIONS':
+    if request.method == 'OPTIONS':
         return {}
     # node_chain = [
     #     {
