@@ -85,6 +85,52 @@ module.exports = function(app){
 
   });
 
+  router.post('/FBlogin', function(req, res) {
+    const { user_name, email_id, password, first_name, last_name, facebook_key} = req.body;
+    const params1 = {
+      user_name,
+      email_id,
+      password,
+      account_created_date: moment().format('YYYY-MM-DD HH:mm:ss')
+    };
+
+    connection.query('SELECT COUNT(*) AS cnt FROM USERACCOUNT WHERE email_id = ? AND user_name = ?', [email_id, user_name], function (error, results, fields) {
+      if (error) throw error;
+      console.log(results[0].cnt);
+      if(results[0].cnt === 0){
+        connection.query('INSERT INTO USERACCOUNT SET ?', params1, function (error, results, fields) {
+          if (error) throw error;
+          const seq = results.insertId;
+          const params2 = {
+            user_id: results.insertId,
+            first_name,
+            last_name
+          };
+          console.log(results.insertId)
+
+          connection.query('INSERT INTO USERPROFILE SET ?', params2, function (error, results, fields) {
+            if (error) throw error;
+            connection.query('SELECT * FROM USERACCOUNT A, USERPROFILE B WHERE A.user_id = B.user_id AND A.user_id = ?', seq, function (error, results, fields) {
+              if (error) throw error;
+
+              res.send(results[0]);
+            });
+          });
+        });
+      }else{
+        connection.query('UPDATE USERACCOUNT SET last_login = ?', moment().format('YYYY-MM-DD HH:mm:ss'), function (error, results, fields) {
+          if (error) throw error;
+          connection.query('SELECT * FROM USERACCOUNT A, USERPROFILE B WHERE A.user_id = B.user_id AND A.user_name = ?', user_name, function (error, results, fields) {
+            if (error) throw error;
+
+            res.send(results[0]);
+          });
+        });
+      }
+    });
+
+  });
+
   router.post('/updateScript', function(req, res) {
     // Uploaded files:
     const { user_id, script } = req.body;

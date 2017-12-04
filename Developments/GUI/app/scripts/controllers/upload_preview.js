@@ -19,7 +19,7 @@ angular.module('visualAnalyticsApp')
     console.log(firstFile);
   	$.ajax({
   	  type: "GET",
-  	  url: `get_file/${firstFile}`,
+  	  url: `file/get_file/${firstFile}`,
   	  dataType: "text",
   	  success: function(response)
   	  {
@@ -51,10 +51,10 @@ angular.module('visualAnalyticsApp')
   	    downloadLink.click();*/
 
         var formData = new FormData();
-        formData.append('data_files', csvFile, filename);
+        formData.append('upload', csvFile, filename);
 
         $.ajax({
-               url : 'file_upload',
+               url : 'file/file_upload',
                type : 'POST',
                data : formData,
                processData: false,  // tell jQuery not to process the data
@@ -62,7 +62,20 @@ angular.module('visualAnalyticsApp')
                success : function(data) {
                    console.log(data);
                    //alert(data);
-                   $state.go('index.main');
+                   var formData = new FormData();
+                   formData.append('upko', csvFile, filename);
+                   $.ajax({
+                          url : 'http://35.197.92.72:8080/upload',
+                          type : 'POST',
+                          data : formData,
+                          processData: false,  // tell jQuery not to process the data
+                          contentType: false,  // tell jQuery not to set contentType
+                          success : function(data) {
+                              console.log(data);
+                              //alert(data);
+                              $state.go('index.main');
+                          }
+                   });
                }
         });
   	}

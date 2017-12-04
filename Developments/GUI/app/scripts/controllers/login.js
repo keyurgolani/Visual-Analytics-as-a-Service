@@ -21,42 +21,32 @@ angular.module('visualAnalyticsApp')
               if (response.status === 'connected') {
                   // Logged into your app and Facebook.
 
-                  FB.api('/me?fields=email,first_name,last_name,location,bio,birthday,gender,picture,link,timezone,work', function (fb_userinfo) {
-                      //console.log(response2);
-                      //alert("Your email is :"+response2.email);
-                      FB.api(
-                          "/" + fb_userinfo.id + "/picture?type=normal",
-                          function (picture) {
-                              if (picture && !picture.error) {
-                                  /* handle the result */
+                  FB.api('/me?fields=email,first_name,last_name,link', function (fb_userinfo) {
 
-                                  var email           = (fb_userinfo.email === undefined ? "" : fb_userinfo.email);
-                                  var password        = "";
-                                  var first_name      = (fb_userinfo.first_name === undefined ? "" : fb_userinfo.first_name);
-                                  var last_name       = (fb_userinfo.last_name === undefined ? "" : fb_userinfo.last_name);
-                                  var gender          = (fb_userinfo.gender === undefined ? "" : fb_userinfo.gender);
-                                  //var birth_date      = (fb_userinfo.birthday === undefined ? "" : fb_userinfo.birthday);
-                                  var pic_url         = (picture.data === undefined ? "" : picture.data.url);
-                                  var timezone        = $rootScope.browser_tz;
-                                  var language        = $rootScope.browser_lang;
-                                  //var bio             = (fb_userinfo.bio === undefined ? "" : fb_userinfo.bio);
-                                  var job             = 0;
-                                  var fb_key          = (fb_userinfo.id);
+                    const {
+                      email_id = "",
+                      password = "",
+                      first_name = "",
+                      last_name = "",
+                      id: user_name
+                    } = fb_userinfo
 
-                                  var __USER_INFO__ = {  email: email, password: password, first_name: first_name,
-                                                  last_name: last_name, gender: gender,
-                                                  pic_url: pic_url, timezone: timezone, language: language,
-                                                  job: job,
-                                                  fb_key: fb_key
-                                  };
+                    $scope.userinfo = {
+                      user_name,
+                      email_id,
+                      password,
+                      first_name,
+                      last_name
+                    };
 
-                                  localStorage.setItem("__USER_INFO__", JSON.stringify(__USER_INFO__));
+                    $http.post("user/FBlogin", $scope.userinfo)
+                    .then(response => {
+                      localStorage.setItem("__USER_INFO__", JSON.stringify(response.data));
 
-                                  $state.go('index.main');
-                              }
-                          }
-                      );
-
+                      $state.go('index.main');
+                    }).catch(error => {
+                      alert(error.data);
+                    })
 
                   });
               } else if (response.status === 'not_authorized') {

@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'ui.router',
     'thatisuday.dropzone',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngLodash'
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, dropzoneOpsProvider) {
 

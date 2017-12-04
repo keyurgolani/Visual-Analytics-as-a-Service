@@ -8,7 +8,7 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('MainCtrl', function ($rootScope, $scope, $state, $uibModal, $http) {
+  .controller('MainCtrl', function ($rootScope, $scope, $state, $uibModal, $http, lodash) {
 $scope.tempNode = {
   title: '',
   fileName: '',
@@ -47,9 +47,9 @@ $rootScope.flowchart = $flowchart;
 
 
     // Apply the plugin on a standard, empty div...
-    console.log(angular.fromJson(angular.fromJson(localStorage.getItem("__USER_INFO__")).script))
+    const script = angular.fromJson(angular.fromJson(localStorage.getItem("__USER_INFO__")).script);
     $flowchart.flowchart({
-      data: angular.fromJson(angular.fromJson(localStorage.getItem("__USER_INFO__")).script)
+      data: lodash.isEmpty(script) ? {} : script
     });
 
     $('.delete_selected_button').click(function() {

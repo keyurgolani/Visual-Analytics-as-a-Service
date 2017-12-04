@@ -11,7 +11,7 @@ angular.module('visualAnalyticsApp')
   .controller('UploadCtrl', function ($scope, $http, $state) {
     var myDropzone;
       $scope.dzOptions = {
-  		url : 'file_upload',
+  		url : 'file/file_upload',
   		paramName : 'data_files',
   		maxFilesize : '1000',
   		addRemoveLinks : true,

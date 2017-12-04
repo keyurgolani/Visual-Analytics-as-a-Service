@@ -4,6 +4,15 @@ module.exports = function(app){
   var express = require('express');
 	var router = express.Router();
 
+  var mysql      = require('mysql');
+  var connection = mysql.createConnection({
+    host     : '35.197.92.72',
+    user     : 'root',
+    password : 'vaaas',
+    database : 'VAAAS'
+  });
+  connection.connect({debug: true});
+
   // default options
   app.use(fileUpload());
 
@@ -15,12 +24,12 @@ module.exports = function(app){
 
   //console.log("file: ",req.files.data_files);
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    let file = req.files.data_files;
+    let file = req.files.upload;
 
 
     // Use the mv() method to place the file somewhere on your server
-  console.log('./uploads/' + req.files.data_files.name)
-    file.mv('./uploads/' + req.files.data_files.name, function(err) {
+  console.log('./uploads/' + req.files.upload.name)
+    file.mv('./uploads/' + req.files.upload.name, function(err) {
       if (err)
         return res.status(500).send(err);
 

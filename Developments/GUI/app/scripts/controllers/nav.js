@@ -212,12 +212,12 @@ angular.module('visualAnalyticsApp')
           //Get the from operator of each list object
           //console.log("---------"+JSON.stringify(links[k]))
           if(k==arrLinks.length){
-            var fromOp = links[arrLinks[k-1]].toOperator;  
+            var fromOp = links[arrLinks[k-1]].toOperator;
           }
           else{
-            var fromOp = links[arrLinks[k]].fromOperator;  
+            var fromOp = links[arrLinks[k]].fromOperator;
           }
-          
+
           console.log("fromOp "+fromOp);
           //Check if this fromOp is present in Operators
           if(data_operators[fromOp] != null) {
@@ -243,14 +243,14 @@ angular.module('visualAnalyticsApp')
         }
 
         // TODO Get the isSorted and limit from front end
-        
+
         var output = {
         "format": output_format,
         "isSorted": false,
         "limit": 10
         };
 
-        
+
         console.log("Final JSON:: "+JSON.stringify(final_JSON));
         console.log("output:: "+JSON.stringify(output));
         console.log("dataset_id:: "+ dataset_id_from_json);
@@ -349,7 +349,7 @@ angular.module('visualAnalyticsApp')
 
         $.ajax({
           type: "POST",
-          url: `http://localhost:8080/process/`+dataset_id,
+          url: `http://35.197.92.72:8080/process/`+dataset_id,
           node_chain: jsonFile,
           output : output_options,
           dataType: "json",
