@@ -28,7 +28,7 @@ def enable_cors():
         'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 
-@route('/process/<dataset_id>', method='POST')
+@route('/process/<dataset_id>', method=['POST', 'OPTIONS')
 def process(dataset_id):
     """
     Processes the dataset denoted by the dataset ID using the Node Chain

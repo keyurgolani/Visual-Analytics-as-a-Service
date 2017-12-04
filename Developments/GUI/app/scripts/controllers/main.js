@@ -56,6 +56,10 @@ $rootScope.flowchart = $flowchart;
       $flowchart.flowchart('deleteSelected');
     });
 
+    $('.delete_all_button').click(() => {
+      $flowchart.flowchart('setData', {});
+    })
+
     $flowchart.on('linkCreate', function(linkId, linkData) {
       var data = $rootScope.flowchart.flowchart('getData');
       $http.post('user/updateScript', {

@@ -51,7 +51,7 @@ angular.module('visualAnalyticsApp')
             $scope.fileList = response.data;
             response.data.forEach((file, idx) => {
                 $("#inputFileList")
-                  .append(`<li class="primary-submenu draggable_operator" data-nb-inputs="0" data-nb-outputs="1" data-title="${file.name}" data-idx="${idx + 7}" data-mode="input" ><a href="#">
+                  .append(`<li class="primary-submenu draggable_operator" data-nb-inputs="0" data-nb-outputs="1" data-title="${file.name}" data-dataset_id="${file.dataset_id}" data-idx="${idx + 7}" data-mode="input" ><a href="#">
                     <div>
                       <div class="nav-label" style="z-index:10000;">${file.name}</div>
                     </div>
@@ -69,12 +69,13 @@ angular.module('visualAnalyticsApp')
               var nbInputs = parseInt($element.data('nb-inputs'));
               var nbOutputs = parseInt($element.data('nb-outputs'));
 
+              var dataset_id = ($element.data('mode') === 'input' ? $element.data('dataset_id') : 0);
               var data = {
                 properties: {
                   title: $element.data('title'),
                   inputs: {},
                   outputs: {},
-                  dataset_id: 1,
+                  dataset_id,
                   script:"",
                   mode: $element.data('mode')
                 }
@@ -91,7 +92,7 @@ angular.module('visualAnalyticsApp')
                   label: 'Output ' + (i + 1)
                 };
               }
-
+              console.log(data);
               return data;
             }
 
@@ -224,15 +225,15 @@ angular.module('visualAnalyticsApp')
             console.log("IN")
             var mode =  data_operators[fromOp].properties.mode;
             //Modes
-            if(mode == "input") {
-              console.log("-----------:"+data_operators[fromOp].properties)
+            if(mode === "input") {
+              console.log("-----------:",data_operators[fromOp].properties)
               dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
             }
-            else if(mode == "output") {
+            else if(mode === "output") {
               output_format = data_operators[fromOp].properties.title;
               // console.log("output_format"+ output_format);
             }
-            else if(mode == "tool") {
+            else if(mode === "tool") {
               var tools={}
               tools["title"] = data_operators[fromOp].properties.title;
               tools["logic"] = data_operators[fromOp].properties.script;
@@ -347,16 +348,15 @@ angular.module('visualAnalyticsApp')
 
         // ]
 
-        $.ajax({
-          type: "POST",
+        $http({
+          method: 'POST',
           url: `http://35.197.92.72:8080/process/`+dataset_id,
-          node_chain: jsonFile,
-          output : output_options,
-          dataType: "json",
-          success: function(response)
-          {
-            alert(response);
+          data: {
+            'node_chain': jsonFile,
+            'output' : output_options
           }
+        }). then(function(response) {
+          alert(response);
         });
     }
 

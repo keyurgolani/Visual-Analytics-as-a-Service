@@ -1,6 +1,7 @@
 module.exports = function(app){
   const fs = require('fs');
   const fileUpload = require('express-fileupload');
+  const lodash = require('lodash');
   var express = require('express');
 	var router = express.Router();
 
@@ -44,16 +45,40 @@ module.exports = function(app){
   res.contentType('application/json');
     const testFolder = './uploads/';
 
-  fs.readdir(testFolder, (err, files) => {
-    let _files = [];
-    files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
-      _files.push({name: file});
-    });
+    fs.readdir(testFolder, (err, files) => {
 
-    res.send(JSON.stringify(_files));
+      let _p = new Promise((resolve, reject) => {
+        let _files = [], k = 0;
+        files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
+          console.log(file);
+
+          connection.query('SELECT dataset_id FROM DATASETS WHERE filename = ?', file, function (error, results, fields) {
+            if (error) throw error;
+
+            //res.send(results[0]);
+            k++;
+            console.log(results, lodash.isEmpty(results));
+            if(!lodash.isEmpty(results)){
+              _files.push({name: file, dataset_id: results[0].dataset_id});
+            }
+
+            if(k === files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).length - 1){
+              resolve(_files);
+            }
+
+          });
+
+        });
+
+      });
+
+      _p.then((_files) => {
+          res.send(JSON.stringify(_files));
+      })
 
 
-  })
+    })
+
   });
 
   router.get('/get_file/:file_name', function(req, res) {
