@@ -15,6 +15,31 @@ $scope.tempNode = {
   fileContent: null
 }
 
+$rootScope.params = {
+  regex: '',
+  column: '',
+  interleave: false,
+  start: 0,
+  end: 0,
+  delimiter: '',
+  parameter: '',
+  value: '',
+  target_column: 0,
+  toType: '',
+  at: 0,
+  indexes: '',
+  operation: '',
+  aggregation: '',
+  ascending: false,
+  n: 0,
+  replace: false
+}
+
+$rootScope.output = {
+  limit: 10,
+  isSorted:false
+}
+
 var $flowchart = $('#flowchart');
 $rootScope.flowchart = $flowchart;
     var $container = $flowchart.parent();
@@ -210,7 +235,8 @@ $rootScope.flowchart = $flowchart;
         var modalInstance = $uibModal.open({
           templateUrl: 'views/modal/view_node.html',
           controller: function ($scope, $uibModalInstance, $http) {
-
+              $scope.script = $rootScope.script;
+              $scope.params = $rootScope.params;
               $scope.cancel = function () {
                   $uibModalInstance.dismiss('cancel');
               };
@@ -218,9 +244,40 @@ $rootScope.flowchart = $flowchart;
               $scope.submit = function() {
                 $uibModalInstance.dismiss('cancel');
                 //$rootScope.script = $scope.script;
+                console.log($scope.params);
                 data.operators[operatorId].properties.script = $scope.script;
+                data.operators[operatorId].properties.params = $scope.params;
                 $flowchart.flowchart('setData', data);
+
+                $rootScope.script = $scope.script;
+                $rootScope.params = $scope.params;
               }
+          },
+          scope: $scope,
+          windowClass: "hmodal-success",
+          size: 'lg'
+      });
+    }else if(mode === "output"){
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modal/view_output.html',
+          controller: function ($scope, $uibModalInstance, $http) {
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+
+            $scope.submit = function() {
+              $uibModalInstance.dismiss('cancel');
+              //$rootScope.script = $scope.script;
+              data.operators[operatorId].properties.limit = $scope.output.limit;
+              data.operators[operatorId].properties.isSorted = $scope.output.isSorted;
+              $flowchart.flowchart('setData', data);
+
+              $rootScope.output = $scope.output;
+            }
+
+
           },
           scope: $scope,
           windowClass: "hmodal-success",

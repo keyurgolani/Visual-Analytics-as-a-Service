@@ -1,0 +1,24 @@
+<div class="modal-content b-a-0">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&#xD7;</span></button>
+    <h4 class="modal-title" id="myModalLabel">{{tempNode.title}}</h4>
+  </div>
+      <div class="modal-body">
+        <form>
+              <div class="form-group">
+                  <label for="exampleInputEmail1">isSorted</label>
+                  <input type="checkbox" class="form-control" id="exampleInputEmail1" placeholder="isSorted" ng-model="output.isSorted">
+              </div>
+              <div class="form-group">
+                  <label for="exampleInputPassword1">Limit</label>
+                  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Limit" ng-model="output.limit">
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button class="btn btn-success" ng-click="submit()">OK</button>
+          <button class="btn btn-warning" ng-click="cancel()">CANCEL</button>
+        </div>
+      </div>
+</div>

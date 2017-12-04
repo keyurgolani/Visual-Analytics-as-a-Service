@@ -208,6 +208,8 @@ angular.module('visualAnalyticsApp')
         var arrLinks = Object.keys(links);
         console.log("Array of Links: "+ arrLinks.length);
 
+        let output = {};
+
         //Iterating through links
         for(var k =0;k<arrOperators.length;k++){
           //Get the from operator of each list object
@@ -230,14 +232,24 @@ angular.module('visualAnalyticsApp')
               dataset_id_from_json = data_operators[fromOp].properties.dataset_id;
             }
             else if(mode === "output") {
-              output_format = data_operators[fromOp].properties.title;
+              console.log(data_operators[fromOp].properties);
+              const {title:format, isSorted = false, limit = 10} = data_operators[fromOp].properties;
+              //output_format = data_operators[fromOp].properties.title;
               // console.log("output_format"+ output_format);
+
+              output = {
+                format,
+                isSorted,
+                limit
+              };
             }
             else if(mode === "tool") {
-              var tools={}
-              tools["title"] = data_operators[fromOp].properties.title;
-              tools["logic"] = data_operators[fromOp].properties.script;
-              tools["params"] = data_operators[fromOp].properties.params;
+              const {title: node, script: logic, params = {}} = data_operators[fromOp].properties;
+              let tools={
+                node,
+                logic,
+                params
+              }
               final_JSON.push(tools)
             }
           }
@@ -245,11 +257,6 @@ angular.module('visualAnalyticsApp')
 
         // TODO Get the isSorted and limit from front end
 
-        var output = {
-        "format": output_format,
-        "isSorted": false,
-        "limit": 10
-        };
 
 
         console.log("Final JSON:: "+JSON.stringify(final_JSON));
@@ -348,13 +355,9 @@ angular.module('visualAnalyticsApp')
 
         // ]
 
-        $http({
-          method: 'POST',
-          url: `http://35.197.92.72:8080/process/`+dataset_id,
-          data: {
-            'node_chain': jsonFile,
-            'output' : output_options
-          }
+        $http.post(`http://35.197.92.72:8080/process/`+dataset_id, {
+          'node_chain': jsonFile,
+          'output' : output_options
         }). then(function(response) {
           alert(response);
         });

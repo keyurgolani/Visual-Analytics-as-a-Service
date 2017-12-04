@@ -4,22 +4,284 @@
     <h4 class="modal-title" id="myModalLabel">{{tempNode.title}}</h4>
   </div>
       <div class="modal-body">
-        <form class="form-horizontal" ng-show="tempNode.title.indexOf('.csv') === -1">
+        <form class="form-horizontal" ng-show="tempNode.title === 'map' || tempNode.title === 'filter' || tempNode.title === 'reduce'">
           <div class="form-group">
-              <label for="inputEmail3" class="col-sm-3 control-label">Script</label>
+              <label for="inputEmail3" class="col-sm-3 control-label">Logic</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" rows="10" ng-model="script"></textarea>
+                  <textarea class="form-control" rows="10" ng-model="script" placeholder="Code to be passed here"></textarea>
               </div>
           </div>
         </form>
-        <div ng-show="tempNode.title.indexOf('.csv') !== -1">
-          <table  id="datatables-example" class="display table table-striped table-hover table-responsive">
-            <tr ng-repeat="x in tempNode.fileContent track by $index">
-              <td ng-repeat="y in x track by $index">{{ y }}</td>
-            </tr>
-          </table>
-        </div>
+        <form class="form-horizontal" ng-show="tempNode.title === 'extractUsingRegex' || tempNode.title === 'splitUsingRegex' ||
+        tempNode.title === 'splitUsingDelimiter'">
+          <div class="form-group">
+              <label for="regex" class="col-sm-3 control-label">Regex</label>
+
+              <div class="col-sm-9">
+                  <textarea id="regex" class="form-control" rows="10" ng-model="params.regex" placeholder="Split Delimiter to be passed here,"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column Index</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column index to be passed here" ng-model="params.column">
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'duplicate'">
+          <div class="form-group">
+              <label for="regex" class="col-sm-3 control-label">Interleave</label>
+
+              <div class="col-sm-9">
+                  <input type="checkbox" id="regex" class="form-control" placeholder="Weather to interleave the duplicate fields or not." ng-model="params.interleave"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Start</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Split Delimiter to be passed here," ng-model="params.start">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">End</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column index to be passed here" ng-model="params.end">
+              </div>
+          </div>
+        </form>
+
+        <form class="form-horizontal" ng-show="tempNode.title === 'mergeWithDelimiter'">
+          <div class="form-group">
+              <label for="regex" class="col-sm-3 control-label">Delimiter</label>
+
+              <div class="col-sm-9">
+                  <input type="text" id="regex" class="form-control" rows="10" placeholder="Merge Delimiter to be passed here," ng-model="params.delimiter"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Start</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Start Column index to be passed here," ng-model="params.start">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">End</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="End Column index to be passed here" ng-model="params.end">
+              </div>
+          </div>
+        </form>
+
+        <form class="form-horizontal" ng-show="tempNode.title === 'filterWithParameter'">
+          <div class="form-group">
+              <label for="regex" class="col-sm-3 control-label">Parameter</label>
+
+              <div class="col-sm-9">
+                  <textarea id="regex" class="form-control" rows="10" ng-model="params.parameter"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="feature column index to be passed here," ng-model="params.column">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Value</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Value to be filtered at to be passed here," ng-model="params.value">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Target Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Index of the column that will act as target for the comparison" ng-model="params.target_column">
+              </div>
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'filterUsingRegex'">
+          <div class="form-group">
+              <label for="regex" class="col-sm-3 control-label">Regex</label>
+
+              <div class="col-sm-9">
+                  <textarea id="regex" class="form-control" rows="10" placeholder="Fliter Regex to be passed here," ng-model="params.regex"></textarea>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column Index</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column index to be passed here" ng-model="params.column">
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'slice'">
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Start</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Start index of the slice" ng-model="params.start">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">End</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="End index of the slice" ng-model="params.end">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column index to be passed here" ng-model="params.column">
+              </div>
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'convertTypeTo'">
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">To Type</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Type to be converted to to be passed here," ng-model="params.toType">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="List of column indices to be passed here" ng-model="params.column">
+              </div>
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'addColumn'">
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">At</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Index to add new column at" ng-model="params.at">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Default Value</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Default value of the newly added column" ng-model="params.value">
+              </div>
+          </div>
+
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'chooseColumn'">
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Indexes</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Indexes to be performed operation on" ng-model="params.indexes">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Operation</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Add the keep / remove for the columns mentioned in the indexes" ng-model="params.operation">
+              </div>
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'flatten'">
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Start</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="start index to start flattening at" ng-model="params.start">
+              </div>
+
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">End</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="end index to do flattening till" ng-model="params.end">
+              </div>
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'reduceBy'">
+
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column to reduce the rows by" ng-model="params.column">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Aggregation</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="exampleInputPassword10" placeholder="aggregation to be applied to columns other than reduce by column. Can be list, add, xor, multiply" ng-model="params.aggregation"></textarea>
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'sortBy'">
+
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column index to act as key for sorting," ng-model="params.column">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Ascending</label>
+              <div class="col-sm-4">
+                  <input type="checkbox" class="form-control" id="exampleInputPassword1" placeholder="Weather to sort in ascending order or not" ng-model="params.ascending">
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'takeTop'">
+
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">N</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Number of top entries to be taken" ng-model="params.n" />
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Ascending</label>
+              <div class="col-sm-4">
+                  <input type="checkbox" class="form-control" id="exampleInputPassword1" placeholder="Column" ng-model="params.ascending" />
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'parseUserAgent'">
+
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column to parse user agent from" ng-model="params.column">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Replace</label>
+              <div class="col-sm-4">
+                  <input type="checkbox" class="form-control" id="exampleInputPassword1" placeholder="Weather the parsed value of user agent will replace the original data or not" ng-model="params.replace" />
+              </div>
+
+          </div>
+        </form>
+        <form class="form-horizontal" ng-show="tempNode.title === 'parseDateTime'">
+
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Column</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Column to parse user agent from" ng-model="params.column">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword1" class="col-sm-3 control-label">Replace</label>
+              <div class="col-sm-4">
+                  <input type="checkbox" class="form-control" id="exampleInputPassword1" placeholder="Weather the parsed value of user agent will replace the original data or not" ng-model="params.replace" />
+              </div>
+
+          </div>
+        </form>
       </div>
+
       <div class="modal-footer">
         <div class="pull-right">
           <button class="btn btn-success" ng-click="submit()">OK</button>
