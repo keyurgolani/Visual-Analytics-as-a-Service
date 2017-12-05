@@ -5,29 +5,26 @@ USE VAAAS;
 
 CREATE TABLE `USERACCOUNT` (
   `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(45) NOT NULL,
+  `user_name` varchar(256) NOT NULL DEFAULT '',
   `email_id` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `last_login` datetime DEFAULT NULL,
-  `account_created_date` datetime DEFAULT NULL,
+  `account_created_date` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `USERPROFILE` (
   `profile_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
-  `script` varchar(10000) DEFAULT NULL,
+  `script` text,
   PRIMARY KEY (`profile_id`),
   UNIQUE KEY `profile_id_UNIQUE` (`profile_id`),
   KEY `fk_USERPROFILE_1_idx` (`user_id`),
   CONSTRAINT `fk_USERPROFILE_1` FOREIGN KEY (`user_id`) REFERENCES `USERACCOUNT` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `USERJOBHISTORY` (
   `job_id` bigint(20) NOT NULL AUTO_INCREMENT,
