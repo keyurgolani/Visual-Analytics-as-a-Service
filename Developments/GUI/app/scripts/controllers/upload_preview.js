@@ -61,21 +61,7 @@ angular.module('visualAnalyticsApp')
                contentType: false,  // tell jQuery not to set contentType
                success : function(data) {
                    console.log(data);
-                   //alert(data);
-                   var formData = new FormData();
-                   formData.append('upko', csvFile, filename);
-                   $.ajax({
-                          url : 'http://localhost:8080/upload',
-                          type : 'POST',
-                          data : formData,
-                          processData: false,  // tell jQuery not to process the data
-                          contentType: false,  // tell jQuery not to set contentType
-                          success : function(data) {
-                              console.log(data);
-                              //alert(data);
-                              $state.go('index.main');
-                          }
-                   });
+                  $state.go('index.main');
                }
         });
   	}
@@ -99,7 +85,7 @@ angular.module('visualAnalyticsApp')
 
   	$("#btn_done").click(function () {
   	    var html = document.querySelector("table").outerHTML;
-  		export_table_to_csv(html, $stateParams.file_name);
+  		export_table_to_csv(html, $stateParams.file_name.split(",")[$stateParams.seq - 1]);
   	});
 
     $("#btn_next").click(function() {

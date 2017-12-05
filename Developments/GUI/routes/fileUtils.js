@@ -29,8 +29,8 @@ module.exports = function(app){
 
 
     // Use the mv() method to place the file somewhere on your server
-  console.log('./uploads/' + req.files.upload.name)
-    file.mv('./uploads/' + req.files.upload.name, function(err) {
+  console.log('./' + req.files.upload.name)
+    file.mv('../../api/datasets/' + req.files.upload.name, function(err) {
       if (err)
         return res.status(500).send(err);
 
@@ -43,26 +43,26 @@ module.exports = function(app){
   router.get('/get_file_list', function(req, res) {
     // Uploaded files:
   res.contentType('application/json');
-    const testFolder = './uploads/';
+    const testFolder = '../../api/datasets/';
 
     fs.readdir(testFolder, (err, files) => {
 
       let _p = new Promise((resolve, reject) => {
         let _files = [], k = 0;
         files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
-          console.log(file);
+
 
           connection.query('SELECT dataset_id FROM DATASETS WHERE filename = ?', file, function (error, results, fields) {
             if (error) throw error;
 
             //res.send(results[0]);
             k++;
-            console.log(results, lodash.isEmpty(results));
+            console.log(file, results, lodash.isEmpty(results));
             if(!lodash.isEmpty(results)){
               _files.push({name: file, dataset_id: results[0].dataset_id});
             }
 
-            if(k === files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).length - 1){
+            if(k === files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).length){
               resolve(_files);
             }
 
@@ -73,6 +73,7 @@ module.exports = function(app){
       });
 
       _p.then((_files) => {
+        console.log("read" + _files);
           res.send(JSON.stringify(_files));
       })
 
@@ -87,7 +88,7 @@ module.exports = function(app){
   //  console.log(req.params.file_name);
     //var file = ;
     var file_name = req.params.file_name;
-    res.download('./uploads/'+ file_name, file_name, function(err) {
+    res.download('../../api/datasets/'+ encodeURIComponent(file_name), file_name, function(err) {
       if(err){
         res.status(500).send(err)
       }else{

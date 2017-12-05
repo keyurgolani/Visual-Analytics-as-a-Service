@@ -12,7 +12,7 @@ angular.module('visualAnalyticsApp')
     var myDropzone;
       $scope.dzOptions = {
   		url : 'file/file_upload',
-  		paramName : 'data_files',
+  		paramName : 'upload',
   		maxFilesize : '1000',
   		addRemoveLinks : true,
       autoProcessQueue: false,
@@ -48,10 +48,20 @@ angular.module('visualAnalyticsApp')
 			$scope.newFile = file;
 		},
 		'success' : function(file, xhr){
-      console.log(file.name);
-
       files.push(file);
-      console.log(files);
+
+      var formData = new FormData();
+      formData.append('upload', file, file.name);
+      $.ajax({
+             url : 'http://localhost:8080/upload',
+             type : 'POST',
+             data : formData,
+             processData: false,  // tell jQuery not to process the data
+             contentType: false,  // tell jQuery not to set contentType
+             success : function(data) {
+                 console.log(data);
+             }
+      });
       //fileNames = test1.csv,test2.cv
 
       //$state.go('index.upload_preview', {'file_name': file.name});
