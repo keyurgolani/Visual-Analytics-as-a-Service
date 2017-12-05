@@ -65,7 +65,7 @@ angular.module('visualAnalyticsApp')
                    var formData = new FormData();
                    formData.append('upko', csvFile, filename);
                    $.ajax({
-                          url : 'http://35.197.92.72:8080/upload',
+                          url : 'http://localhost:8080/upload',
                           type : 'POST',
                           data : formData,
                           processData: false,  // tell jQuery not to process the data
