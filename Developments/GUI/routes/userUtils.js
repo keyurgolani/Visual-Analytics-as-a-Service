@@ -9,7 +9,7 @@ module.exports = function(app){
   var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : 'V1nayaka',
+    password : 'admin',
     database : 'VAAAS'
   });
   connection.connect({debug: true});

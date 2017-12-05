@@ -3,6 +3,7 @@ from bottle import route, run, request, response, static_file, hook
 import entities
 import importlib
 import os
+import json
 
 import findspark
 findspark.init()
@@ -28,8 +29,8 @@ def enable_cors():
         'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 
-@route('/process/<dataset_id>', method=['POST', 'OPTIONS'])
-def process(dataset_id):
+@route('/process', method=['POST', 'OPTIONS'])
+def process():
     """
     Processes the dataset denoted by the dataset ID using the Node Chain
     denoted by the JSON object in body of the request. Saves the result
@@ -40,6 +41,7 @@ def process(dataset_id):
     """
     if request.method == 'OPTIONS':
         return {}
+    request_values = json.loads(request.body.read())
     # node_chain = [
     #     {
     #         "node": "map",
@@ -70,7 +72,7 @@ def process(dataset_id):
     #     {
     #         "node": "splitUsingDelimiter",
     #         "params": {
-    #             "regex": TODO: Split Delimiter to be passed here,
+    #             "delimeter": TODO: Split Delimiter to be passed here,
     #             "column": TODO: Column index to be passed here
     #         }
     #     },
@@ -189,11 +191,11 @@ def process(dataset_id):
     #     }
     # ]
     # ==== Input ====
-    dataset = dao.get_dataset(entities.Dataset(dataset_id=dataset_id, owner=1))
+    dataset = dao.get_dataset(entities.Dataset(dataset_id=request_values['dataset_id'], owner=1))
     rdd = utils.get_data(sc, dataset.get_full_path())
 
     # ==== Processing ====
-    for node in request.body.node_chain:
+    for node in request_values['node_chain']:
         code_module = importlib.import_module("nodes.node_" + node["node"])
         if (node["node"] == "map" or
                 node["node"] == "reduce" or
@@ -209,24 +211,24 @@ def process(dataset_id):
     processed_dataset = entities.Dataset(filename="{}_processed{}".format(
         name, ext), root_path=dataset.root_path,
         owner=1, beautiful_name=dataset.beautiful_name + " Processed")
-    if request.body.output['isSorted']:
-        if request.body.output['limit']:
+    if request_values['output']['isSorted']:
+        if request_values['output']['limit']:
             utils.save_results(
-                rdd.top(request.body.output['limit']),
+                rdd.top(request_values['output']['limit']),
                 processed_dataset.get_full_path(),
-                request.body.output['format'])
+                request_values['output']['format'])
         else:
             utils.save_results(
                 rdd.top(rdd.count()),
                 processed_dataset.get_full_path(),
-                request.body.output['format'])
+                request_values['output']['format'])
     else:
         utils.save_results(
             rdd.collect(), processed_dataset.get_full_path(),
-            request.body.output['format'])
+            request_values['output']['format'])
     dao.add_dataset(processed_dataset)
     # TODO: Finish Job History Addition Functionality
-    dao.add_job_history()
+    # dao.add_job_history()
 
     return {
         "status": 200,

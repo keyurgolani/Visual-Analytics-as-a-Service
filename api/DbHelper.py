@@ -15,7 +15,7 @@ class DbHelper(object):
 
     DB_HOST = "localhost"
     DB_USER = "root"
-    DB_PASSWORD = "V1nayaka"
+    DB_PASSWORD = "admin"
     DB = "VAAAS"
 
     def __init__(self):
@@ -66,7 +66,8 @@ class DbHelper(object):
             else:
                 cursor.execute(query)
         except Exception as e:
-            raise errors.DBError(e)
+            # raise errors.DBError(e)
+            raise e
         else:
             id = cursor.lastrowid
         finally:

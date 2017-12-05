@@ -21,7 +21,10 @@ def run_node(rdd, utils, params):
         :return: row with the given column replaced with processed row
         :rtype: list
         """
-        row[params['column']:params['column'] + 1] = re.findall(
-            params['regex'], str(row[params['column']])) or []
+        if type(row) == 'list':
+            col = int(params['column'])
+            row[col:col + 1] = re.findall(params['regex'], str(row[col])) or []
+        else:
+            row = re.findall(params['regex'], row) or []
         return row
     return rdd.map(run_logic)

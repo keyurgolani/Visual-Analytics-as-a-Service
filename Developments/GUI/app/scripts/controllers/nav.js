@@ -233,7 +233,7 @@ angular.module('visualAnalyticsApp')
             }
             else if(mode === "output") {
               console.log(data_operators[fromOp].properties);
-              const {title:format, isSorted = false, limit = 10} = data_operators[fromOp].properties;
+              const {title:format, isSorted = false, limit = 0} = data_operators[fromOp].properties;
               //output_format = data_operators[fromOp].properties.title;
               // console.log("output_format"+ output_format);
 
@@ -355,12 +355,19 @@ angular.module('visualAnalyticsApp')
 
         // ]
 
-        $http.post(`http://35.197.92.72:8080/process/`+dataset_id, {
-          'node_chain': jsonFile,
-          'output' : output_options
-        }). then(function(response) {
-          alert(response);
-        });
+        $http({
+          method : "POST",
+					url : 'http://localhost:8080/process',
+					data : {
+						"dataset_id" : dataset_id,
+            "node_chain": jsonFile,
+						"output" : output_options
+					}
+				}).then((results) => {
+					alert(results)
+				}, (error) => {
+					console.log("Error", error);
+				});
     }
 
 

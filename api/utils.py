@@ -25,7 +25,7 @@ def save_results(results, file, format):
     with open(file, 'w+') as outfile:
         for result in results:
             values = map(str, result)
-            outfile.write(("," if format == "csv" else "\t").join(values))
+            outfile.write(("," if format.lower() == "csv" else "\t").join(values))
             outfile.write("\n")
 
 
