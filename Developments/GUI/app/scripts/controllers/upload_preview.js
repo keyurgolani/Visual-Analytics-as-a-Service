@@ -136,7 +136,7 @@ angular.module('visualAnalyticsApp')
   		$('#csv-display').append(html);
   		$('#DynamicTable').SetEditable({ $addButton: $('#addNewRow')});
   		$('#DynamicTable').paging({
-      limit: 2,
+      limit: 100,
       rowDisplayStyle: 'block',
       activePage: 0,
       rows: []
