@@ -415,7 +415,7 @@ angular.module('visualAnalyticsApp')
                   break;
                 case "convertTypeTo":
 
-                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
+                  data_operators[fromOp].properties.params.column = data_operators[fromOp].properties.params.column.trim().split(',').map(Number);
                   tools = {
                     node,
                     params
