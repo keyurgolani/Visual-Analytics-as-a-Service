@@ -501,7 +501,13 @@ angular.module('visualAnalyticsApp')
                     replace: data_operators[fromOp].properties.replace,
                   }
                   break;
+                  case "removeHeader":
+                    tools = {
+                      node
+                    }
+                    break;
                 }
+
 
 console.log("tools", tools);
               final_JSON.push(tools)
