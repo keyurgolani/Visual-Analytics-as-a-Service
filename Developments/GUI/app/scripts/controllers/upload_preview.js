@@ -135,6 +135,13 @@ angular.module('visualAnalyticsApp')
   		html += '</table>';
   		$('#csv-display').append(html);
   		$('#DynamicTable').SetEditable({ $addButton: $('#addNewRow')});
+  		$('#DynamicTable').paging({
+      limit: 2,
+      rowDisplayStyle: 'block',
+      activePage: 0,
+      rows: []
+  		  
+  		});
   	  }
   	}
     });
