@@ -133,7 +133,6 @@ module.exports = function(app){
 
   router.post('/updateScript', function(req, res) {
     // Uploaded files:
-    console.log(req.body);
     const { user_id, script } = req.body;
     const params = [
       script, user_id
