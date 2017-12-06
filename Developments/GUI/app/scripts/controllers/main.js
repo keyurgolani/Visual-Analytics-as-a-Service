@@ -15,24 +15,104 @@ $scope.tempNode = {
   fileContent: null
 }
 
-$rootScope.params = {
-  regex: '',
-  column: '',
-  interleave: false,
-  start: 0,
-  end: 0,
-  delimiter: '',
-  parameter: '',
-  value: '',
-  target_column: 0,
-  toType: '',
-  at: 0,
-  indexes: '',
-  operation: '',
-  aggregation: '',
-  ascending: false,
-  n: 0,
-  replace: false
+$scope.script = $.parseJSON(localStorage.getItem("__USER_SCRIPT__"));
+console.log($scope.script);
+
+$rootScope.map = (lodash.isEmpty($scope.script.map) ? {
+ logic: ''
+} : $scope.script.map);
+
+$rootScope.filter = {
+ logic: ''
+}
+
+$rootScope.reduce = {
+ logic: ''
+}
+
+$rootScope.extractUsingRegex = {
+ regex: '',
+ column: '',
+}
+
+$rootScope.splitUsingRegex = {
+ regex: '',
+ column: '',
+}
+
+$rootScope.splitUsingDelimiter = {
+ column: '',
+ delimiter: '',
+}
+
+$rootScope.duplicate = {
+ interleave: false,
+ start: 0,
+ end: 0,
+}
+
+$rootScope.mergeWithDelimiter = {
+ delimiter: false,
+ start: 0,
+ end: 0,
+}
+
+$rootScope.filterWithParameter = {
+ parameter: '',
+ column: '',
+ value: '',
+ target_column: 0,
+}
+
+$rootScope.filterUsingRegex = {
+ delimiter: false,
+ start: 0,
+ end: 0,
+}
+
+$rootScope.slice = {
+ start: 0,
+ end: 0,
+ column: '',
+}
+
+$rootScope.convertTypeTo = {
+ toType: '',
+ column: '',
+}
+
+$rootScope.addColumn = {
+ at: 0,
+ value: '',
+}
+
+$rootScope.chooseColumn = {
+ indexes: '',
+ operation: '',
+}
+
+$rootScope.flatten = {
+ start: 0,
+ end: 0,
+}
+
+$rootScope.reduceBy = {
+ column: '',
+ aggregation: '',
+}
+
+$rootScope.takeTop = {
+ n: 0,
+}
+
+$rootScope.parseUserAgent = {
+ column: '',
+ replace: false
+}
+
+$rootScope.parseDateTime = {
+ column: '',
+ replace: false
 }
 
 $rootScope.output = {
@@ -72,9 +152,9 @@ $rootScope.flowchart = $flowchart;
 
 
     // Apply the plugin on a standard, empty div...
-    const script = angular.fromJson(angular.fromJson(localStorage.getItem("__USER_INFO__")).script);
+
     $flowchart.flowchart({
-      data: lodash.isEmpty(script) ? {} : script
+      data: lodash.isEmpty($scope.script) ? {} : $scope.script
     });
 
     $('.delete_selected_button').click(function() {
@@ -86,12 +166,17 @@ $rootScope.flowchart = $flowchart;
     })
 
     $flowchart.on('linkCreate', function(linkId, linkData) {
-      var data = $rootScope.flowchart.flowchart('getData');
+
+      var data = $flowchart.flowchart('getData');
       $http.post('user/updateScript', {
         script: JSON.stringify(data),
         user_id: $rootScope.userinfo.user_id
       });
+      $scope.script = data;
+      localStorage.setItem("__USER_SCRIPT__", JSON.stringify(data));
     });
+
+
 
     $flowchart.on('operatorSelect2', function(el, operatorId, returnHash) {
       var data = $flowchart.flowchart('getData');
@@ -235,23 +320,344 @@ $rootScope.flowchart = $flowchart;
         var modalInstance = $uibModal.open({
           templateUrl: 'views/modal/view_node.html',
           controller: function ($scope, $uibModalInstance, $http) {
-              $scope.script = $rootScope.script;
-              $scope.params = $rootScope.params;
+
+              $scope.map = {
+                logic: ''
+              }
+
+              $scope.filter = {
+                logic: ''
+              }
+
+              $scope.reduce = {
+                logic: ''
+              }
+
+              $scope.extractUsingRegex = {
+                regex: '',
+                column: '',
+              }
+
+              $scope.splitUsingRegex = {
+                regex: '',
+                column: '',
+              }
+
+              $scope.splitUsingDelimiter = {
+                regex: '',
+                column: '',
+              }
+
+              $scope.duplicate = {
+                interleave: false,
+                start: 0,
+                end: 0,
+              }
+
+              $scope.mergeWithDelimiter = {
+                delimiter: false,
+                start: 0,
+                end: 0,
+              }
+
+              $scope.filterWithParameter = {
+                parameter: '',
+                column: '',
+                value: '',
+                target_column: 0,
+              }
+
+              $scope.filterUsingRegex = {
+                regex: false,
+                start: 0,
+                end: 0,
+              }
+
+              $scope.slice = {
+                start: 0,
+                end: 0,
+                column: '',
+              }
+
+              $scope.convertTypeTo = {
+                toType: '',
+                column: '',
+              }
+
+              $scope.addColumn = {
+                at: 0,
+                value: '',
+              }
+
+              $scope.chooseColumn = {
+                indexes: '',
+                operation: '',
+              }
+
+              $scope.flatten = {
+                start: 0,
+                end: 0,
+              }
+
+              $scope.reduceBy = {
+                column: '',
+                aggregation: '',
+              }
+
+              $scope.sortBy = {
+                column: '',
+                ascending: false,
+              }
+
+              $scope.takeTop = {
+                n: 0,
+              }
+
+              $scope.parseUserAgent = {
+                column: '',
+                replace: false
+              }
+
+              $scope.parseDateTime = {
+                column: '',
+                replace: false
+              }
+
               $scope.cancel = function () {
                   $uibModalInstance.dismiss('cancel');
               };
 
               $scope.submit = function() {
+                var data = $flowchart.flowchart('getData');
                 $uibModalInstance.dismiss('cancel');
                 //$rootScope.script = $scope.script;
-                console.log($scope.params);
-                data.operators[operatorId].properties.script = $scope.script;
-                data.operators[operatorId].properties.params = $scope.params;
-                $flowchart.flowchart('setData', data);
 
-                $rootScope.script = $scope.script;
-                $rootScope.params = $scope.params;
+
+                switch(data.operators[operatorId].properties.title){
+                  case "map":
+                    $rootScope.map = $scope.map;
+                    data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.map};
+    console.log("HA", data.operators[operatorId].properties)
+                  break;
+                  case "filter":
+                  $rootScope.filter = $scope.filter;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filter};
+
+                  break;
+                  case "reduce":
+                  $rootScope.reduce = $scope.reduce;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.reduce};
+
+                  break;
+                  case "extractUsingRegex":
+                  $rootScope.extractUsingRegex = $scope.extractUsingRegex;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.extractUsingRegex};
+
+                  break;
+                  case "splitUsingRegex":
+                  $rootScope.splitUsingRegex = $scope.splitUsingRegex;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.splitUsingRegex};
+
+                  break;
+                  case "splitUsingDelimiter":
+                  $rootScope.splitUsingDelimiter = $scope.splitUsingDelimiter;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.splitUsingDelimiter};
+
+                  break;
+                  case "duplicate":
+                  $rootScope.duplicate = $scope.duplicate;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.duplicate};
+
+                  break;
+                  case "mergeWithDelimiter":
+                  $rootScope.mergeWithDelimiter = $scope.mergeWithDelimiter;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.mergeWithDelimiter};
+
+                  break;
+                  case "filterWithParameter":
+                  $rootScope.filterWithParameter = $scope.filterWithParameter;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filterWithParameter};
+
+                  break;
+                  case "filterUsingRegex":
+                  $rootScope.filterUsingRegex = $scope.filterUsingRegex;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filterUsingRegex};
+
+                  break;
+                  case "slice":
+                  $rootScope.slice = $scope.slice;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.slice};
+
+                  break;
+                  case "convertTypeTo":
+                  $rootScope.convertTypeTo = $scope.convertTypeTo;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.convertTypeTo};
+
+                  break;
+                  case "addColumn":
+                  $rootScope.addColumn = $scope.addColumn;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.addColumn};
+
+                  break;
+                  case "chooseColumn":
+                  $rootScope.chooseColumn = $scope.chooseColumn;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.chooseColumn};
+
+                  break;
+                  case "flatten":
+                  $rootScope.flatten = $scope.flatten;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.flatten};
+
+                  break;
+                  case "reduceBy":
+                  $rootScope.reduceBy = $scope.reduceBy;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.reduceBy};
+
+                  break;
+
+                  case "sortBy":
+                  $rootScope.sortBy = $scope.sortBy;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.sortBy};
+
+                  break;
+                  case "takeTop":
+                  $rootScope.takeTop = $scope.takeTop;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.takeTop};
+
+                  break;
+                  case "parseUserAgent":
+                  $rootScope.parseUserAgent = $scope.parseUserAgent;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.parseUserAgent};
+
+                  break;
+                  case "parseDateTime":
+
+                  $rootScope.parseDateTime = $scope.parseDateTime;
+                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.parseDateTime};
+
+                  break;
+                }
+
+
+                console.log($rootScope, $scope, data);
+
+                $http.post('user/updateScript', {
+                  script: JSON.stringify(data),
+                  user_id: $rootScope.userinfo.user_id
+                });
+                $scope.script = data;
+                localStorage.setItem("__USER_SCRIPT__", JSON.stringify(data));
+
+                $flowchart.flowchart('setData', data);
+                console.log($flowchart.flowchart('getData'));
               }
+
+              $scope.load = function() {
+                $scope.map = {
+                  logic: data.operators[operatorId].properties.logic
+                }
+
+                $scope.filter = {
+                  logic: data.operators[operatorId].properties.logic
+                }
+
+                $scope.reduce = {
+                  logic: data.operators[operatorId].properties.logic
+                }
+
+                $scope.extractUsingRegex = {
+                  regex: data.operators[operatorId].properties.regex,
+                  column:  data.operators[operatorId].properties.column,
+                }
+
+                $scope.splitUsingRegex = {
+                  regex: data.operators[operatorId].properties.regex,
+                  column: data.operators[operatorId].properties.column,
+                }
+
+                $scope.splitUsingDelimiter = {
+                  delimiter: data.operators[operatorId].properties.delimiter,
+                  column: data.operators[operatorId].properties.column,
+                }
+
+                $scope.duplicate = {
+                  interleave: data.operators[operatorId].properties.interleave,
+                  start: data.operators[operatorId].properties.start,
+                  end: data.operators[operatorId].properties.end,
+                }
+
+                $scope.mergeWithDelimiter = {
+                  delimiter: data.operators[operatorId].properties.delimiter,
+                  start: data.operators[operatorId].properties.start,
+                  end: data.operators[operatorId].properties.end,
+                }
+
+                $scope.filterWithParameter = {
+                  parameter: data.operators[operatorId].properties.parameter,
+                  column: data.operators[operatorId].properties.column,
+                  value: data.operators[operatorId].properties.value,
+                  target_column: data.operators[operatorId].properties.column,
+                }
+
+                $scope.filterUsingRegex = {
+                  regex: data.operators[operatorId].properties.regex,
+                  start: data.operators[operatorId].properties.start,
+                  end: data.operators[operatorId].properties.end,
+                }
+
+                $scope.slice = {
+                  start: data.operators[operatorId].properties.start,
+                  end: data.operators[operatorId].properties.end,
+                  column: data.operators[operatorId].properties.column,
+                }
+
+                $scope.convertTypeTo = {
+                  regex: data.operators[operatorId].properties.toType,
+                  column: data.operators[operatorId].properties.column,
+                }
+
+                $scope.addColumn = {
+                  at: data.operators[operatorId].properties.at,
+                  value: data.operators[operatorId].properties.value,
+                }
+
+                $scope.chooseColumn = {
+                  indexes: data.operators[operatorId].properties.indexes,
+                  operation: data.operators[operatorId].properties.operation,
+                }
+
+                $scope.flatten = {
+                  start: data.operators[operatorId].properties.start,
+                  end: data.operators[operatorId].properties.end,
+                }
+
+                $scope.reduceBy = {
+                  column: data.operators[operatorId].properties.column,
+                  aggregation: data.operators[operatorId].properties.aggregation,
+                }
+
+                $scope.sortBy = {
+                  column: data.operators[operatorId].properties.column,
+                  ascending: data.operators[operatorId].properties.ascending,
+                }
+
+                $scope.takeTop = {
+                  n: data.operators[operatorId].properties.n,
+                }
+
+                $scope.parseUserAgent = {
+                  column: data.operators[operatorId].properties.column,
+                  replace: data.operators[operatorId].properties.replace,
+                }
+
+                $scope.parseDateTime = {
+                  column: data.operators[operatorId].properties.column,
+                  replace: data.operators[operatorId].properties.replace,
+                }
+              }
+
+              $scope.load();
+
           },
           scope: $scope,
           windowClass: "hmodal-success",

@@ -61,6 +61,13 @@ angular
             abstract: false,
             templateUrl: "/views/upload_preview.html",
             controller: "UploadPreviewCtrl"
+        })
+        .state('index.result', {
+            url: "/result",
+            parent: 'index',
+            abstract: false,
+            templateUrl: "/views/result.html",
+            controller: "ResultCtrl"
         });
 
         //$qProvider.errorOnUnhandledRejections(false);

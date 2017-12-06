@@ -42,6 +42,7 @@ angular.module('visualAnalyticsApp')
                     $http.post("user/FBlogin", $scope.userinfo)
                     .then(response => {
                       localStorage.setItem("__USER_INFO__", JSON.stringify(response.data));
+                      localStorage.setItem("__USER_SCRIPT__", response.data.script);
 
                       $state.go('index.main');
                     }).catch(error => {
@@ -75,6 +76,7 @@ angular.module('visualAnalyticsApp')
       $http.post("user/login", $scope.userinfo)
       .then(response => {
         localStorage.setItem("__USER_INFO__", JSON.stringify(response.data));
+        localStorage.setItem("__USER_SCRIPT__", response.data.script);
 
         $state.go('index.main');
       }).catch(error => {

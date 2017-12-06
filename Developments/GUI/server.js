@@ -82,6 +82,7 @@ app.listen(http_port);
 app.use('/file', fileUtils);
 app.use('/user', userUtils);
 app.use('/', router);
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({limit: '500mb', extended: true}));
 
 console.log("CMPE295 Frontend App Listening on Port "+http_port);

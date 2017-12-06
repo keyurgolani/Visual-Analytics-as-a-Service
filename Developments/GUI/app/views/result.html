@@ -1,0 +1,18 @@
+<div class="row">
+  <h1>User History</h1>
+  <button id="btn-next" class="btn btn-primary" ui-sref="index.result">Reload</button>
+  <table class="table table-responsive">
+      <thead>
+        <th>JOB_ID</th>
+        <th>STATUS</th>
+        <th>RESULT_URL</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="job in userJobHistory">
+          <td>{job.job_id}</td>
+          <td>{job.status}</td>
+          <td>{job.result_url}</td>
+        </tr>
+      </tbody>
+  </table>
+</div>

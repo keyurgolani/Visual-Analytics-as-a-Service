@@ -47,35 +47,40 @@ module.exports = function(app){
 
     fs.readdir(testFolder, (err, files) => {
 
-      let _p = new Promise((resolve, reject) => {
-        let _files = [], k = 0;
-        files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
+      if(lodash.isEmpty(files)){
+        res.send(400);
+      }else{
+        let _p = new Promise((resolve, reject) => {
+          let _files = [], k = 0;
+          files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).forEach(file => {
 
 
-          connection.query('SELECT dataset_id FROM DATASETS WHERE filename = ?', file, function (error, results, fields) {
-            if (error) throw error;
+            connection.query('SELECT dataset_id FROM DATASETS WHERE filename = ?', file, function (error, results, fields) {
+              if (error) throw error;
 
-            //res.send(results[0]);
-            k++;
-            console.log(file, results, lodash.isEmpty(results));
-            if(!lodash.isEmpty(results)){
-              _files.push({name: file, dataset_id: results[0].dataset_id});
-            }
+              //res.send(results[0]);
+              k++;
+              console.log(file, results, lodash.isEmpty(results));
+              if(!lodash.isEmpty(results)){
+                _files.push({name: file, dataset_id: results[0].dataset_id});
+              }
 
-            if(k === files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).length){
-              resolve(_files);
-            }
+              if(k === files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item)).length){
+                resolve(_files);
+              }
+
+            });
 
           });
 
         });
 
-      });
+        _p.then((_files) => {
+          console.log("read" + _files);
+            res.send(JSON.stringify(_files));
+        })
+      }
 
-      _p.then((_files) => {
-        console.log("read" + _files);
-          res.send(JSON.stringify(_files));
-      })
 
 
     })

@@ -133,10 +133,10 @@ module.exports = function(app){
 
   router.post('/updateScript', function(req, res) {
     // Uploaded files:
+    console.log(req.body);
     const { user_id, script } = req.body;
     const params = [
       script, user_id
-
     ];
 
     connection.query('UPDATE USERPROFILE SET script = ? WHERE user_id = ? ', params, function (error, results, fields) {
@@ -145,5 +145,15 @@ module.exports = function(app){
     });
 
   });
+
+  router.get('/userHistory/:user_id', function(req, res) {
+    const { user_id } = req.params;
+
+    connection.query('SELECT * FROM USERJOBHISTORY A WHERE A.user_id = ?', user_id, function (error, results, fields) {
+      if (error) throw error;
+
+      res.send(results);
+    });
+  })
   return router;
 }
