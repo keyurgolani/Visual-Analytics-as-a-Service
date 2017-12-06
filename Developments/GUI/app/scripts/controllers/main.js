@@ -443,7 +443,7 @@ $rootScope.flowchart = $flowchart;
                 switch(data.operators[operatorId].properties.title){
                   case "map":
                     $rootScope.map = $scope.map;
-                    data.operators[operatorId].properties = $scope.map;
+                    data.operators[operatorId].properties.params = $scope.map;
 
                   break;
                   case "filter":
@@ -560,107 +560,114 @@ $rootScope.flowchart = $flowchart;
               }
 
               $scope.load = function() {
-                $scope.map = {
-                  logic: data.operators[operatorId].properties.logic
+                
+                switch(data.operators[operatorId].properties.title){
+                  case "map":
+                    $scope.map = {
+                      ...data.operators[operatorId].properties.params
+                    }
+
+                  break;
+                  case "filter":
+                  $scope.filter = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "reduce":
+                  $scope.reduce = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "extractUsingRegex":
+                  $scope.extractUsingRegex = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "splitUsingRegex":
+                  $scope.splitUsingRegex = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "splitUsingDelimiter":
+                  $scope.splitUsingDelimiter = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "duplicate":
+                  $scope.duplicate = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "mergeWithDelimiter":
+                  $scope.mergeWithDelimiter = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "filterWithParameter":
+                  $scope.filterWithParameter = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "filterUsingRegex":
+                  $scope.filterUsingRegex = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "slice":
+                  $scope.slice = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "convertTypeTo":
+                  $scope.convertTypeTo = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "addColumn":
+                  $scope.addColumn = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "chooseColumn":
+                  $scope.chooseColumn = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "flatten":
+                  $scope.flatten = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  console.log($scope.flatten)
+                  break;
+                  case "reduceBy":
+                  $scope.reduceBy = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+
+                  case "sortBy":
+                  $scope.sortBy = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "takeTop":
+                  $scope.takeTop = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "parseUserAgent":
+                  $scope.parseUserAgent = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "parseDateTime":
+
+                  $scope.parseDateTime = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
                 }
 
-                $scope.filter = {
-                  logic: data.operators[operatorId].properties.logic
-                }
-
-                $scope.reduce = {
-                  logic: data.operators[operatorId].properties.logic
-                }
-
-                $scope.extractUsingRegex = {
-                  regex: data.operators[operatorId].properties.regex,
-                  column:  data.operators[operatorId].properties.column,
-                }
-
-                $scope.splitUsingRegex = {
-                  regex: data.operators[operatorId].properties.regex,
-                  column: data.operators[operatorId].properties.column,
-                }
-
-                $scope.splitUsingDelimiter = {
-                  delimiter: data.operators[operatorId].properties.delimiter,
-                  column: data.operators[operatorId].properties.column,
-                }
-
-                $scope.duplicate = {
-                  interleave: data.operators[operatorId].properties.interleave,
-                  start: data.operators[operatorId].properties.start,
-                  end: data.operators[operatorId].properties.end,
-                }
-
-                $scope.mergeWithDelimiter = {
-                  delimiter: data.operators[operatorId].properties.delimiter,
-                  start: data.operators[operatorId].properties.start,
-                  end: data.operators[operatorId].properties.end,
-                }
-
-                $scope.filterWithParameter = {
-                  parameter: data.operators[operatorId].properties.parameter,
-                  column: data.operators[operatorId].properties.column,
-                  value: data.operators[operatorId].properties.value,
-                  target_column: data.operators[operatorId].properties.column,
-                }
-
-                $scope.filterUsingRegex = {
-                  regex: data.operators[operatorId].properties.regex,
-                  start: data.operators[operatorId].properties.start,
-                  end: data.operators[operatorId].properties.end,
-                }
-
-                $scope.slice = {
-                  start: data.operators[operatorId].properties.start,
-                  end: data.operators[operatorId].properties.end,
-                  column: data.operators[operatorId].properties.column,
-                }
-
-                $scope.convertTypeTo = {
-                  regex: data.operators[operatorId].properties.toType,
-                  column: data.operators[operatorId].properties.column,
-                }
-
-                $scope.addColumn = {
-                  at: data.operators[operatorId].properties.at,
-                  value: data.operators[operatorId].properties.value,
-                }
-
-                $scope.chooseColumn = {
-                  indexes: data.operators[operatorId].properties.indexes,
-                  operation: data.operators[operatorId].properties.operation,
-                }
-
-                $scope.flatten = {
-                  start: data.operators[operatorId].properties.start,
-                  end: data.operators[operatorId].properties.end,
-                }
-
-                $scope.reduceBy = {
-                  column: data.operators[operatorId].properties.column,
-                  aggregation: data.operators[operatorId].properties.aggregation,
-                }
-
-                $scope.sortBy = {
-                  column: data.operators[operatorId].properties.column,
-                  ascending: data.operators[operatorId].properties.ascending,
-                }
-
-                $scope.takeTop = {
-                  n: data.operators[operatorId].properties.n,
-                }
-
-                $scope.parseUserAgent = {
-                  column: data.operators[operatorId].properties.column,
-                  replace: data.operators[operatorId].properties.replace,
-                }
-
-                $scope.parseDateTime = {
-                  column: data.operators[operatorId].properties.column,
-                  replace: data.operators[operatorId].properties.replace,
-                }
               }
 
               $scope.load();
