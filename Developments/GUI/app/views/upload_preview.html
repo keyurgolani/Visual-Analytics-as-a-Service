@@ -3,8 +3,8 @@
     <h1>File Preview</h1>
 
     <button id="addNewRow" class="btn btn-primary btn-sm">Add New Row</button>
-    <button id="btn_done" class="btn btn-warning btn-sm">Done to editing</button>
-    <button id="btn_next" class="btn btn-warning btn-sm">Next</button>
+    <button id="btn_done" class="btn btn-warning btn-sm" ng-show="files.length === 1 || currentSeq === files.length">Done to editing</button>
+    <button id="btn_next" class="btn btn-warning btn-sm" ng-show="files.length !== 1 && currentSeq !== files.length">Next</button>
     <div id="csv-display">
 
     </div>

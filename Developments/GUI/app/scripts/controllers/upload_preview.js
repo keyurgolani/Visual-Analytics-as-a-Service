@@ -8,12 +8,20 @@
  * Controller of the visualAnalyticsApp
  */
 angular.module('visualAnalyticsApp')
-  .controller('UploadPreviewCtrl', function ($scope, $http, $state, $stateParams) {
+  .controller('UploadPreviewCtrl', function ($scope, $http, $state, $stateParams, lodash) {
 
     //console.log($stateParams.file_name);
 
     $(document).ready(function(){
   	var data;
+
+var files = $stateParams.file_name.split(",");
+    if(lodash.isEmpty(files)){
+      alert("Invalid access!");
+      $state.go('index.main');
+    }
+
+    var currentSeq = $stateParams.seq;
 
   var firstFile =   $stateParams.file_name.split(",")[$stateParams.seq - 1];
     console.log(firstFile);
@@ -140,7 +148,7 @@ angular.module('visualAnalyticsApp')
       rowDisplayStyle: 'block',
       activePage: 0,
       rows: []
-  		  
+
   		});
   	  }
   	}

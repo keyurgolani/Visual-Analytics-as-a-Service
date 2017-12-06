@@ -240,6 +240,13 @@ $rootScope.flowchart = $flowchart;
           		html += '</table>';
           		$('#csv-display').append(html);
           		$('#DynamicTable').SetEditable({ $addButton: $('#addNewRow')});
+              $('#DynamicTable').paging({
+              limit: 10,
+              rowDisplayStyle: 'block',
+              activePage: 0,
+              rows: []
+
+          		});
           	  }
           	}
 
@@ -270,10 +277,10 @@ $rootScope.flowchart = $flowchart;
           	    downloadLink = document.createElement("a");
 
                 var formData = new FormData();
-                formData.append('data_files', csvFile, filename);
+                formData.append('upload', csvFile, filename);
 
                 $.ajax({
-                       url : 'file_upload',
+                       url : 'file/file_upload',
                        type : 'POST',
                        data : formData,
                        processData: false,  // tell jQuery not to process the data
@@ -294,12 +301,12 @@ $rootScope.flowchart = $flowchart;
 
           	        if(i===0){
                       for (var j = 0; j < cols.length - 2; j++){
-                        console.log(cols[j].innerText);
+                        //console.log(cols[j].innerText);
             	            row.push(cols[j].innerText);
                         }
                     }else{
                       for (var j = 0; j < cols.length - 1; j++){
-                        console.log(cols[j].innerText);
+                        //console.log(cols[j].innerText);
             	            row.push(cols[j].innerText);
                         }
                     }
