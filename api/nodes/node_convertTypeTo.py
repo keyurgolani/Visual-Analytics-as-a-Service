@@ -19,23 +19,47 @@ def run_node(rdd, utils, params):
         :return: row with the given column/s converted into given new type
         :rtype: list
         """
-        for column in params['columns']:
+        for column in params['column']:
             if params['toType'] == 'integer':
-                row[column] = int(row[column])
+                try:
+                    row[column] = int(row[column])
+                except:
+                    row[column] = 0
             elif params['toType'] == 'float':
-                row[column] = float(row[column])
+                try:
+                    row[column] = float(row[column])
+                except:
+                    row[column] = 0
             elif params['toType'] == 'string':
-                row[column] = str(row[column])
+                try:
+                    row[column] = str(row[column])
+                except:
+                    row[column] = ""
             elif params['toType'] == 'long':
-                row[column] = long(row[column])
+                try:
+                    row[column] = long(row[column])
+                except:
+                    row[column] = 0L
             elif params['toType'] == 'boolean':
-                row[column] = bool(row[column])
+                try:
+                    row[column] = bool(row[column])
+                except:
+                    row[column] = False
             elif params['toType'] == 'set':
-                row[column] = set(row[column])
+                try:
+                    row[column] = set(row[column])
+                except:
+                    row[column] = set()
             elif params['toType'] == 'list':
-                row[column] = list(row[column])
+                try:
+                    row[column] = list(row[column])
+                except:
+                    row[column] = []
             elif params['toType'] == 'tuple':
-                row[column] = tuple(row[column])
+                try:
+                    row[column] = tuple(row[column])
+                except:
+                    row[column] = tuple()
             else:
                 import errors
                 raise errors.UnimplementedOperationError()

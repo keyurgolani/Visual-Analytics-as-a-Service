@@ -1,3 +1,4 @@
+import json
 from entities import Dataset
 from DbHelper import DbHelper
 from errors import MoreThanOneResultError
@@ -37,3 +38,24 @@ def get_dataset(dataset):
             owner=result[0]['owner'],
             is_private=result[0]['is_private']
         )
+
+
+def add_job_history(owner, node_chain, data, status="Processing",
+                    result_url=""):
+    node_chain_id = db.insert(
+        "insert into PUBLICCHAINS (user_id, node) values (" +
+        str(owner) + ", '" + json.dumps(node_chain) + "')")
+    return db.insert(
+        "Insert into USERJOBHISTORY " +
+        "(user_id, status, data, node_chain, result_url) values " +
+        "(" + str(owner) + ", '" + status + "', " + str(data) + ", " +
+        str(node_chain_id) +
+        ", '" + result_url + "')")
+
+
+def change_job_status(job_id, result_url, status="Completed"):
+    affected_rows = db.update("update USERJOBHISTORY set status='" +
+                              status + "', result_url='" +
+                              result_url + "' where job_id=" +
+                              str(job_id) + "")
+    return affected_rows

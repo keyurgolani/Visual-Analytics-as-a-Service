@@ -191,7 +191,8 @@ def process():
     #     }
     # ]
     # ==== Input ====
-    dataset = dao.get_dataset(entities.Dataset(dataset_id=request_values['dataset_id'], owner=1))
+    dataset = dao.get_dataset(entities.Dataset(
+        dataset_id=request_values['dataset_id'], owner=1))
     rdd = utils.get_data(sc, dataset.get_full_path())
 
     # ==== Processing ====
@@ -211,6 +212,12 @@ def process():
     processed_dataset = entities.Dataset(filename="{}_processed{}".format(
         name, ext), root_path=dataset.root_path,
         owner=1, beautiful_name=dataset.beautiful_name + " Processed")
+    job_id = dao.add_job_history(
+        owner=1,
+        status="Processing",
+        data=request_values['dataset_id'],
+        node_chain=request_values['node_chain'],
+        result_url="")
     if request_values['output']['isSorted']:
         if request_values['output']['limit']:
             utils.save_results(
@@ -226,10 +233,11 @@ def process():
         utils.save_results(
             rdd.collect(), processed_dataset.get_full_path(),
             request_values['output']['format'])
-    dao.add_dataset(processed_dataset)
-    # TODO: Finish Job History Addition Functionality
-    # dao.add_job_history()
-
+    dataset_id = dao.add_dataset(processed_dataset).dataset_id
+    dao.change_job_status(
+        job_id=job_id,
+        status="Completed",
+        result_url="/download/" + str(dataset_id))
     return {
         "status": 200,
         "message": "Processed Successfully"

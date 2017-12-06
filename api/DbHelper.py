@@ -49,6 +49,31 @@ class DbHelper(object):
             cursor.execute(query)
         return cursor.fetchall()
 
+    def update(self, query, params=None):
+        """
+        Method provides the UPDATE operation out of CRUD
+        :param query: SQL Query to be executed
+        :param params: conditional parameters for the UPDATE operation
+        :return: True of success else False
+        """
+        print "========================Query==========================="
+        print query
+        print "========================================================"
+        cursor = self.__connection.cursor()
+        try:
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+        except Exception as e:
+            # raise errors.DBError(e)
+            raise e
+        else:
+            row_count = cursor.rowcount
+        finally:
+            self.__connection.commit()
+        return row_count
+
     def insert(self, query, params=None):
         """
         Method provides the CREATE operation out of CRUD
