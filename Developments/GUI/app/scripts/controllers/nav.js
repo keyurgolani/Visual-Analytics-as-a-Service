@@ -609,10 +609,13 @@ console.log("tools", tools);
 
         // ]
 
+        console.log($scope.userinfo)
+
         $http({
           method : "POST",
 					url : 'http://localhost:8080/process',
 					data : {
+            "user_id": $scope.userinfo.user_id,
 						"dataset_id" : dataset_id,
             "node_chain": jsonFile,
 						"output" : output_options
