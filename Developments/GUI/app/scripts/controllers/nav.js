@@ -337,141 +337,121 @@ angular.module('visualAnalyticsApp')
               };
             }
             else if(mode === "tool") {
-              const {title: node} = data_operators[fromOp].properties;
+              const {title: node, params} = data_operators[fromOp].properties;
 
               let tools;
               switch(node){
                 case "map":
                   tools = {
                     node,
-                    logic: data_operators[fromOp].properties.logic
+                    params
                   }
                   break;
                 case "reduce":
                   tools = {
                     node,
-                    logic: data_operators[fromOp].properties.logic
+                    params
                   }
                   break;
                 case "filter":
                 tools = {
                   node,
-                  logic: data_operators[fromOp].properties.logic
+                  params
                 }
                 break;
                 case "extractUsingRegex":
-                data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    regex: data_operators[fromOp].properties.regex,
-                    column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "splitUsingRegex":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    regex: data_operators[fromOp].properties.regex,
-                    column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "splitUsingDelimiter":
-                data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    delimiter: data_operators[fromOp].properties.delimiter,
-                    column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "duplicate":
                   tools = {
                     node,
-                    interleave: data_operators[fromOp].properties.interleave,
-                    start: data_operators[fromOp].properties.start,
-                    end: data_operators[fromOp].properties.end,
+                    params
                   }
                   break;
                 case "mergeWithDelimiter":
                   tools = {
                     node,
-                    delimiter: data_operators[fromOp].properties.delimiter,
-                    start: data_operators[fromOp].properties.start,
-                    end: data_operators[fromOp].properties.end,
+                    params
                   }
                   break;
                 case "filterWithParameter":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
-                  data_operators[fromOp].properties.target_column = Number(data_operators[fromOp].properties.target_column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
+                  data_operators[fromOp].properties.params.target_column = Number(data_operators[fromOp].properties.params.target_column);
                   tools = {
                     node,
-                    parameter: data_operators[fromOp].properties.parameter,
-                    column: data_operators[fromOp].properties.column,
-                    value: data_operators[fromOp].properties.value,
-                    target_column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "filterUsingRegex":
                   tools = {
                     node,
-                    regex: data_operators[fromOp].properties.regex,
-                    start: data_operators[fromOp].properties.start,
-                    end: data_operators[fromOp].properties.end,
+                    params
                   }
                   break;
                 case "slice":
-                data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    start: data_operators[fromOp].properties.start,
-                    end: data_operators[fromOp].properties.end,
-                    column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "convertTypeTo":
 
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    regex: data_operators[fromOp].properties.toType,
-                    column: data_operators[fromOp].properties.column,
+                    params
                   }
                   break;
                 case "addColumn":
                   tools = {
                     node,
-                    at: data_operators[fromOp].properties.at,
-                    value: data_operators[fromOp].properties.value,
+                    params
                   }
                   break;
                 case "chooseColumn":
-                  data_operators[fromOp].properties.indexes = data_operators[fromOp].properties.indexes.trim().split(',').map(Number);
+                  data_operators[fromOp].properties.params.indexes = data_operators[fromOp].properties.params.indexes.trim().split(',').map(Number);
                   tools = {
                     node,
-                    indexes: data_operators[fromOp].properties.indexes,
-                    operation: data_operators[fromOp].properties.operation,
+                    params
                   }
                   break;
                 case "flatten":
                   tools = {
                     node,
-                    start: data_operators[fromOp].properties.start,
-                    end: data_operators[fromOp].properties.end,
+                    params
                   }
                   break;
                 case "reduceBy":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    column: data_operators[fromOp].properties.column,
-                    aggregation: data_operators[fromOp].properties.aggregation,
+                    params
                   }
                   break;
                 case "sortBy":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    column: data_operators[fromOp].properties.column,
-                    ascending: data_operators[fromOp].properties.ascending,
+                    params
                   }
                   break;
                 case "distinct":
@@ -482,23 +462,21 @@ angular.module('visualAnalyticsApp')
                 case "takeTop":
                   tools = {
                     node,
-                    n: data_operators[fromOp].properties.n,
+                    params
                   }
                   break;
                 case "parseUserAgent":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    column: data_operators[fromOp].properties.column,
-                    replace: data_operators[fromOp].properties.replace,
+                    params
                   }
                   break;
                 case "parseDateTime":
-                  data_operators[fromOp].properties.column = Number(data_operators[fromOp].properties.column);
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
-                    column: data_operators[fromOp].properties.column,
-                    replace: data_operators[fromOp].properties.replace,
+                    params
                   }
                   break;
                   case "removeHeader":

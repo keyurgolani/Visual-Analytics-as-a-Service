@@ -443,104 +443,104 @@ $rootScope.flowchart = $flowchart;
                 switch(data.operators[operatorId].properties.title){
                   case "map":
                     $rootScope.map = $scope.map;
-                    data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.map};
-    console.log("HA", data.operators[operatorId].properties)
+                    data.operators[operatorId].properties = $scope.map;
+
                   break;
                   case "filter":
                   $rootScope.filter = $scope.filter;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filter};
+                  data.operators[operatorId].properties.params = $scope.filter;
 
                   break;
                   case "reduce":
                   $rootScope.reduce = $scope.reduce;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.reduce};
+                  data.operators[operatorId].properties.params = $scope.reduce;
 
                   break;
                   case "extractUsingRegex":
                   $rootScope.extractUsingRegex = $scope.extractUsingRegex;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.extractUsingRegex};
+                  data.operators[operatorId].properties.params = $scope.extractUsingRegex;
 
                   break;
                   case "splitUsingRegex":
                   $rootScope.splitUsingRegex = $scope.splitUsingRegex;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.splitUsingRegex};
+                  data.operators[operatorId].properties.params = $scope.splitUsingRegex;
 
                   break;
                   case "splitUsingDelimiter":
                   $rootScope.splitUsingDelimiter = $scope.splitUsingDelimiter;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.splitUsingDelimiter};
+                  data.operators[operatorId].properties.params = $scope.splitUsingDelimiter;
 
                   break;
                   case "duplicate":
                   $rootScope.duplicate = $scope.duplicate;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.duplicate};
+                  data.operators[operatorId].properties.params = $scope.duplicate;
 
                   break;
                   case "mergeWithDelimiter":
                   $rootScope.mergeWithDelimiter = $scope.mergeWithDelimiter;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.mergeWithDelimiter};
+                  data.operators[operatorId].properties.params = $scope.mergeWithDelimiter;
 
                   break;
                   case "filterWithParameter":
                   $rootScope.filterWithParameter = $scope.filterWithParameter;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filterWithParameter};
+                  data.operators[operatorId].properties.params = $scope.filterWithParameter;
 
                   break;
                   case "filterUsingRegex":
                   $rootScope.filterUsingRegex = $scope.filterUsingRegex;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.filterUsingRegex};
+                  data.operators[operatorId].properties.params = $scope.filterUsingRegex;
 
                   break;
                   case "slice":
                   $rootScope.slice = $scope.slice;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.slice};
+                  data.operators[operatorId].properties.params = $scope.slice;
 
                   break;
                   case "convertTypeTo":
                   $rootScope.convertTypeTo = $scope.convertTypeTo;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.convertTypeTo};
+                  data.operators[operatorId].properties.params = $scope.convertTypeTo;
 
                   break;
                   case "addColumn":
                   $rootScope.addColumn = $scope.addColumn;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.addColumn};
+                  data.operators[operatorId].properties.params = $scope.addColumn;
 
                   break;
                   case "chooseColumn":
                   $rootScope.chooseColumn = $scope.chooseColumn;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.chooseColumn};
+                  data.operators[operatorId].properties.params = $scope.chooseColumn;
 
                   break;
                   case "flatten":
                   $rootScope.flatten = $scope.flatten;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.flatten};
+                  data.operators[operatorId].properties.params = $scope.flatten;
 
                   break;
                   case "reduceBy":
                   $rootScope.reduceBy = $scope.reduceBy;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.reduceBy};
+                  data.operators[operatorId].properties.params = $scope.reduceBy;
 
                   break;
 
                   case "sortBy":
                   $rootScope.sortBy = $scope.sortBy;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.sortBy};
+                  data.operators[operatorId].properties.params = $scope.sortBy;
 
                   break;
                   case "takeTop":
                   $rootScope.takeTop = $scope.takeTop;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.takeTop};
+                  data.operators[operatorId].properties.params = $scope.takeTop;
 
                   break;
                   case "parseUserAgent":
                   $rootScope.parseUserAgent = $scope.parseUserAgent;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.parseUserAgent};
+                  data.operators[operatorId].properties.params = $scope.parseUserAgent;
 
                   break;
                   case "parseDateTime":
 
                   $rootScope.parseDateTime = $scope.parseDateTime;
-                  data.operators[operatorId].properties = {...data.operators[operatorId].properties, ...$scope.parseDateTime};
+                  data.operators[operatorId].properties.params = $scope.parseDateTime;
 
                   break;
                 }
