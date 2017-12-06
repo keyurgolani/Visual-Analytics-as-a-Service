@@ -15,7 +15,7 @@ $scope.tempNode = {
   fileContent: null
 }
 
-$scope.script = $.parseJSON(localStorage.getItem("__USER_SCRIPT__"));
+$scope.script = $.parseJSON(lodash.isEmpty(localStorage.getItem("__USER_SCRIPT__") ? {} : localStorage.getItem("__USER_SCRIPT__")));
 console.log($scope.script);
 
 $rootScope.map = (lodash.isEmpty($scope.script.map) ? {
