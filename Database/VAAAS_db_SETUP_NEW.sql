@@ -1,4 +1,4 @@
-DROP database VAAAS;
+DROP database if exists VAAAS;
 CREATE database VAAAS;
 
 USE VAAAS;
@@ -43,7 +43,7 @@ CREATE TABLE `USERNODES` (
   `node_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) DEFAULT NULL,
   `node` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`NODEID`),
+  PRIMARY KEY (`node_id`),
   KEY `fk_USERNODES_1_idx` (`user_id`),
   CONSTRAINT `fk_USERNODES_1` FOREIGN KEY (`user_id`) REFERENCES `USERACCOUNT` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -112,5 +112,3 @@ CREATE TABLE `DATASETS` (
 
 
 COMMIT;
-
-
