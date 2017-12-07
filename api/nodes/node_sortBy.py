@@ -31,5 +31,6 @@ def run_node(rdd, utils, params):
         :rtype: list
         """
         return row[1][:params['column']] + [row[0]] + row[1][params['column']:]
-    return rdd.map(map_logic).sortByKey(ascending=params['ascending']).map(
+    return rdd.map(map_logic).sortByKey(ascending=params[
+        'ascending'] if 'ascending' in params.keys() else False).map(
         reverse_map_logic)
