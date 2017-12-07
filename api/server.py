@@ -235,7 +235,7 @@ def process():
     }
 
 
-@route('/upload', method='POST')
+@route('/upload', method=['POST', 'OPTIONS'])
 def do_upload():
     """
     Method to upload the dataset into the server and ultimately adding the
@@ -253,7 +253,7 @@ def do_upload():
     }
 
 
-@route('/download/<dataset_id>')
+@route('/download/<dataset_id>', method=['GET'])
 def do_download(dataset_id):
     """
     Method downloads the dataset from dataset ID given

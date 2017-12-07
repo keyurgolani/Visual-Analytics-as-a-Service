@@ -9,9 +9,9 @@
       </thead>
       <tbody>
         <tr ng-repeat="job in userJobHistory">
-          <td>{job.job_id}</td>
-          <td>{job.status}</td>
-          <td>{job.result_url}</td>
+          <td>{{job.job_id}}</td>
+          <td>{{job.status}}</td>
+          <td ng-click="download(job.result_url)">{{job.result_url}}</td>
         </tr>
       </tbody>
   </table>
