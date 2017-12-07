@@ -205,7 +205,8 @@ def process():
         elif node["node"] == "custom":
             rdd = code_module.run_node(rdd, utils, node["logic"], sc)
         else:
-            rdd = code_module.run_node(rdd, utils, node["params"])
+            rdd = code_module.run_node(
+                rdd, utils, node["params"] if "params" in node.keys() else {})
 
     # ==== Output ====
     name, ext = os.path.splitext(dataset.filename)
