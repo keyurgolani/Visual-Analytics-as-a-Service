@@ -192,7 +192,8 @@ def process():
     # ]
     # ==== Input ====
     dataset = dao.get_dataset(entities.Dataset(
-        dataset_id=request_values['dataset_id'], owner=1))
+        dataset_id=request_values['dataset_id'],
+        owner=request_values['user_id']))
     rdd = utils.get_data(sc, dataset.get_full_path())
 
     # ==== Processing ====
@@ -212,9 +213,10 @@ def process():
     name, ext = os.path.splitext(dataset.filename)
     processed_dataset = entities.Dataset(filename="{}_processed{}".format(
         name, ext), root_path=dataset.root_path,
-        owner=1, beautiful_name=dataset.beautiful_name + " Processed")
+        owner=request_values['user_id'],
+        beautiful_name=dataset.beautiful_name + " Processed")
     job_id = dao.add_job_history(
-        owner=1,
+        owner=request_values['user_id'],
         status="Processing",
         data=request_values['dataset_id'],
         node_chain=request_values['node_chain'],
