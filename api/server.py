@@ -221,21 +221,9 @@ def process():
         data=request_values['dataset_id'],
         node_chain=request_values['node_chain'],
         result_url="")
-    if request_values['output']['isSorted']:
-        if request_values['output']['limit']:
-            utils.save_results(
-                rdd.top(request_values['output']['limit']),
-                processed_dataset.get_full_path(),
-                request_values['output']['format'])
-        else:
-            utils.save_results(
-                rdd.top(rdd.count()),
-                processed_dataset.get_full_path(),
-                request_values['output']['format'])
-    else:
-        utils.save_results(
-            rdd.collect(), processed_dataset.get_full_path(),
-            request_values['output']['format'])
+    utils.save_results(
+        rdd.collect(), processed_dataset.get_full_path(),
+        request_values['output']['format'])
     dataset_id = dao.add_dataset(processed_dataset).dataset_id
     dao.change_job_status(
         job_id=job_id,
