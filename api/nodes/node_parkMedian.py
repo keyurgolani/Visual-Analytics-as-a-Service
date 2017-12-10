@@ -13,13 +13,14 @@ def run_node(rdd, utils, params, parked):
 
     def extract_column(col_index):
         return rdd\
-            .map(lambda x: [int(x[col_index])])\
+            .map(lambda x: [int(x[col_index]) if x[col_index] else 0])\
             .map(lambda x: (-1, x))\
             .reduceByKey(lambda x, y: x + y)\
             .map(lambda x: x[1])\
             .collect()[0]
 
     import numpy as np
-    col_median = np.median(np.array(extract_column(params['column'])))
+    column = extract_column(params['column'])
+    col_median = np.median(np.array(column))
     median = rdd.filter(lambda row: int(row[params['column']]) == col_median).first()
     return (median, rdd)

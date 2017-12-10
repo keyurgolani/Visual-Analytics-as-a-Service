@@ -21,7 +21,7 @@ def run_node(rdd, utils, params, parked):
         """
         if "parked" in params['value']:
             import re
-            cols = int(re.findall('\d+', params['value']))
+            cols = map(int, re.findall('\d+', params['value']))
             new_values = row[params['at']]
             for col in cols:
                 new_values.append(parked[col])
