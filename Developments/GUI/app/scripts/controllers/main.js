@@ -436,6 +436,18 @@ $rootScope.flowchart = $flowchart;
                 replace: false
               }
 
+              $scope.findDistance = {
+                unit: '',
+                lat1: '',
+                lng1: '',
+                lat2: '',
+                lng2: ''
+              }
+
+              $scope.parkMedian = {
+                column: ''
+              }
+
               $scope.cancel = function () {
                   $uibModalInstance.dismiss('cancel');
               };
@@ -547,6 +559,20 @@ $rootScope.flowchart = $flowchart;
 
                   $rootScope.parseDateTime = $scope.parseDateTime;
                   data.operators[operatorId].properties.params = $scope.parseDateTime;
+
+                  break;
+
+                  case "findDistance":
+
+                  $rootScope.findDistance = $scope.findDistance;
+                  data.operators[operatorId].properties.params = $scope.findDistance;
+
+                  break;
+
+                  case "parkMedian":
+
+                  $rootScope.parkMedian = $scope.parkMedian;
+                  data.operators[operatorId].properties.params = $scope.parkMedian;
 
                   break;
                 }
@@ -669,6 +695,18 @@ $rootScope.flowchart = $flowchart;
                   case "parseDateTime":
 
                   $scope.parseDateTime = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "findDistance":
+
+                  $scope.findDistance = {
+                    ...data.operators[operatorId].properties.params
+                  }
+                  break;
+                  case "parkMedian":
+
+                  $scope.parkMedian = {
                     ...data.operators[operatorId].properties.params
                   }
                   break;

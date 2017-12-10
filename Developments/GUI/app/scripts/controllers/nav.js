@@ -89,6 +89,7 @@ angular.module('visualAnalyticsApp')
                       mode: $element.data('mode')
                     }
                   };
+                  console.log(data);
 
                   var i = 0;
                   for (i = 0; i < nbInputs; i++) {
@@ -307,6 +308,7 @@ angular.module('visualAnalyticsApp')
         for(var k =0;k<arrOperators.length;k++){
           //Get the from operator of each list object
           //console.log("---------"+JSON.stringify(links[k]))
+
           if(k==arrLinks.length){
             var fromOp = links[arrLinks[k-1]].toOperator;
           }
@@ -319,6 +321,7 @@ angular.module('visualAnalyticsApp')
           if(data_operators[fromOp] != null) {
             console.log("IN")
             var mode =  data_operators[fromOp].properties.mode;
+            console.log(data_operators[fromOp])
             //Modes
             if(mode === "input") {
               console.log("-----------:",data_operators[fromOp].properties)
@@ -473,6 +476,24 @@ angular.module('visualAnalyticsApp')
                   }
                   break;
                 case "parseDateTime":
+                  data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
+                  tools = {
+                    node,
+                    params
+                  }
+                  break;
+                case "findDistance":
+                  data_operators[fromOp].properties.params.lat1 = Number(data_operators[fromOp].properties.params.lat1);
+                  data_operators[fromOp].properties.params.lng1 = Number(data_operators[fromOp].properties.params.lng1);
+                  data_operators[fromOp].properties.params.lat2 = Number(data_operators[fromOp].properties.params.lat2);
+                  data_operators[fromOp].properties.params.lng2 = Number(data_operators[fromOp].properties.params.lng2);
+                  
+                  tools = {
+                    node,
+                    params
+                  }
+                  break;
+                case "parkMedian":
                   data_operators[fromOp].properties.params.column = Number(data_operators[fromOp].properties.params.column);
                   tools = {
                     node,
