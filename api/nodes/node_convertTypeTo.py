@@ -1,4 +1,4 @@
-def run_node(rdd, utils, params):
+def run_node(rdd, utils, params, parked):
     """
     Logic for Node "Convert Type"
     :param rdd: Input RDD To Be Appended Node Logic To

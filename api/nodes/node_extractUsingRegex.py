@@ -1,4 +1,4 @@
-def run_node(rdd, utils, params):
+def run_node(rdd, utils, params, parked):
     """
     Logic for Node "Extract With Regex"
     :param rdd: Input RDD To Be Appended Node Logic To

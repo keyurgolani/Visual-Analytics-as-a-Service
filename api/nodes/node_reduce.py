@@ -1,4 +1,4 @@
-def run_node(rdd, utils, logic):
+def run_node(rdd, utils, logic, parked):
     """
     Logic for Node "Reduce"
     :param rdd: Input RDD To Be Appended Node Logic To
