@@ -21,7 +21,7 @@ def run_node(rdd, utils, params, parked):
         """
         data_value = row[params['column']]
         if 'value' in params.keys():
-            target_value = params['value']
+            target_value = int(params['value'])
         elif 'target_column' in params.keys():
             target_value = row[params['target_column']]
         if params['parameter'] == 'greater':
