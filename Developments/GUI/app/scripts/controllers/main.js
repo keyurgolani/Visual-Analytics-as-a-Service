@@ -121,6 +121,12 @@ $rootScope.output = {
 }
 
 var $flowchart = $('#flowchart');
+
+$scope.load_sample_button = function() {
+    var sampleData = $.parseJSON(`{"operators":{"0":{"properties":{"title":"inyo.csv","inputs":{},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":3,"mode":"input"},"left":460,"top":40},"1":{"properties":{"title":"removeHeader","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool"},"left":640,"top":120},"2":{"properties":{"title":"splitUsingDelimiter","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool","params":{"delimiter":",","column":"0"}},"left":780,"top":20},"3":{"properties":{"title":"chooseColumn","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool","params":{"indexes":"2, 5","operation":"keep"}},"left":760,"top":320},"4":{"properties":{"title":"convertTypeTo","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool","params":{"toType":"integer","column":"0"}},"left":900,"top":200},"5":{"properties":{"title":"reduceBy","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool","params":{"column":"1","aggregation":"add"}},"left":900,"top":440},"8":{"properties":{"title":"sortBy","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool","params":{"column":"1"}},"left":1240,"top":100},"9":{"properties":{"title":"flatten","inputs":{"input_0":{"label":"Input 1"}},"outputs":{"output_0":{"label":"Output 1"}},"dataset_id":0,"mode":"tool"},"left":1100,"top":280},"10":{"properties":{"title":"CSV","inputs":{"input_0":{"label":"Input 1"}},"outputs":{},"dataset_id":0,"mode":"output","limit":0,"isSorted":false},"left":1360,"top":240}},"links":{"0":{"fromOperator":0,"fromConnector":"output_0","fromSubConnector":0,"toOperator":1,"toConnector":"input_0","toSubConnector":0},"1":{"fromOperator":1,"fromConnector":"output_0","fromSubConnector":0,"toOperator":2,"toConnector":"input_0","toSubConnector":0},"2":{"fromOperator":"2","fromConnector":"output_0","fromSubConnector":0,"toOperator":3,"toConnector":"input_0","toSubConnector":0},"3":{"fromOperator":"3","fromConnector":"output_0","fromSubConnector":0,"toOperator":4,"toConnector":"input_0","toSubConnector":0},"4":{"fromOperator":"4","fromConnector":"output_0","fromSubConnector":0,"toOperator":5,"toConnector":"input_0","toSubConnector":0},"8":{"fromOperator":"5","fromConnector":"output_0","fromSubConnector":0,"toOperator":9,"toConnector":"input_0","toSubConnector":0},"9":{"fromOperator":9,"fromConnector":"output_0","fromSubConnector":0,"toOperator":"8","toConnector":"input_0","toSubConnector":0}},"operatorTypes":{}}`);
+
+    $flowchart.flowchart('setData', sampleData);
+}
 $rootScope.flowchart = $flowchart;
     var $container = $flowchart.parent();
 
@@ -560,7 +566,7 @@ $rootScope.flowchart = $flowchart;
               }
 
               $scope.load = function() {
-                
+
                 switch(data.operators[operatorId].properties.title){
                   case "map":
                     $scope.map = {
