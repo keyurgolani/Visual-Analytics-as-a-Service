@@ -425,6 +425,7 @@ angular.module('visualAnalyticsApp')
                   }
                   break;
                 case "addColumn":
+                data_operators[fromOp].properties.params.at = Number(data_operators[fromOp].properties.params.at);
                   tools = {
                     node,
                     params
@@ -487,7 +488,7 @@ angular.module('visualAnalyticsApp')
                   data_operators[fromOp].properties.params.lng1 = Number(data_operators[fromOp].properties.params.lng1);
                   data_operators[fromOp].properties.params.lat2 = Number(data_operators[fromOp].properties.params.lat2);
                   data_operators[fromOp].properties.params.lng2 = Number(data_operators[fromOp].properties.params.lng2);
-                  
+
                   tools = {
                     node,
                     params
