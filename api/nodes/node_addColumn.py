@@ -19,7 +19,15 @@ def run_node(rdd, utils, params):
         :return: row with an additional column with value given in params
         :rtype: list
         """
-        row[params['at']:params['at'] + 1] = [row[params['at']],
-                                              str(params['value'])]
+        if "parked" in params['value']:
+            import re
+            cols = int(re.findall('\d+', params['value']))
+            new_values = row[params['at']]
+            for col in cols:
+                new_values.append(parked[col])
+            row[params['at']:params['at'] + 1] = new_values
+        else:
+            row[params['at']:params['at'] + 1] = [row[params['at']],
+                                                  str(params['value'])]
         return row
     return rdd.map(run_logic)

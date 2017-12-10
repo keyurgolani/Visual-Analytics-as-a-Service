@@ -42,154 +42,6 @@ def process():
     if request.method == 'OPTIONS':
         return {}
     request_values = json.loads(request.body.read())
-    # node_chain = [
-    #     {
-    #         "node": "map",
-    #         "logic": TODO: Map Code to be passed here
-    #     },
-    #     {
-    #         "node": "reduce",
-    #         "logic": TODO: Reduce Code to be passed here
-    #     },
-    #     {
-    #         "node": "filter",
-    #         "logic": TODO: Filter Code to be passed here
-    #     },
-    #     {
-    #         "node": "extractUsingRegex",
-    #         "params": {
-    #             "regex": TODO: Extraction Regex to be passed here,
-    #             "column": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "splitUsingRegex",
-    #         "params": {
-    #             "regex": TODO: Split Regex to be passed here,
-    #             "column": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "splitUsingDelimiter",
-    #         "params": {
-    #             "delimeter": TODO: Split Delimiter to be passed here,
-    #             "column": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "duplicate",
-    #         "params": {
-    #             "interleave": TODO: Weather to interleave the
-    #             duplicate fields or not.
-    #             "start": TODO: Split Delimiter to be passed here,
-    #             "end": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "mergeWithDelimiter",
-    #         "params": {
-    #             "delimiter": TODO: Merge Delimiter to be passed here,
-    #             "start": TODO: Start Column index to be passed here,
-    #             "end": TODO: End Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "filterWithParameter",
-    #         "params": {
-    #             "parameter": TODO: ,
-    #             "column": TODO: feature column index to be passed here,
-    #             "value": TODO: Value to be filtered at to be passed here,
-    #             "target_column: TODO: Index of the column that will act as
-    #             target for the comparison"
-    #         }
-    #     },
-    #     {
-    #         "node": "filterUsingRegex",
-    #         "params": {
-    #             "regex": TODO: Fliter Regex to be passed here,
-    #             "column": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "slice",
-    #         "params": {
-    #             "start": TODO: Start index of the slice
-    #             "end": TODO: End index of the slice
-    #             "column": TODO: Column index to be passed here
-    #         }
-    #     },
-    #     {
-    #         "node": "convertTypeTo",
-    #         "params": {
-    #             "toType": TODO: Type to be converted to to be passed here,
-    #             "columns": TODO: List of column indices to be passed here
-    #         }
-    #     }
-    #     {
-    #         "node": "addColumn",
-    #         "params": {
-    #             "at": TODO: Index to add new column at
-    #             "value": TODO: Default value of the newly added column
-    #         }
-    #     }
-    #     {
-    #         "node": "chooseColumn",
-    #         "params": {
-    #             "indexes": TODO: Indexes to be performed operation on
-    #             "operation": TODO: Add the keep / remove for the columns
-    #             mentioned in the indexes
-    #         }
-    #     }
-    #     {
-    #         "node": "flatten",
-    #         "params": {
-    #             "start": TODO: start index to start flattening at
-    #             "end": TODO: end index to do flattening till
-    #         }
-    #     }
-    #     {
-    #         "node": "reduceBy",
-    #         "params": {
-    #             "column": TODO: Column to reduce the rows by
-    #             "aggregation": TODO: aggregation to be applied to columns
-    #             other than reduce by column. (Can be list, add, xor,
-    #             multiply)
-    #         }
-    #     }
-    #     {
-    #         "node": "sortBy",
-    #         "params": {
-    #             "column": TODO: Column index to act as key for sorting,
-    #             "ascending": TODO: Weather to sort in ascending order or not
-    #         }
-    #     }
-    #     {
-    #         "node": "distinct"
-    #     }
-    #     {
-    #         "node": "takeTop",
-    #         "params": {
-    #             "n": TODO: Number of top entries to be taken
-    #         }
-    #     }
-    #     TODO: Finish Below Nodes
-    #     {
-    #         "node": "parseUserAgent",
-    #         "params": {
-    #             "column": TODO: Column to parse user agent from
-    #             "replace": TODO: Weather the parsed value of user agent will
-    #             replace the original data or not
-    #         }
-    #     }
-    #     {
-    #         "node": "parseDateTime",
-    #         "params": {
-    #             "column": TODO: Column to parse date time from
-    #             "replace": TODO: Weather the parsed value of date time will
-    #             replace the original data or not
-    #         }
-    #     }
-    # ]
     # ==== Input ====
     dataset = dao.get_dataset(entities.Dataset(
         dataset_id=request_values['dataset_id'],
@@ -197,17 +49,23 @@ def process():
     rdd = utils.get_data(sc, dataset.get_full_path())
 
     # ==== Processing ====
+    parked_row = None
     for node in request_values['node_chain']:
         code_module = importlib.import_module("nodes.node_" + node["node"])
         if (node["node"] == "map" or
                 node["node"] == "reduce" or
                 node["node"] == "filter"):
-            rdd = code_module.run_node(rdd, utils, node["logic"])
+            rdd = code_module.run_node(rdd, utils, node["logic"], parked_row)
         elif node["node"] == "custom":
-            rdd = code_module.run_node(rdd, utils, node["logic"], sc)
+            rdd = code_module.run_node(rdd, utils, node["logic"], sc, parked_row)
+        elif node["node"] == "parkMedian":
+            parked_row, rdd = code_module.run_node(
+                rdd, utils, node["params"] if "params" in node.keys() else {},
+                parked_row)
         else:
             rdd = code_module.run_node(
-                rdd, utils, node["params"] if "params" in node.keys() else {})
+                rdd, utils, node["params"] if "params" in node.keys() else {},
+                parked_row)
 
     # ==== Output ====
     name, ext = os.path.splitext(dataset.filename)
@@ -270,3 +128,154 @@ def do_download(dataset_id):
 
 
 run(host='0.0.0.0', port=8080, reloader=True)
+
+
+
+# node_chain = [
+#     {
+#         "node": "map",
+#         "logic": TODO: Map Code to be passed here
+#     },
+#     {
+#         "node": "reduce",
+#         "logic": TODO: Reduce Code to be passed here
+#     },
+#     {
+#         "node": "filter",
+#         "logic": TODO: Filter Code to be passed here
+#     },
+#     {
+#         "node": "extractUsingRegex",
+#         "params": {
+#             "regex": TODO: Extraction Regex to be passed here,
+#             "column": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "splitUsingRegex",
+#         "params": {
+#             "regex": TODO: Split Regex to be passed here,
+#             "column": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "splitUsingDelimiter",
+#         "params": {
+#             "delimeter": TODO: Split Delimiter to be passed here,
+#             "column": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "duplicate",
+#         "params": {
+#             "interleave": TODO: Weather to interleave the
+#             duplicate fields or not.
+#             "start": TODO: Split Delimiter to be passed here,
+#             "end": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "mergeWithDelimiter",
+#         "params": {
+#             "delimiter": TODO: Merge Delimiter to be passed here,
+#             "start": TODO: Start Column index to be passed here,
+#             "end": TODO: End Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "filterWithParameter",
+#         "params": {
+#             "parameter": TODO: ,
+#             "column": TODO: feature column index to be passed here,
+#             "value": TODO: Value to be filtered at to be passed here,
+#             "target_column: TODO: Index of the column that will act as
+#             target for the comparison"
+#         }
+#     },
+#     {
+#         "node": "filterUsingRegex",
+#         "params": {
+#             "regex": TODO: Fliter Regex to be passed here,
+#             "column": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "slice",
+#         "params": {
+#             "start": TODO: Start index of the slice
+#             "end": TODO: End index of the slice
+#             "column": TODO: Column index to be passed here
+#         }
+#     },
+#     {
+#         "node": "convertTypeTo",
+#         "params": {
+#             "toType": TODO: Type to be converted to to be passed here,
+#             "columns": TODO: List of column indices to be passed here
+#         }
+#     }
+#     {
+#         "node": "addColumn",
+#         "params": {
+#             "at": TODO: Index to add new column at
+#             "value": TODO: Default value of the newly added column
+#         }
+#     }
+#     {
+#         "node": "chooseColumn",
+#         "params": {
+#             "indexes": TODO: Indexes to be performed operation on
+#             "operation": TODO: Add the keep / remove for the columns
+#             mentioned in the indexes
+#         }
+#     }
+#     {
+#         "node": "flatten",
+#         "params": {
+#             "start": TODO: start index to start flattening at
+#             "end": TODO: end index to do flattening till
+#         }
+#     }
+#     {
+#         "node": "reduceBy",
+#         "params": {
+#             "column": TODO: Column to reduce the rows by
+#             "aggregation": TODO: aggregation to be applied to columns
+#             other than reduce by column. (Can be list, add, xor,
+#             multiply)
+#         }
+#     }
+#     {
+#         "node": "sortBy",
+#         "params": {
+#             "column": TODO: Column index to act as key for sorting,
+#             "ascending": TODO: Weather to sort in ascending order or not
+#         }
+#     }
+#     {
+#         "node": "distinct"
+#     }
+#     {
+#         "node": "takeTop",
+#         "params": {
+#             "n": TODO: Number of top entries to be taken
+#         }
+#     }
+#     TODO: Finish Below Nodes
+#     {
+#         "node": "parseUserAgent",
+#         "params": {
+#             "column": TODO: Column to parse user agent from
+#             "replace": TODO: Weather the parsed value of user agent will
+#             replace the original data or not
+#         }
+#     }
+#     {
+#         "node": "parseDateTime",
+#         "params": {
+#             "column": TODO: Column to parse date time from
+#             "replace": TODO: Weather the parsed value of date time will
+#             replace the original data or not
+#         }
+#     }
+# ]
